@@ -6,13 +6,46 @@ const { title } = Astro.props;
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="Astro description" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		<meta name="description" content="Portafolio con ilustraciones de la artista plástica Cristina León de Bogotá Colombia">
+		<meta property="og:title" content="Cristina León Artista" />
+    <meta property="og:description" content="Portafolio con ilustraciones de la artista plástica Cristina León de Bogotá Colombia" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://cristinaleonilustradora.com" />
+    <meta property="og:image" content="http://cristinaleonilustradora.com/img/cristina-leon-ilustradora-optimizado.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/cl.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<script src="https://use.fontawesome.com/eab2f30c85.js"></script>
 	</head>
 	<body>
+		<header>
+		
+			<div class="logo">
+				<a href="http://cristinaleonilustradora.com/" title="Cristina León Ilustradora, Bogotá, Colombia" class="link-img">
+				<img src="img/cristina-leon-ilustradora-optimizado.svg" alt="Cristina León Ilustradora, Bogotá, Colombia">
+				</a>
+			</div>
+	
+			<a href="http://cristinaleonilustradora.com/" title="Cristina León Ilustradora, Bogotá, Colombia">
+			<h1>Cristina León.</h1>
+			</a>
+	
+		</header>
 		<slot />
+		<footer>
+			<ul class="contact-links-list">
+				<li>
+					<a href="https://www.instagram.com/crisleonilustracion/" class="contact-link">
+						<img class="icon" src="icons/instagram.svg" alt="Instagram">
+					</a>
+				</li>
+				<li>
+					<a href="mailto:leon.cristina@gmail.com" class="contact-link">
+						<img class="icon" src="icons/email.svg" alt="Email">
+					</a>
+				</li>
+			</ul>
+		</footer>
 	</body>
 </html>
