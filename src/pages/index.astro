@@ -1,46 +1,69 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import '../styles/global.css'
-const title = 'Portafolio | Cristina León Artista | Bogotá, Colombia';
+const properties = {
+	title: 'Portafolio',
+	url: '/',
+	images: [
+		{
+			url: '/img/portafolio/img7.jpg',
+			alt: 'imgAlt',
+		},
+		{
+			url: '/img/portafolio/img9.jpg',
+			alt: 'imgAlt',
+		},
+		{
+			url: '/img/portafolio/img4.jpg',
+			alt: 'imgAlt',
+		},
+		{
+			url: '/img/portafolio/img3.jpg',
+			alt: 'imgAlt',
+		},
+		{
+			url: '/img/portafolio/img6.jpg',
+			alt: 'imgAlt',
+		},
+		{
+			url: '/img/portafolio/img1.jpg',
+			alt: 'imgAlt',
+		},
+		{
+			url: '/img/portafolio/img8.jpg',
+			alt: 'imgAlt',
+		},
+		{
+			url: '/img/portafolio/img5.jpg',
+			alt: 'imgAlt',
+		},
+		{
+			url: '/img/portafolio/img2.jpg',
+			alt: 'imgAlt',
+		},
+	]
+}
+const {
+	images,
+	title,
+	url,
+} = properties;
 ---
 
-<Layout title={title}>
-	<main>
-		
-		<div>
-			<p>Cristina León es artista plástica e ilustradora infantil, quién mezcla la pasión por el dibujo con la enseñanza a niños entre los 4 y los 7 años. Ellos la contagian cada día con su fantasía y así inspiran la gran mayoría de sus dibujos. Uno de sus propósito es despertar la conciencia en los niños sobre el cuidado del medio ambiente y de todos los seres que habitamos en la tierra. Es por esta razón que la gran mayoría de sus ilustraciones son animales, que además de tener un gusto particular por ellos, son una razón para sensibilizar a otros, promoviendo el gusto y el amor por diferentes seres vivos.</p>
-		</div>
-
-		<section>
-			<h2>Trabajo</h2>
-			<ul class="description">
-				<li>Lecciones de Poesía para niños y niñas inquietos, <br>
-				Escritor: Luís García Montero, Ilustraciones: Cristina León <br> 
-				Editorial Visor, 2016</li>
-				<li>Lecciones de poesía para niños inquietos, de Luis García Montero. <br> 
-				Ilustraciones: Cristina León <br> 
-				Cuadernos EX-LIBRIS, serie: Grandes Maestros. Agenda Cultural, <br> 
-				Gimnasio Moderno, 2015</li>
-				<li>Exposición colectiva “ De cero a  cien años” con el grupo: <br>
-				Postgrado en Ilustración para publicaciones infantiles y Juveniles, <br>
-				EINA. Barcelona, España 2013</li>
-				<li>Ilustraciones Textos Infantiles: Libro “Burbujas D, transición libro integrado. Grupo Editorial EDUCAR. 2012</li>
-				<li>Ilustraciones. Libro “Burbujas D, transición libro integrado. <br>
-				Grupo Editorial Educar. (2012) Bogotá.</li>
-				<li>Ilustraciones revista de Literatura “Phoenix” <br>
-				de la Universidad Nacional de Colombia. (2001)</li>
-				<li>Participante del Segundo concurso Bienal de Pintura y Escultura, BNA (Bolsa Nacional Agropecuaria), (2001) Bogotá.</li>
-				<li>Exposición Colectiva de Arte, Club Médico de Bogotá, 2000</li>
-			</ul>
-		</section>
-		<section>
-			<h2>Formación Académica</h2>
-			<ul class="description">
-				<li>Eina, Escola de Disseny i Art, Barcelona</li>
-				<li>Universidad De Los Andes, Bogotá</li>
-				<li>Universidad El Bosque, Bogotá</li>
-			</ul>
-		</section>
-
-	</main>
+<Layout title={title} url={url}>
+	{images.map((image) => (
+		<img src={image.url} alt={image.alt} />
+	))}
 </Layout>
+<style>
+	img {
+		margin-bottom: 1.5rem;
+	}
+	@media screen and (min-width: 828px) {
+		img {
+			height: 21rem;
+			width: auto;
+			margin-right: 1.5rem;
+		}
+	}
+</style>

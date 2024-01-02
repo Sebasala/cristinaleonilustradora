@@ -1,12 +1,31 @@
 ---
-const { title } = Astro.props;
+import Footer from "../components/Footer.astro";
+const { title, url } = Astro.props;
+const properties = {
+	sufix: "Cristina León Artísta | Bogotá, Colombia",
+	heading: "Cristina León",
+	pages: {
+		portafolio: {
+			href: "/",
+			label: "Portafolio"
+		},
+		biografia: {
+			href: "/biografia",
+			label: "Biografía"
+		}
+	}
+};
+const { sufix, heading, pages } = properties;
+const { portafolio, biografia } = pages;
+const isPortafolio = url === portafolio.href;
+const isBiografia = url === biografia.href;
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<title>{title}</title>
+		<title>{title} | {sufix}</title>
 		<meta name="description" content="Portafolio con ilustraciones de la artista plástica Cristina León de Bogotá Colombia">
 		<meta property="og:title" content="Cristina León Artista" />
     <meta property="og:description" content="Portafolio con ilustraciones de la artista plástica Cristina León de Bogotá Colombia" />
@@ -14,7 +33,7 @@ const { title } = Astro.props;
     <meta property="og:url" content="http://cristinaleonilustradora.com" />
     <meta property="og:image" content="http://cristinaleonilustradora.com/img/cristina-leon-ilustradora-optimizado.svg" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/cl.svg" />
+		<link rel="icon" type="image/svg" href="/img/logos/cl.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<script src="https://use.fontawesome.com/eab2f30c85.js"></script>
 	</head>
@@ -23,29 +42,35 @@ const { title } = Astro.props;
 		
 			<div class="logo">
 				<a href="http://cristinaleonilustradora.com/" title="Cristina León Ilustradora, Bogotá, Colombia" class="link-img">
-				<img src="img/cristina-leon-ilustradora-optimizado.svg" alt="Cristina León Ilustradora, Bogotá, Colombia">
+				<img src="img/logos/cristina-leon-ilustradora-optimizado.svg" alt="Cristina León Ilustradora, Bogotá, Colombia">
 				</a>
 			</div>
 	
 			<a href="http://cristinaleonilustradora.com/" title="Cristina León Ilustradora, Bogotá, Colombia">
-			<h1>Cristina León.</h1>
+			<h1>{heading}</h1>
 			</a>
+
+			<nav>
+				<ul class="nav-links-list">
+					<li>
+						<a class:list={["nav-link", isPortafolio && "current-page"]} href={portafolio.href}>{portafolio.label}</a>
+					</li>
+					<li>
+						<a class:list={["nav-link", isBiografia && "current-page"]} href={biografia.href}>{biografia.label}</a>
+					</li>
+				</ul>
+			</nav>
 	
 		</header>
-		<slot />
-		<footer>
-			<ul class="contact-links-list">
-				<li>
-					<a href="https://www.instagram.com/crisleonilustracion/" class="contact-link">
-						<img class="icon" src="icons/instagram.svg" alt="Instagram">
-					</a>
-				</li>
-				<li>
-					<a href="mailto:leon.cristina@gmail.com" class="contact-link">
-						<img class="icon" src="icons/email.svg" alt="Email">
-					</a>
-				</li>
-			</ul>
-		</footer>
+		<main>
+			<slot />
+		</main>
+		<Footer />
 	</body>
 </html>
+
+<style>
+	li {
+		margin-bottom: 0;
+	}
+</style>
