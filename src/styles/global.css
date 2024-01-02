@@ -454,7 +454,7 @@
   /* line 10, ../sass/base/_type.scss */
   h1,
   h2 {
-    margin: 0 1.5rem 1.5rem; }
+    margin: 0 0 1.5rem; }
   
   /* line 14, ../sass/base/_type.scss */
   h1 {
@@ -550,22 +550,19 @@
   
   /* line 42, ../sass/base/_layout.scss */
   img {
-    max-width: 100%;
-    margin-bottom: 1.5rem; }
+    max-width: 100%; }
   
   /* line 47, ../sass/base/_layout.scss */
   ul {
-    margin: 0 0 1.5rem; }
+    margin: 0 0 1.5rem;
+    padding: 0; }
   
   /* line 51, ../sass/base/_layout.scss */
   p {
-    padding: 0 1.5rem;
     margin: 0 0 1.5rem; }
   
   /* line 56, ../sass/base/_layout.scss */
   .logo {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
     margin-bottom: 1.5rem; }
   
   /* line 62, ../sass/base/_layout.scss */
@@ -586,13 +583,11 @@
   .nav-link {
     display: block;
     padding: 0.75rem;
-    margin: 0 1.5rem;
     border-left: 1px solid transparent; }
   
   /* line 84, ../sass/base/_layout.scss */
   .contact-links-list {
     list-style: none;
-    padding: 0 1.5rem;
     margin: 0 0 1.5rem; }
   
   /* line 90, ../sass/base/_layout.scss */
@@ -603,7 +598,8 @@
   
   /* line 1, ../sass/base/_bg.scss */
   body {
-    background-color: #F3F3F3; }
+    background-color: #F3F3F3;
+    padding: 0 1.5rem; }
   
   /* line 5, ../sass/base/_bg.scss */
   figure {
@@ -621,8 +617,7 @@
     .contact-links-list li {
       font-size: 1.777rem;
       line-height: 3rem;
-      display: inline-block;
-      margin: 0 0.5rem; }
+      display: inline-block; }
   
   /* line 3, ../sass/sections/_layout.scss */
   .figures-list .grid-item {
