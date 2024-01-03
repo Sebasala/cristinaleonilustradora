@@ -53,7 +53,7 @@ const isBiografia = url === biografia.href;
 			<nav>
 				<ul class="nav-links-list">
 					<li>
-						<a class:list={["nav-link", isPortafolio && "current-page"]} href={portafolio.href}>{portafolio.label}</a>
+						<a class:list={["nav-link", "gradient", isPortafolio && "current-page"]} href={portafolio.href}>{portafolio.label}</a>
 					</li>
 					<li>
 						<a class:list={["nav-link", isBiografia && "current-page"]} href={biografia.href}>{biografia.label}</a>
@@ -72,5 +72,21 @@ const isBiografia = url === biografia.href;
 <style>
 	li {
 		margin-bottom: 0;
+	}
+
+	.gradient {
+		max-width: 113px;
+		background: linear-gradient(
+			90deg,
+			rgb(35, 35, 186), 
+			rgb(35, 35, 186), 
+			rgb(185, 39, 185), 
+			rgb(185, 34, 34), 
+			rgb(184, 130, 31), 
+			rgb(177, 177, 32), 
+			rgb(7, 100, 7)
+		);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
 	}
 </style>
