@@ -581,7 +581,7 @@
   
   /* line 77, ../sass/base/_layout.scss */
   .nav-link {
-    display: block;
+    display: inline-block;
     padding: 0.75rem;
     border-left: 1px solid transparent; }
   
