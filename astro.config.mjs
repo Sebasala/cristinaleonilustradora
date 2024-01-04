@@ -2,9 +2,5 @@ import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-  output: 'static',
-  outDir: './docs',
-  build: {
-    assets: 'astro'
-  }
+  site: 'https://cristinaleonilustradora.com/'
 });
