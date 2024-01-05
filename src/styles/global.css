@@ -550,7 +550,8 @@
   
   /* line 42, ../sass/base/_layout.scss */
   img {
-    max-width: 100%; }
+    max-width: 100%;
+    height: auto; }
   
   /* line 47, ../sass/base/_layout.scss */
   ul {

@@ -35,7 +35,6 @@ const isBiografia = url === biografia.href;
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg" href="/img/logos/cl.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<script src="https://use.fontawesome.com/eab2f30c85.js"></script>
 	</head>
 	<body>
 		<header>
@@ -62,9 +61,7 @@ const isBiografia = url === biografia.href;
 			</nav>
 	
 		</header>
-		<main>
-			<slot />
-		</main>
+		<slot />
 		<Footer />
 	</body>
 </html>
