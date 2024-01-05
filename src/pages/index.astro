@@ -1,43 +1,11 @@
 ---
 import Layout from '@layouts/Layout.astro';
 import '@styles/global.css'
+import { Image } from 'astro:assets';
 const properties = {
 	title: 'Portafolio',
 	url: '/',
-	images: [
-		{
-			url: '/img/portafolio/img7.jpg',
-			alt: 'imgAlt',
-		},
-		{
-			url: '/img/portafolio/img4.jpg',
-			alt: 'imgAlt',
-		},
-		{
-			url: '/img/portafolio/img3.jpg',
-			alt: 'imgAlt',
-		},
-		{
-			url: '/img/portafolio/img6.jpg',
-			alt: 'imgAlt',
-		},
-		{
-			url: '/img/portafolio/img1.jpg',
-			alt: 'imgAlt',
-		},
-		{
-			url: '/img/portafolio/img8.jpg',
-			alt: 'imgAlt',
-		},
-		{
-			url: '/img/portafolio/img5.jpg',
-			alt: 'imgAlt',
-		},
-		{
-			url: '/img/portafolio/img2.jpg',
-			alt: 'imgAlt',
-		},
-	]
+	images: await Astro.glob('/src/assets/*').then((images) => images.map((image) => image.default)),
 }
 const {
 	images,
@@ -47,19 +15,24 @@ const {
 ---
 
 <Layout title={title} url={url}>
-	{images.map((image) => (
-		<img src={image.url} alt={image.alt} />
-	))}
+	<main>
+		{images.map((image) => (
+			<Image src={image} alt="" height={600} />
+		))}
+	</main>
 </Layout>
 <style>
+	main {
+		text-align: center;
+	}
 	img {
 		margin-bottom: 1.5rem;
 	}
 	@media screen and (min-width: 828px) {
 		img {
-			height: 21rem;
-			width: auto;
 			margin-right: 1.5rem;
+			max-height: 21rem;
+			width: auto;
 		}
 	}
 </style>
