@@ -1,0 +1,60 @@
+---
+import Footer from "@components/Footer.astro";
+const { title } = Astro.props;
+const properties = {
+	sufix: "Cristina León Arte | Bogotá, Colombia",
+	heading: "Cristina León",
+	pages: {
+		portafolio: {
+			href: "/",
+			label: "Portafolio"
+		},
+		biografia: {
+			href: "/biografia",
+			label: "Biografía"
+		}
+	}
+};
+const { sufix, heading } = properties;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>{title} | {sufix}</title>
+		<meta name="description" content="Portafolio con ilustraciones de la artista plástica Cristina León de Bogotá Colombia">
+		<meta property="og:title" content="Cristina León Artista" />
+    <meta property="og:description" content="Portafolio con ilustraciones de la artista plástica Cristina León de Bogotá Colombia" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://cristinaleonilustradora.com" />
+    <meta property="og:image" content="http://cristinaleonilustradora.com/img/cristina-leon-ilustradora-optimizado.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg" href="/img/logos/cl.svg" />
+		<meta name="generator" content={Astro.generator} />
+	</head>
+	<body>
+		<header>
+			<h2>{heading}</h2>
+			<img class="logo" src="/img/logos/cristina-leon-ilustradora-optimizado.svg" alt="Cristina León Ilustradora, Bogotá, Colombia">
+		</header>
+		<slot />
+		<Footer />
+	</body>
+</html>
+
+<style>
+	header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+	.logo {
+		height: 3rem;
+	}
+
+	h2 {
+		margin: 0;
+	}
+</style>
+

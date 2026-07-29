@@ -1,0 +1,37 @@
+---
+import CtaSection from "@components/talleres/ilustracion-poetica/CtaSection.astro";
+import EspacioSection from "@components/talleres/ilustracion-poetica/EspacioSection.astro";
+import FaqSection from "@components/talleres/ilustracion-poetica/FaqSection.astro";
+import FilosofiaSection from "@components/talleres/ilustracion-poetica/FilosofiaSection.astro";
+import FormularioSection from "@components/talleres/ilustracion-poetica/FormularioSection.astro";
+import HeroSection from "@components/talleres/ilustracion-poetica/HeroSection.astro";
+import LogisticaSection from "@components/talleres/ilustracion-poetica/LogisticaSection.astro";
+import MentoraSection from "@components/talleres/ilustracion-poetica/MentoraSection.astro";
+import ProyectoSection from "@components/talleres/ilustracion-poetica/ProyectoSection.astro";
+import RecorridoSection from "@components/talleres/ilustracion-poetica/RecorridoSection.astro";
+import LayoutTalleres from "@layouts/LayoutTalleres.astro";
+import "@styles/global.css";
+import contenido from "./contenido.json";
+
+import hoja from "./assets/hoja.png";
+import pajaro from "./assets/pajaro.png";
+import pez from "./assets/pez.png";
+import planta2 from "./assets/planta2.png";
+
+const { metadata, hero, filosofia, espacio, proyecto, recorrido, mentora, logistica, formulario, faqs, cta } = contenido;
+---
+
+<LayoutTalleres title={metadata.title} url="/talleres/ilustracion-poetica">
+	<main class="poetica-page">
+		<HeroSection hero={hero} image={pajaro} />
+		<FilosofiaSection title={filosofia.title} text={filosofia.text} image={hoja} />
+		<EspacioSection title={espacio.title} description={espacio.description} quote={espacio.quote} quoteAuthor={espacio.quoteAuthor} image={planta2} />
+		<ProyectoSection title={proyecto.title} description={proyecto.description} rutas={proyecto.rutas} image={pez}/>
+		<MentoraSection eyebrow={mentora.eyebrow} name={mentora.name} role={mentora.role} bio={mentora.bio} quote={mentora.quote} />
+		<CtaSection text={cta.text} label={cta.label} link={cta.link} />
+		<RecorridoSection title={recorrido.title} description={recorrido.description} etapas={recorrido.etapas} />
+		<LogisticaSection title={logistica.title} detalles={logistica.detalles} />
+		<FaqSection title={faqs.title} items={faqs.items} />
+		<FormularioSection title={formulario.title} pasos={formulario.pasos} precio={formulario.precio} />
+	</main>
+</LayoutTalleres>

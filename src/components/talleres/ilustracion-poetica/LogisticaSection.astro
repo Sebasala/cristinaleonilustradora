@@ -1,0 +1,30 @@
+---
+interface Detalle {
+	label: string;
+	value: string;
+}
+
+interface Props {
+	title: string;
+	detalles: Detalle[];
+}
+
+const { title, detalles } = Astro.props;
+---
+
+<section class="logistica">
+	<h2>{title}</h2>
+	<ul>
+		{detalles.map((detalle) => (
+			<li>
+				<strong>{detalle.label}:</strong> {detalle.value}
+			</li>
+		))}
+	</ul>
+</section>
+
+<style>
+	ul {
+		list-style: none;
+	}
+</style>

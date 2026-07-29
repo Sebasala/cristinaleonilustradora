@@ -1,0 +1,22 @@
+---
+interface Props {
+	text: string;
+	label: string;
+	link: string;
+}
+
+const { text, label, link } = Astro.props;
+---
+
+<section class="cta">
+	<p>{text}</p>
+	<a href={link} class="button">
+		{label}
+	</a>
+</section>
+
+<style>
+	.cta {
+		text-align: center;
+	}
+</style>

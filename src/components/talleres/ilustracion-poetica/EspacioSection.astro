@@ -1,0 +1,29 @@
+---
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+interface Props {
+	title: string;
+	description: string;
+	quote: string;
+	quoteAuthor: string;
+	image: ImageMetadata;
+}
+
+const { title, description, quote, quoteAuthor, image } = Astro.props;
+---
+
+<section class="espacio">
+	<Image src={image} alt="Pez" width={100} />
+	<h2>{title}</h2>
+	<p>{description}</p>
+	<blockquote>
+		<p>{quote}</p>
+		<cite>{quoteAuthor}</cite>
+	</blockquote>
+</section>
+
+<style>
+	.espacio img {
+		margin: 0 auto 1.5rem;
+	}
+</style>

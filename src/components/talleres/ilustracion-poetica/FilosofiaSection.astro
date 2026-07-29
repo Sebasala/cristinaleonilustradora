@@ -1,0 +1,27 @@
+---
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+interface Props {
+	title: string;
+	text: string;
+    image: ImageMetadata;
+}
+
+const { title, text, image } = Astro.props;
+---
+
+<section class="texto">
+    <Image src={image} alt="Hoja" width={50} />
+	<h2>{title}</h2>
+	<p>{text}</p>
+</section>
+
+<style>
+    .texto {
+        padding: 0;
+    }
+    .texto img {
+        margin: 0 auto 1.5rem;
+        transform: rotate(-90deg);
+    }
+</style>
