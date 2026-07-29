@@ -1,0 +1,26 @@
+---
+interface Paso {
+	numero: number;
+	title: string;
+	fields: string[];
+}
+
+interface Precio {
+	valorTotal: string;
+	descripcion: string;
+	facilidadesPago: string[];
+	preguntaFiltro: string;
+}
+
+interface Props {
+	title: string;
+	pasos: Paso[];
+	precio: Precio;
+}
+
+const { title } = Astro.props;
+---
+
+<section class="formulario" id="formulario">
+	<h2>{title}</h2>
+</section>

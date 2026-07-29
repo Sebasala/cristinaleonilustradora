@@ -1,0 +1,35 @@
+---
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+interface Props {
+	hero: {
+		subtitle: string;
+		title: string;
+		hook: string;
+		intro: string;
+	};
+	image: ImageMetadata;
+}
+
+const { hero, image } = Astro.props;
+---
+
+<section class="hero">
+	<Image src={image} alt="Pájaro" width={340} />
+	<div class="hero-copy">
+		<p class="eyebrow">{hero.subtitle}</p>
+		<h1>{hero.title}</h1>
+		<p class="hook">{hero.hook}</p>
+		<p>{hero.intro}</p>
+	</div>
+</section>
+
+<style>
+	.eyebrow {
+		margin: 0;
+	}
+	img {
+		margin: 0 0 1.5rem;
+	}
+</style>

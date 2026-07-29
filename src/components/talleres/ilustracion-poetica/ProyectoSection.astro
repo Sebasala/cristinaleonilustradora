@@ -1,0 +1,40 @@
+---
+import { Image } from 'astro:assets';
+
+interface Ruta {
+	title: string;
+	description: string;
+}
+
+interface Props {
+	title: string;
+	description: string;
+	rutas: Ruta[];
+	image: ImageMetadata;
+}
+
+const { title, description, rutas, image } = Astro.props;
+---
+
+<section class="proyecto">
+	<Image src={image} alt="Pez" width={340}/>
+	<h2>{title}</h2>
+	<p>{description}</p>
+	<div class="grid-dos">
+		{rutas.map((ruta) => (
+			<article class="card">
+				<h3>{ruta.title}</h3>
+				<p>{ruta.description}</p>
+			</article>
+		))}
+	</div>
+</section>
+
+<style>
+	.proyecto img {
+		margin: 0 0 1.5rem;
+	}
+	.card {
+		padding: 0.75rem 0;
+	}
+</style>

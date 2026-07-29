@@ -1,0 +1,21 @@
+---
+interface Props {
+	eyebrow: string;
+	name: string;
+	role: string;
+	bio: string;
+	quote: string;
+}
+
+const { eyebrow, name, role, bio, quote } = Astro.props;
+---
+
+<section class="mentora">
+	<p class="eyebrow">{eyebrow}</p>
+	<h2>{name}</h2>
+	<p class="rol">{role}</p>
+	<p>{bio}</p>
+	<blockquote>
+		<p>{quote}</p>
+	</blockquote>
+</section>

@@ -1,0 +1,35 @@
+---
+interface Etapa {
+	fase: string;
+	title: string;
+	details: string;
+}
+
+interface Props {
+	title: string;
+	description: string;
+	etapas: Etapa[];
+}
+
+const { title, description, etapas } = Astro.props;
+---
+
+<section class="recorrido">
+	<h2>{title}</h2>
+	<p>{description}</p>
+	<div class="etapas">
+		{etapas.map((etapa) => (
+			<article class="etapa">
+				<p class="eyebrow">{etapa.fase}</p>
+				<h3>{etapa.title}</h3>
+				<p>{etapa.details}</p>
+			</article>
+		))}
+	</div>
+</section>
+
+<style>
+	.etapa {
+		padding: 0.75rem 0;
+	}
+</style>
