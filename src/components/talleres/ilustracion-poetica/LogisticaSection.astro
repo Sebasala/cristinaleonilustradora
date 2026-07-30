@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 interface Detalle {
 	label: string;
 	value: string;
@@ -7,24 +8,52 @@ interface Detalle {
 interface Props {
 	title: string;
 	detalles: Detalle[];
+	image: ImageMetadata;
 }
 
-const { title, detalles } = Astro.props;
+const { title, detalles, image } = Astro.props;
 ---
 
 <section class="logistica">
-	<h2>{title}</h2>
-	<ul>
-		{detalles.map((detalle) => (
-			<li>
-				<strong>{detalle.label}:</strong> {detalle.value}
-			</li>
-		))}
-	</ul>
+	<Image src={image} alt="Hoja" width={100} />
+	<div class="copy">
+		<h2>{title}</h2>
+		<ul>
+			{detalles.map((detalle) => (
+				<li>
+					<strong>{detalle.label}:</strong> {detalle.value}
+				</li>
+			))}
+		</ul>
+	</div>
 </section>
 
 <style>
+	img {
+		margin: 0 auto var(--space);
+	}
 	ul {
 		list-style: none;
+	}
+
+	@media screen and (min-width: 760px) {
+		.logistica {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: var(--space);
+			align-items: center;
+
+			img {
+				margin: 0 auto var(--space-2);
+				transform: rotate(0deg);
+				grid-column: 2;
+				grid-row: 1;
+			}
+
+			.copy {
+				grid-column: 1;
+				grid-row: 1;
+			}
+		}
 	}
 </style>

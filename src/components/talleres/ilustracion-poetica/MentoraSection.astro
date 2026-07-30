@@ -15,20 +15,40 @@ const { eyebrow, name, role, bio, quote, image } = Astro.props;
 
 <section class="mentora">
 	<Image src={image} alt="Cristina" width={340} />
-	<p class="eyebrow">{eyebrow}</p>
-	<h2>{name}</h2>
-	<p class="rol">{role}</p>
-	<p>{bio}</p>
-	<blockquote>
-		<p>{quote}</p>
-	</blockquote>
+	<div class="copy">
+		<p class="eyebrow">{eyebrow}</p>
+		<h2>{name}</h2>
+		<p class="rol">{role}</p>
+		<p>{bio}</p>
+		<blockquote>
+			<p>{quote}</p>
+		</blockquote>
+	</div>
 </section>
 
 <style>
 	.mentora {
 		img {
-			margin-bottom: var(--space-2);
+			margin: 0 auto var(--space-2);
 			border-radius: var(--space);
 		}
+
+		@media screen and (min-width: 760px) {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: var(--space);
+
+            img {
+                margin: 0 auto var(--space-2);
+                transform: rotate(0deg);
+				grid-column: 2;
+				grid-row: 1;
+            }
+
+			.copy {
+				grid-column: 1;
+				grid-row: 1;
+			}
+        }
 	}
 </style>

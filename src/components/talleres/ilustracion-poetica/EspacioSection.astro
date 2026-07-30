@@ -14,16 +14,38 @@ const { title, description, quote, quoteAuthor, image } = Astro.props;
 
 <section class="espacio">
 	<Image src={image} alt="Pez" width={100} />
-	<h2>{title}</h2>
-	<p>{description}</p>
-	<blockquote>
-		<p>{quote}</p>
-		<cite>{quoteAuthor}</cite>
-	</blockquote>
+	<div class="copy">
+		<h2>{title}</h2>
+		<p>{description}</p>
+		<blockquote>
+			<p>{quote}</p>
+			<cite>{quoteAuthor}</cite>
+		</blockquote>
+	</div>
 </section>
 
 <style>
-	.espacio img {
-		margin: 0 auto var(--space);
+	.espacio {
+		img {
+			margin: 0 auto var(--space);
+		}
+		
+
+		@media screen and (min-width: 760px) {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+
+            img {
+                margin: 0 auto var(--space-2);
+                transform: rotate(0deg);
+				grid-column: 2;
+				grid-row: 1;
+            }
+
+			.copy {
+				grid-column: 1;
+				grid-row: 1;
+			}
+        }
 	}
 </style>

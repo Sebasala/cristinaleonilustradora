@@ -17,7 +17,7 @@ const { hero, image } = Astro.props;
 
 <section class="hero">
 	<Image src={image} alt="Pájaro" width={340} />
-	<div class="hero-copy">
+	<div class="copy">
 		<p class="eyebrow">{hero.subtitle}</p>
 		<h1>{hero.title}</h1>
 		<p class="hook">{hero.hook}</p>
@@ -26,10 +26,33 @@ const { hero, image } = Astro.props;
 </section>
 
 <style>
+	img {
+		margin: 0 auto var(--space-2);
+	}
+
 	.eyebrow {
 		margin: 0;
 	}
-	img {
-		margin: 0 0 var(--space-2);
+
+	@media screen and (min-width: 760px) {
+		.hero {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			align-items: center;
+
+			img, .copy {
+				grid-row: 1;
+			}
+
+			img {
+				transform: scaleX(-1);
+				grid-column: 2;
+				
+			}
+
+			.copy {
+				grid-column: 1;
+			}
+		}
 	}
 </style>
