@@ -5,7 +5,6 @@ body {
 header,
 main,
 footer {
-  max-width: 340px;
   margin: 0 auto;
 
   @media only screen and (min-width: 828px) {
@@ -19,6 +18,10 @@ footer {
 
 section {
   margin: var(--space-2) 0;
+
+  @media screen and (min-width: 760px) {
+    margin: calc(4 * var(--space)) 0;
+  }
 }
 
 h1,
@@ -29,7 +32,7 @@ h5,
 h6,
 p,
 li {
-  max-width: 30rem;
+  max-width: var(--text-max-width);
   margin: 0 0 var(--space);
 }
 
@@ -65,4 +68,9 @@ p:last-child {
 .contact-links-list {
   list-style: none;
   margin: 0 0 var(--space);
+}
+
+.copy {
+  max-width: var(--text-max-width);
+  margin: 0 auto;
 }

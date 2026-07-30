@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 interface Etapa {
 	fase: string;
 	title: string;
@@ -9,27 +10,51 @@ interface Props {
 	title: string;
 	description: string;
 	etapas: Etapa[];
+	image: ImageMetadata;
 }
 
-const { title, description, etapas } = Astro.props;
+const { title, description, etapas, image } = Astro.props;
 ---
 
 <section class="recorrido">
-	<h2>{title}</h2>
-	<p>{description}</p>
-	<div class="etapas">
-		{etapas.map((etapa) => (
-			<article class="etapa">
-				<p class="eyebrow">{etapa.fase}</p>
-				<h3>{etapa.title}</h3>
-				<p>{etapa.details}</p>
-			</article>
-		))}
+	<Image src={image} alt="Hongos" width={200} />
+	<div class="copy">
+		<h2>{title}</h2>
+		<p>{description}</p>
+		<div class="etapas">
+			{etapas.map((etapa) => (
+				<article class="etapa">
+					<p class="eyebrow">{etapa.fase}</p>
+					<h3>{etapa.title}</h3>
+					<p>{etapa.details}</p>
+				</article>
+			))}
+		</div>
 	</div>
 </section>
 
 <style>
-	.etapa {
-		padding: 0.75rem 0;
+	.recorrido {
+		img {
+			margin: 0 auto var(--space);
+			width: 50px;
+
+		}
+		.etapa {
+			padding: 0.75rem 0;
+		}
+
+		@media screen and (min-width: 760px) {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: var(--space-2);
+			align-items: center;
+
+            img {
+                margin: 0 auto var(--space-2);
+                transform: rotate(0deg);
+				width: 200px;
+            }
+        }
 	}
 </style>

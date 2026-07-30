@@ -14,8 +14,11 @@ import contenido from "./contenido.json";
 
 import cristina from "./assets/cristina.jpeg";
 import hoja from "./assets/hoja.png";
+import hoja2 from "./assets/hoja2.png";
+import hongos from "./assets/hongos.png";
 import pajaro from "./assets/pajaro.png";
 import pez from "./assets/pez.png";
+import planta from "./assets/planta.png";
 import planta2 from "./assets/planta2.png";
 
 const { metadata, hero, filosofia, espacio, proyecto, recorrido, mentora, logistica, formulario, faqs, cta } = contenido;
@@ -29,9 +32,9 @@ const { metadata, hero, filosofia, espacio, proyecto, recorrido, mentora, logist
 		<ProyectoSection title={proyecto.title} description={proyecto.description} rutas={proyecto.rutas} image={pez}/>
 		<MentoraSection eyebrow={mentora.eyebrow} name={mentora.name} role={mentora.role} bio={mentora.bio} quote={mentora.quote} image={cristina} />
 		<CtaSection text={cta.text} label={cta.label} link={cta.link} />
-		<RecorridoSection title={recorrido.title} description={recorrido.description} etapas={recorrido.etapas} />
-		<LogisticaSection title={logistica.title} detalles={logistica.detalles} />
-		<FaqSection title={faqs.title} items={faqs.items} />
+		<RecorridoSection title={recorrido.title} description={recorrido.description} etapas={recorrido.etapas} image={hongos} />
+		<LogisticaSection title={logistica.title} detalles={logistica.detalles} image={hoja2}/>
+		<FaqSection title={faqs.title} items={faqs.items} image={planta}/>
 		<FormularioSection title={formulario.title} pasos={formulario.pasos} precio={formulario.precio} />
 	</main>
 </LayoutTalleres>

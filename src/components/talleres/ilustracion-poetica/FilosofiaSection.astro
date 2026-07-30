@@ -10,18 +10,30 @@ interface Props {
 const { title, text, image } = Astro.props;
 ---
 
-<section class="texto">
-    <Image src={image} alt="Hoja" width={50} />
-	<h2>{title}</h2>
-	<p>{text}</p>
+<section class="filosofia">
+    <Image src={image} alt="Hoja" width={100} />
+	<div class="copy">
+        <h2>{title}</h2>
+        <p>{text}</p>
+    </div>
 </section>
 
 <style>
-    .texto {
+    .filosofia {
         padding: 0;
-    }
-    .texto img {
-        margin: 0 auto var(--space-2);
-        transform: rotate(-90deg);
+        img {
+            margin: 0 auto var(--space-2);
+            transform: rotate(-90deg);
+        }
+
+        @media screen and (min-width: 760px) {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+
+            img {
+                margin: 0 auto var(--space-2);
+                transform: rotate(0deg);
+            }
+        }
     }
 </style>
