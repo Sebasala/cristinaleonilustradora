@@ -6,13 +6,14 @@ header,
 main,
 footer {
   margin: 0 auto;
+  max-width: var(--text-max-width);
 
-  @media only screen and (min-width: 828px) {
+  @media only screen and (min-width: 760px) {
     max-width: 780px;
   }
 
   @media only screen and (min-width: 1400px) {
-    max-width: 1200px;
+    max-width: 1000px;
   }
 }
 

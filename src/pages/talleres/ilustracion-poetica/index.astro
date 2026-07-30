@@ -26,15 +26,15 @@ const { metadata, hero, filosofia, espacio, proyecto, recorrido, mentora, logist
 
 <LayoutTalleres title={metadata.title} url="/talleres/ilustracion-poetica">
 	<main class="poetica-page">
-		<HeroSection hero={hero} image={pajaro} />
-		<FilosofiaSection title={filosofia.title} text={filosofia.text} image={hoja} />
-		<EspacioSection title={espacio.title} description={espacio.description} quote={espacio.quote} quoteAuthor={espacio.quoteAuthor} image={planta2} />
-		<ProyectoSection title={proyecto.title} description={proyecto.description} rutas={proyecto.rutas} image={pez}/>
-		<MentoraSection eyebrow={mentora.eyebrow} name={mentora.name} role={mentora.role} bio={mentora.bio} quote={mentora.quote} image={cristina} />
-		<CtaSection text={cta.text} label={cta.label} link={cta.link} />
-		<RecorridoSection title={recorrido.title} description={recorrido.description} etapas={recorrido.etapas} image={hongos} />
-		<LogisticaSection title={logistica.title} detalles={logistica.detalles} image={hoja2}/>
-		<FaqSection title={faqs.title} items={faqs.items} image={planta}/>
-		<FormularioSection title={formulario.title} pasos={formulario.pasos} precio={formulario.precio} />
+		<HeroSection content={hero} image={pajaro} />
+		<FilosofiaSection content={filosofia} image={hoja} />
+		<EspacioSection content={espacio} image={planta2} />
+		<ProyectoSection content={proyecto} image={pez} />
+		<MentoraSection content={mentora} image={cristina} />
+		<CtaSection content={cta} image={hoja} />
+		<RecorridoSection content={recorrido} image={hongos} />
+		<LogisticaSection content={logistica} image={hoja2}/>
+		<FaqSection content={faqs} image={planta}/>
+		<FormularioSection content={formulario} image={planta2} />
 	</main>
 </LayoutTalleres>

@@ -1,4 +1,6 @@
 ---
+import type { ImageMetadata } from "astro";
+
 interface Paso {
 	numero: number;
 	title: string;
@@ -13,12 +15,16 @@ interface Precio {
 }
 
 interface Props {
-	title: string;
-	pasos: Paso[];
-	precio: Precio;
+	content: {
+		title: string;
+		pasos: Paso[];
+		precio: Precio;
+	};
+	image: ImageMetadata;
 }
 
-const { title } = Astro.props;
+const { content } = Astro.props;
+const { title } = content;
 ---
 
 <section class="formulario" id="formulario">
