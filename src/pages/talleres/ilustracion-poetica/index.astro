@@ -12,6 +12,7 @@ import RecorridoSection from "@components/talleres/ilustracion-poetica/Recorrido
 import LayoutTalleres from "@layouts/LayoutTalleres.astro";
 import contenido from "./contenido.json";
 
+import cristina from "./assets/cristina.jpeg";
 import hoja from "./assets/hoja.png";
 import pajaro from "./assets/pajaro.png";
 import pez from "./assets/pez.png";
@@ -26,7 +27,7 @@ const { metadata, hero, filosofia, espacio, proyecto, recorrido, mentora, logist
 		<FilosofiaSection title={filosofia.title} text={filosofia.text} image={hoja} />
 		<EspacioSection title={espacio.title} description={espacio.description} quote={espacio.quote} quoteAuthor={espacio.quoteAuthor} image={planta2} />
 		<ProyectoSection title={proyecto.title} description={proyecto.description} rutas={proyecto.rutas} image={pez}/>
-		<MentoraSection eyebrow={mentora.eyebrow} name={mentora.name} role={mentora.role} bio={mentora.bio} quote={mentora.quote} />
+		<MentoraSection eyebrow={mentora.eyebrow} name={mentora.name} role={mentora.role} bio={mentora.bio} quote={mentora.quote} image={cristina} />
 		<CtaSection text={cta.text} label={cta.label} link={cta.link} />
 		<RecorridoSection title={recorrido.title} description={recorrido.description} etapas={recorrido.etapas} />
 		<LogisticaSection title={logistica.title} detalles={logistica.detalles} />
