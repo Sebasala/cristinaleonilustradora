@@ -21,7 +21,8 @@
         "quoteAuthor": "John Berger"
     },
     "proyecto": {
-        "title": "El Proyecto: Tu Hilo Conductor",
+        "subtitle": "El Proyecto",
+        "title": "Tu Hilo Conductor",
         "description": "Durante las 24 horas del ciclo, desarrollarás un Proyecto de Narrativa Visual único. Aprenderás a estructurar una idea y a darle continuidad gráfica a través de una de estas dos rutas sugeridas:",
         "rutas": [
             {

@@ -2,16 +2,19 @@
 import type { ImageMetadata } from "astro";
 import { Image } from "astro:assets";
 interface Props {
-	title: string;
-	text: string;
+	content: {
+        title: string;
+	    text: string;
+    }
     image: ImageMetadata;
 }
 
-const { title, text, image } = Astro.props;
+const { content, image } = Astro.props;
+const { title, text } = content;
 ---
 
 <section class="filosofia">
-    <Image src={image} alt="Hoja" width={100} />
+    <Image class="image" src={image} alt="Hoja" widths={[100]} />
 	<div class="copy">
         <h2>{title}</h2>
         <p>{text}</p>
@@ -19,20 +22,24 @@ const { title, text, image } = Astro.props;
 </section>
 
 <style>
+    .image {
+        margin: 0 auto var(--space-2);
+        transform: rotate(-90deg);
+        height: 100px;
+        object-fit: contain;
+    }
     .filosofia {
         padding: 0;
-        img {
-            margin: 0 auto var(--space-2);
-            transform: rotate(-90deg);
-        }
 
         @media screen and (min-width: 760px) {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
+            align-items: center;
 
-            img {
+            .image {
                 margin: 0 auto var(--space-2);
                 transform: rotate(0deg);
+                margin: 0 auto;
             }
         }
     }

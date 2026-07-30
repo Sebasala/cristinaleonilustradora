@@ -1,4 +1,5 @@
 ---
+import type { ImageMetadata } from 'astro';
 import { Image } from 'astro:assets';
 
 interface Ruta {
@@ -7,18 +8,23 @@ interface Ruta {
 }
 
 interface Props {
-	title: string;
-	description: string;
-	rutas: Ruta[];
+	content: {
+		title: string;
+		description: string;
+		rutas: Ruta[];
+		subtitle: string;
+	}
 	image: ImageMetadata;
 }
 
-const { title, description, rutas, image } = Astro.props;
+const { content, image } = Astro.props;
+const { title, description, rutas, subtitle } = content;
 ---
 
 <section class="proyecto">
-	<Image src={image} alt="Pez" width={340}/>
+	<Image class="image" src={image} alt="Pez" widths={[476, 496]}/>
 	<div class="copy">
+		<p class="eyebrow">{subtitle}</p>
 		<h2>{title}</h2>
 		<p>{description}</p>
 		<div class="grid-dos">
@@ -34,12 +40,16 @@ const { title, description, rutas, image } = Astro.props;
 
 <style>
 	.proyecto {
-		img {
+		.image {
 			margin: 0 auto var(--space-2);
 		}
 
 		.card {
-			padding: 0.75rem 0;
+			margin: 0 0 var(--space);
+
+			&:last-child {
+				margin-bottom: 0;
+			}
 		}
 
 		@media screen and (min-width: 760px) {
@@ -48,9 +58,10 @@ const { title, description, rutas, image } = Astro.props;
 			gap: var(--space-2);
 			align-items: center;
 
-            img {
-                margin: 0 auto var(--space-2);
-                transform: rotate(0deg);
+            .image {
+                margin: 0 auto;
+				height: calc(18 * var(--space));
+				object-fit: contain;
             }
         }
 	}

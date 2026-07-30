@@ -1,11 +1,17 @@
 ---
+import type { ImageMetadata } from "astro";
+
 interface Props {
-	text: string;
-	label: string;
-	link: string;
+	content: {
+		text: string;
+		label: string;
+		link: string;
+	};
+	image: ImageMetadata;
 }
 
-const { text, label, link } = Astro.props;
+const { content } = Astro.props;
+const { text, label, link } = content;
 ---
 
 <section class="cta copy">

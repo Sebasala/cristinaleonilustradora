@@ -1,4 +1,5 @@
 ---
+import type { ImageMetadata } from "astro";
 import { Image } from "astro:assets";
 interface Etapa {
 	fase: string;
@@ -7,17 +8,20 @@ interface Etapa {
 }
 
 interface Props {
-	title: string;
-	description: string;
-	etapas: Etapa[];
+	content: {
+		title: string;
+		description: string;
+		etapas: Etapa[];
+	};
 	image: ImageMetadata;
 }
 
-const { title, description, etapas, image } = Astro.props;
+const { content, image } = Astro.props;
+const { title, description, etapas } = content;
 ---
 
 <section class="recorrido">
-	<Image src={image} alt="Hongos" width={200} />
+	<Image class="image" src={image} alt="Hongos" widths={[50, 188]} />
 	<div class="copy">
 		<h2>{title}</h2>
 		<p>{description}</p>
@@ -35,13 +39,16 @@ const { title, description, etapas, image } = Astro.props;
 
 <style>
 	.recorrido {
-		img {
+		.image {
 			margin: 0 auto var(--space);
 			width: 50px;
-
 		}
 		.etapa {
-			padding: 0.75rem 0;
+			margin: 0 0 var(--space);
+
+			&:last-child {
+				margin: 0;
+			}
 		}
 
 		@media screen and (min-width: 760px) {
@@ -50,10 +57,12 @@ const { title, description, etapas, image } = Astro.props;
 			gap: var(--space-2);
 			align-items: center;
 
-            img {
+            .image {
                 margin: 0 auto var(--space-2);
                 transform: rotate(0deg);
-				width: 200px;
+				height: calc(28 * var(--space));
+				width: auto;
+				margin: 0;
             }
         }
 	}
