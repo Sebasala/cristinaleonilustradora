@@ -1,5 +1,5 @@
 body {
-  padding: 1.5rem;
+  padding: var(--space);
 }
 
 header,
@@ -17,6 +17,10 @@ footer {
   }
 }
 
+section {
+  margin: var(--space-2) 0;
+}
+
 h1,
 h2,
 h3,
@@ -26,7 +30,7 @@ h6,
 p,
 li {
   max-width: 30rem;
-  margin: 0 0 1.5rem;
+  margin: 0 0 var(--space);
 }
 
 figure {
@@ -35,17 +39,17 @@ figure {
 }
 
 figcaption {
-  padding: 0 1.5rem 1.5rem;
+  padding: 0 var(--space) var(--space);
   text-align: left;
 }
 
 ul {
-  margin: 0 0 1.5rem;
+  margin: 0 0 var(--space);
   padding: 0;
 }
 
 p {
-  margin: 0 0 1.5rem;
+  margin: 0 0 var(--space);
 }
 
 p:last-child {
@@ -60,5 +64,5 @@ p:last-child {
 
 .contact-links-list {
   list-style: none;
-  margin: 0 0 1.5rem;
+  margin: 0 0 var(--space);
 }

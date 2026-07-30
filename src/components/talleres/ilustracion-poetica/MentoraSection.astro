@@ -1,16 +1,20 @@
 ---
+import { Image } from 'astro:assets';
+
 interface Props {
 	eyebrow: string;
 	name: string;
 	role: string;
 	bio: string;
 	quote: string;
+	image: ImageMetadata
 }
 
-const { eyebrow, name, role, bio, quote } = Astro.props;
+const { eyebrow, name, role, bio, quote, image } = Astro.props;
 ---
 
 <section class="mentora">
+	<Image src={image} alt="Cristina" width={340} />
 	<p class="eyebrow">{eyebrow}</p>
 	<h2>{name}</h2>
 	<p class="rol">{role}</p>
@@ -19,3 +23,12 @@ const { eyebrow, name, role, bio, quote } = Astro.props;
 		<p>{quote}</p>
 	</blockquote>
 </section>
+
+<style>
+	.mentora {
+		img {
+			margin-bottom: var(--space-2);
+			border-radius: var(--space);
+		}
+	}
+</style>
