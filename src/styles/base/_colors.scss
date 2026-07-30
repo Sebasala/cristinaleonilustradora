@@ -1,0 +1,20 @@
+body {
+  background-color: var(--color-light);
+}
+
+p,
+li {
+  color: var(--color-black);
+  opacity: var(--opacity-medium);
+}
+
+a {
+  color: var(--color-accent);
+}
+
+h1,
+h2,
+h3 {
+  color: var(--color-black);
+  opacity: var(--opacity-high);
+}
