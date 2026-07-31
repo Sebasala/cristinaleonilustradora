@@ -20,15 +20,23 @@ import pajaro from "./assets/pajaro.png";
 import pez from "./assets/pez.png";
 import planta from "./assets/planta.png";
 import planta2 from "./assets/planta2.png";
+import taller from "./assets/taller.jpeg";
 
 const { metadata, hero, filosofia, espacio, proyecto, recorrido, mentora, logistica, formulario, faqs, cta } = contenido;
 ---
 
-<LayoutTalleres title={metadata.title} url="/talleres/ilustracion-poetica">
+<LayoutTalleres
+	title={metadata.title}
+	description={metadata.description}
+	agTitle={metadata.title}
+	agDescription={metadata.description}
+	agUrl="https://cristinaleonilustradora.com/talleres/ilustracion-poetica"
+	agImage={metadata.ogImage}
+>
 	<main class="poetica-page">
 		<HeroSection content={hero} image={pajaro} />
 		<FilosofiaSection content={filosofia} image={hoja} />
-		<EspacioSection content={espacio} image={planta2} />
+		<EspacioSection content={espacio} image={taller} />
 		<ProyectoSection content={proyecto} image={pez} />
 		<MentoraSection content={mentora} image={cristina} />
 		<CtaSection content={cta} image={hoja} />

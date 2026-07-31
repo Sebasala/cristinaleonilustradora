@@ -46,6 +46,10 @@ const { title, items } = content;
 	
 	.copy {
 
+		@media screen and (min-width: 760px) {
+			height: calc(18 * var(--space));
+		}
+
 		@media screen and (min-width: 1400px) {
 			width: 100%;
 		}
@@ -85,8 +89,7 @@ const { title, items } = content;
 
 		&::details-content {
 			block-size: 0;
-			transition: block-size 0.2s linear, content-visibility 0.2s linear;
-			transition-behavior: allow-discrete;
+			transition: block-size 0.2s linear allow-discrete, content-visibility 0.2s linear allow-discrete;
 		}
 	}
 

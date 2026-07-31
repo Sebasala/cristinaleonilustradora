@@ -1,52 +1,36 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import { Image } from "astro:assets";
+import LayoutTalleres from '../../layouts/LayoutTalleres.astro';
+import pajaro from './ilustracion-poetica/assets/pajaro.png';
 ---
 
-<Layout title="Talleres">
+<LayoutTalleres
+  title="Talleres"
+  description="Explora los talleres de Cristina León en Bogotá."
+  agTitle="Talleres | Cristina León"
+  agDescription="Explora los talleres de Cristina León en Bogotá."
+>
   <main>
     <h1>Talleres</h1>
-    <p>Bienvenido a nuestros talleres de ilustración</p>
     
     <nav>
       <ul>
         <li>
-          <a href="/talleres/ilustracion-poetica">Taller de Ilustración Poética</a>
+          <a href="/talleres/ilustracion-poetica">
+            <Image class="image" src={pajaro} alt="Pájaro" widths={[496]} />
+            Taller de Ilustración Poética</a>
         </li>
       </ul>
     </nav>
   </main>
-</Layout>
+</LayoutTalleres>
 
 <style>
-  main {
-    max-width: 800px;
+  h1, ul  {
+    margin-bottom: var(--space-2);
+  }
+
+  li {
     margin: 0 auto;
-    padding: 2rem;
-  }
-
-  h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-  }
-
-  nav ul {
-    list-style: none;
-    padding: 0;
-  }
-
-  nav li {
-    margin: 1rem 0;
-  }
-
-  nav a {
-    font-size: 1.2rem;
-    color: var(--color-primary, #333);
-    text-decoration: none;
-    border-bottom: 2px solid var(--color-primary, #333);
-    transition: color 0.3s ease;
-  }
-
-  nav a:hover {
-    color: var(--color-secondary, #666);
   }
 </style>

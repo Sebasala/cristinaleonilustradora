@@ -17,7 +17,7 @@ const { title, description, quote, quoteAuthor } = content;
 
 <section class="espacio">
 	<div class="image-container">
-		<Image class="image" src={image} alt="Planta" widths={[200]} />
+		<Image class="image" src={image} alt="Taller" widths={[496]} />
 	</div>
 	<div class="copy">
 		<h2>{title}</h2>
@@ -32,7 +32,7 @@ const { title, description, quote, quoteAuthor } = content;
 <style>
 	.image {
 		margin: 0 auto var(--space);
-		width: 110px;
+		border-radius: var(--space);
 	}
 
 	cite {
@@ -44,12 +44,12 @@ const { title, description, quote, quoteAuthor } = content;
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
 			gap: var(--space);
-			align-items: end;
 
             .image {
                 margin: 0 0 0 auto;
 				grid-column: 2;
 				grid-row: 1;
+				height: calc(14 * var(--space));
             }
 
 			.copy {
