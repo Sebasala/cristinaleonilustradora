@@ -1,9 +1,18 @@
 ---
 import Footer from "@components/Footer.astro";
 import '@styles/global.scss';
-const { title } = Astro.props;
+const {
+	title,
+	description,
+	titleSuffix = "Cristina León Arte | Bogotá, Colombia",
+	ogTitle = "Cristina León Artista",
+	ogDescription = "Portafolio con ilustraciones de la artista plástica Cristina León de Bogotá Colombia",
+	ogType = "website",
+	ogUrl = "https://cristinaleonilustradora.com",
+	ogImage = "/img/cristina-leon-ilustradora-optimizado.svg"
+} = Astro.props;
 const properties = {
-	sufix: "Cristina León Arte | Bogotá, Colombia",
+	sufix: titleSuffix,
 	heading: "Cristina León",
 	pages: {
 		portafolio: {
@@ -20,16 +29,16 @@ const { sufix, heading } = properties;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="es">
 	<head>
 		<meta charset="UTF-8" />
 		<title>{title} | {sufix}</title>
-		<meta name="description" content="Portafolio con ilustraciones de la artista plástica Cristina León de Bogotá Colombia">
-		<meta property="og:title" content="Cristina León Artista" />
-    <meta property="og:description" content="Portafolio con ilustraciones de la artista plástica Cristina León de Bogotá Colombia" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="http://cristinaleonilustradora.com" />
-    <meta property="og:image" content="http://cristinaleonilustradora.com/img/cristina-leon-ilustradora-optimizado.svg" />
+		<meta name="description" content={description} />
+		<meta property="og:title" content={ogTitle} />
+		<meta property="og:description" content={ogDescription} />
+		<meta property="og:type" content={ogType} />
+		<meta property="og:url" content={ogUrl} />
+		<meta property="og:image" content={ogImage} />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg" href="/img/logos/cl.svg" />
 		<meta name="generator" content={Astro.generator} />
