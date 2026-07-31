@@ -36,20 +36,23 @@ const { title, items } = content;
 <style>
 	.image {
 		margin: 0 auto var(--space);
-		height: 272px;
-		object-fit: contain;
-
+		width: 140px;
+		transform: rotate(-10deg);
 		@media screen and (min-width: 760px) {
 			margin: 0;
 		}
 	}
-	.faq-list {
-		display: grid;
+	
+	.copy {
+
+		@media screen and (min-width: 1400px) {
+			width: 100%;
+		}
 	}
 
 	.faq-item {
 		border-bottom: 1px solid var(--color-accent);
-		padding: 0.75rem 0;
+		padding: calc(0.5 * var(--space)) 0;
 
 		&:last-child {
 			border-bottom: 0;
@@ -82,15 +85,28 @@ const { title, items } = content;
 		margin-top: var(--space);
 	}
 
+	.faq-list {
+		display: grid;
+
+		@media screen and (min-width: 760px) {
+			.faq-item {
+				padding: calc(0.5 * var(--space)) var(--space);
+				background-color: var(--color-accent-light);
+				border: 1px solid var(--color-accent);
+				border-radius: calc(1 * var(--space));
+				margin-bottom: var(--space);
+			}
+		}
+	}
+
 	.faq {
-		max-width: 48rem;
 		margin: 0 auto;
 
 		@media screen and (min-width: 760px) {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
 			gap: var(--space-2);
-			align-items: center;
+			align-items: end;
         }
 	}
 </style>

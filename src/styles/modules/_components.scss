@@ -5,7 +5,7 @@
 .button {
   background-color: var(--color-accent);
   color: white;
-  padding: 0.75rem var(--space);
+  padding: calc(0.5 * var(--space)) var(--space);
   border: none;
   cursor: pointer;
   letter-spacing: 0rem;
