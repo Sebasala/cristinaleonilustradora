@@ -3,6 +3,45 @@ import Layout from '@layouts/Layout.astro';
 import '@styles/global.scss';
 const title = 'Biografía';
 const url = '/biografia';
+
+const trabajo = [
+	{
+		text: 'Lecciones de Poesía para niños y niñas inquietos,\n Escritor: Luís García Montero, \n Ilustraciones: Cristina León \n Editorial Visor, 2016',
+	},
+	{
+		text: 'Lecciones de poesía para niños inquietos, de Luis García Montero. \n Ilustraciones: Cristina León \n Cuadernos EX-LIBRIS, serie: Grandes Maestros. Agenda Cultural, Gimnasio Moderno, 2015',
+	},
+	{
+		text: 'Exposición colectiva “De cero a  cien años” con el grupo: Postgrado en Ilustración para publicaciones infantiles y Juveniles, EINA. Barcelona, España 2013',
+	},
+	{
+		text: 'Ilustraciones Textos Infantiles \n Libro: “Burbujas D, transición libro integrado”. \n Grupo Editorial EDUCAR. 2012',
+	},
+	{
+		text: 'Ilustraciones. Libro \n “Burbujas D, transición libro integrado”. \n Grupo Editorial Educar. (2012) Bogotá.',
+	},
+	{
+		text: 'Ilustraciones revista de Literatura “Phoenix” de la Universidad Nacional de Colombia. (2001)',
+	},
+	{
+		text: 'Participante del Segundo concurso Bienal de Pintura y Escultura, \n BNA (Bolsa Nacional Agropecuaria), (2001) Bogotá.',
+	},
+	{
+		text: 'Exposición Colectiva de Arte, Club Médico de Bogotá, 2000',
+	},
+];
+
+const formacionAcademica = [
+	{
+		text: 'Eina, Escola de Disseny i Art, Barcelona',
+	},
+	{
+		text: 'Universidad De Los Andes, Bogotá',
+	},
+	{
+		text: 'Universidad El Bosque, Bogotá',
+	},
+];
 ---
 
 <Layout title={title} url={url}>
@@ -13,40 +52,24 @@ const url = '/biografia';
 		<section>
 			<h2>Trabajo</h2>
 			<ul>
-				<li>Lecciones de Poesía para niños y niñas inquietos, <br>
-				Escritor: Luís García Montero, Ilustraciones: Cristina León <br>
-				Editorial Visor, 2016</li>
-				<li>Lecciones de poesía para niños inquietos, de Luis García Montero. <br>
-				Ilustraciones: Cristina León <br>
-				Cuadernos EX-LIBRIS, serie: Grandes Maestros. Agenda Cultural, <br>
-				Gimnasio Moderno, 2015</li>
-				<li>Exposición colectiva “ De cero a  cien años” con el grupo: <br>
-				Postgrado en Ilustración para publicaciones infantiles y Juveniles, <br>
-				EINA. Barcelona, España 2013</li>
-				<li>Ilustraciones Textos Infantiles: Libro “Burbujas D, transición libro integrado. Grupo Editorial EDUCAR. 2012</li>
-				<li>Ilustraciones. Libro “Burbujas D, transición libro integrado. <br>
-				Grupo Editorial Educar. (2012) Bogotá.</li>
-				<li>Ilustraciones revista de Literatura “Phoenix” <br>
-				de la Universidad Nacional de Colombia. (2001)</li>
-				<li>Participante del Segundo concurso Bienal de Pintura y Escultura, BNA (Bolsa Nacional Agropecuaria), (2001) Bogotá.</li>
-				<li>Exposición Colectiva de Arte, Club Médico de Bogotá, 2000</li>
+				{trabajo.map((item) => (
+					<li><p>{item.text}</p></li>
+				))}
 			</ul>
 		</section>
 		<section>
 			<h2>Formación Académica</h2>
 			<ul>
-				<li>Eina, Escola de Disseny i Art, Barcelona</li>
-				<li>Universidad De Los Andes, Bogotá</li>
-				<li>Universidad El Bosque, Bogotá</li>
+				{formacionAcademica.map((item) => (
+					<li><p>{item.text}</p></li>
+				))}
 			</ul>
 		</section>
 	</main>
 </Layout>
+
 <style>
-	li {
-		margin-bottom: var(--space);
-	}
-	ul {
-		padding-left: 17px;
-	}
+  p {
+	white-space: pre-line;
+  }
 </style>
