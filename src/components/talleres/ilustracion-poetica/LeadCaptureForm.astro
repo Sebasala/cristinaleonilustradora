@@ -1,0 +1,30 @@
+---
+import FormHeading from "./FormHeading.astro";
+import FormStatus from "./FormStatus.astro";
+import FormSteps from "./FormSteps.astro";
+import FormSuccess from "./FormSuccess.astro";
+import type { FormularioContent } from "./formulario.types";
+import ProgressSteps from "./ProgressSteps.astro";
+
+interface Props {
+	content: FormularioContent;
+}
+
+const { content } = Astro.props;
+const { ui } = content;
+const { pasos } = content;
+---
+
+<form class="lead-form" id="lead-capture-form" novalidate aria-labelledby="lead-form-title" data-ui={JSON.stringify(ui)}>
+	<ProgressSteps pasos={pasos} currentStep={1} ariaLabel={ui.progressLabel} />
+
+	<FormHeading heading={content.heading} description={content.description} id="lead-form-title" />
+
+	<FormStatus />
+
+	<FormSteps content={content} />
+
+	<FormSuccess title={ui.successTitle} message={ui.successMessage} />
+</form>
+
+<script src="./lead-capture-form.ts"></script>

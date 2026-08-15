@@ -1,0 +1,59 @@
+---
+interface Paso {
+	numero: string | number;
+	title: string;
+}
+
+interface Props {
+	pasos: Paso[];
+	currentStep?: number;
+	ariaLabel?: string;
+}
+
+const { pasos, currentStep = 1, ariaLabel = "Progreso del formulario" } = Astro.props;
+---
+
+<div class="progress" aria-label={ariaLabel}>
+	{pasos.map((paso, index) => {
+		const stepNumber = index + 1;
+		const isActive = stepNumber === currentStep;
+		const isComplete = stepNumber < currentStep;
+
+		return (
+			<div class:list={["progress-step", { active: isActive, complete: isComplete }]} data-progress-step={stepNumber}>
+				<span class="progress-number">{paso.numero}</span>
+				<span>{paso.title}</span>
+			</div>
+		);
+	})}
+</div>
+
+<style>
+	.progress {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 0.4rem;
+		margin-bottom: var(--space-2);
+	}
+
+	.progress-step {
+		display: flex;
+		align-items: center;
+		gap: 0.45rem;
+		padding-top: 0.65rem;
+		border-top: 2px solid color-mix(in srgb, var(--color-accent) 18%, transparent);
+		font-size: 0.72rem;
+		line-height: 1.2;
+		color: color-mix(in srgb, var(--color-black) 55%, transparent);
+	}
+
+	.progress-step.active,
+	.progress-step.complete {
+		border-color: var(--color-accent);
+		color: var(--color-accent);
+	}
+
+	.progress-number {
+		font-weight: 700;
+	}
+</style>

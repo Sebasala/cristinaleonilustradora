@@ -1,0 +1,14 @@
+---
+interface Props {
+  heading: string;
+  description: string;
+  id?: string;
+}
+
+const { heading, description, id = "lead-form-title" } = Astro.props;
+---
+
+<div class="form-heading">
+  <h3 id={id}>{heading}</h3>
+  <p>{description}</p>
+</div>

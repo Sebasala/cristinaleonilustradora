@@ -1,0 +1,20 @@
+---
+import type { FormularioContent } from "./formulario.types";
+import StepOne from "./StepOne.astro";
+import StepThree from "./StepThree.astro";
+import StepTwo from "./StepTwo.astro";
+
+interface Props {
+	content: FormularioContent;
+}
+
+const { content } = Astro.props;
+---
+
+<StepOne content={content} />
+<StepTwo content={content} />
+<StepThree content={content} />
+
+<style is:global>
+	@import "./form-step.css";
+</style>

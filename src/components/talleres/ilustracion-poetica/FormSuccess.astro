@@ -1,0 +1,19 @@
+---
+interface Props {
+	title: string;
+	message: string;
+}
+
+const { title, message } = Astro.props;
+---
+
+<div class="success-message" data-success hidden tabindex="-1" role="status" aria-live="polite">
+	<h3>{title}</h3>
+	<p>{message}</p>
+</div>
+
+<style>
+	.success-message {
+		text-align: center;
+	}
+</style>

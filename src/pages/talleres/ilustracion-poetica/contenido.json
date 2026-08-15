@@ -119,6 +119,28 @@
     },
     "formulario": {
         "title": "Reserva tu cupo",
+        "heading": "Conversemos sobre tu proceso creativo",
+        "description": "Cuéntame un poco sobre ti para encontrar la mejor manera de acompañarte.",
+        "ui": {
+            "progressLabel": "Progreso del formulario",
+            "back": "Atrás",
+            "continueAvailability": "Continuar a disponibilidad",
+            "continueInvestment": "Continuar a inversión",
+            "submit": "Reservar cupo y hablar con Cristina",
+            "priceLabel": "Valor total",
+            "successTitle": "Gracias por compartir tu información",
+            "successMessage": "Recibí tus datos. Cristina se pondrá en contacto contigo para conversar sobre tu cupo.",
+            "reviewErrors": "Revisa los campos marcados antes de continuar.",
+            "investmentError": "Selecciona una facilidad de pago y una respuesta sobre tu presupuesto.",
+            "validation": {
+                "fullName": "Escribe tu nombre completo (mínimo 3 caracteres).",
+                "whatsapp": "Escribe un número celular colombiano de 10 dígitos que empiece por 3.",
+                "availability": "Selecciona una opción de disponibilidad.",
+                "motivation": "Cuéntame un poco más (mínimo 10 caracteres).",
+                "paymentOption": "Selecciona una facilidad de pago.",
+                "budgetResponse": "Selecciona la opción que mejor describe tu situación."
+            }
+        },
         "pasos": [
             {
                 "numero": 1,
@@ -132,18 +154,44 @@
                 "numero": 2,
                 "title": "Disponibilidad y motivación",
                 "fields": [
-                    "Disponibilidad horaria (Mañanas, tardes, fines de semana)",
-                    "¿Por qué te interesa explorar la narrativa visual?"
+                    "Disponibilidad horaria",
+                    "Motivación"
                 ]
             },
             {
                 "numero": 3,
                 "title": "Detalles de inversión",
                 "fields": [
-                    "Confirmación de aceptación de la inversión"
+                    "Facilidades de pago",
+                    "Relación con la inversión"
                 ]
             }
         ],
+        "fields": {
+            "fullName": {
+                "label": "Nombre completo"
+            },
+            "whatsapp": {
+                "label": "WhatsApp",
+                "help": "Escribe los 10 dígitos de tu celular.",
+                "placeholder": "300 000 0000"
+            },
+            "availability": {
+                "label": "Disponibilidad horaria",
+                "options": [
+                    "Mañanas",
+                    "Tardes",
+                    "Fines de semana"
+                ]
+            },
+            "motivation": {
+                "label": "¿Por qué te interesa explorar la narrativa visual?",
+                "placeholder": "Háblame de esa imagen, historia o pregunta que quieres llevar al papel..."
+            },
+            "paymentOption": {
+                "label": "Facilidades de pago"
+            }
+        },
         "precio": {
             "valorTotal": "$1.440.000 COP",
             "descripcion": "La inversión total por el ciclo de 24 horas de mentoría personalizada y presencial es de $1.440.000 COP.",
@@ -152,7 +200,13 @@
                 "Opción 2: 2 cuotas de $720.000 COP (la primera para reservar el cupo, la segunda en la sesión 4).",
                 "Opción 3: 3 cuotas mensuales de $480.000 COP."
             ],
-            "preguntaFiltro": "¿Estás de acuerdo con este rango de inversión para coordinar tu cupo?"
+            "preguntaFiltro": "¿Cuál de estas opciones describe mejor tu relación con la inversión del taller?",
+            "opcionesPresupuesto": [
+                "Sí, este rango está dentro de mi presupuesto.",
+                "Estoy evaluando cómo organizar la inversión.",
+                "No estoy seguro de poder asumirla en este momento.",
+                "En este momento, el taller está fuera de mi presupuesto."
+            ]
         }
     }
 }
