@@ -1,0 +1,55 @@
+---
+import type { FormularioContent } from "./formulario.types";
+
+interface Props {
+	content: FormularioContent;
+}
+
+const { content } = Astro.props;
+const { pasos, fields, precio, ui } = content;
+const { paymentOption } = fields;
+---
+
+<section class="form-step" data-step="3" aria-labelledby="step-3-title" hidden>
+	<div class="step-heading">
+		<p class="step-number">Paso 3 de {pasos.length}</p>
+		<h4 id="step-3-title">{pasos[2].title}</h4>
+	</div>
+
+	<div class="price-highlight">
+		<p class="price-label">{ui.priceLabel}</p>
+		<p class="price-value">{precio.valorTotal}</p>
+		<p>{precio.descripcion}</p>
+	</div>
+
+	<fieldset class="field-group option-fieldset">
+		<legend>{paymentOption.label}</legend>
+		<div class="payment-options">
+			{precio.facilidadesPago.map((option, index) => (
+				<label class="choice-card payment-card" for={`payment-${index}`}>
+					<input id={`payment-${index}`} type="radio" name="paymentOption" value={option} required />
+					<span>{option}</span>
+				</label>
+			))}
+		</div>
+		<p class="field-error" data-error-for="paymentOption" aria-live="polite"></p>
+	</fieldset>
+
+	<fieldset class="field-group option-fieldset budget-fieldset">
+		<legend>{precio.preguntaFiltro}</legend>
+		<div class="payment-options">
+			{precio.opcionesPresupuesto.map((option, index) => (
+				<label class="choice-card payment-card" for={`budget-${index}`}>
+					<input id={`budget-${index}`} type="radio" name="budgetResponse" value={option} required />
+					<span>{option}</span>
+				</label>
+			))}
+		</div>
+		<p class="field-error" data-error-for="budgetResponse" aria-live="polite"></p>
+	</fieldset>
+
+	<div class="step-actions">
+		<button class="button button-secondary" type="button" data-previous="2">{ui.back}</button>
+		<button class="button button-primary" type="submit">{ui.submit}</button>
+	</div>
+</section>

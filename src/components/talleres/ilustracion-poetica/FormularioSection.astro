@@ -1,25 +1,10 @@
 ---
 import type { ImageMetadata } from "astro";
-
-interface Paso {
-	numero: number;
-	title: string;
-	fields: string[];
-}
-
-interface Precio {
-	valorTotal: string;
-	descripcion: string;
-	facilidadesPago: string[];
-	preguntaFiltro: string;
-}
+import LeadCaptureForm from "./LeadCaptureForm.astro";
+import type { FormularioContent } from "./formulario.types";
 
 interface Props {
-	content: {
-		title: string;
-		pasos: Paso[];
-		precio: Precio;
-	};
+	content: FormularioContent;
 	image: ImageMetadata;
 }
 
@@ -31,4 +16,5 @@ const { title } = content;
 	<div class="copy">
 		<h2>{title}</h2>
 	</div>
+	<LeadCaptureForm content={content} />
 </section>
