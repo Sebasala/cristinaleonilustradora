@@ -124,21 +124,20 @@
         "ui": {
             "progressLabel": "Progreso del formulario",
             "back": "Atrás",
-            "continueAvailability": "Continuar a disponibilidad",
-            "continueInvestment": "Continuar a inversión",
+            "continueAvailability": "Tú motivación y disponibilidad",
+            "continueInvestment": "¿Cuánto vale?",
             "submit": "Reservar cupo y hablar con Cristina",
-            "priceLabel": "Valor total",
+            "priceLabel": "Inversión",
             "successTitle": "Gracias por compartir tu información",
-            "successMessage": "Recibí tus datos. Cristina se pondrá en contacto contigo para conversar sobre tu cupo.",
+            "successMessage": "Recibí tus datos. Me pondré en contacto contigo para conversar sobre tu cupo.",
             "reviewErrors": "Revisa los campos marcados antes de continuar.",
-            "investmentError": "Selecciona una facilidad de pago y una respuesta sobre tu presupuesto.",
+            "investmentError": "Selecciona una facilidad de pago.",
             "validation": {
                 "fullName": "Escribe tu nombre completo (mínimo 3 caracteres).",
                 "whatsapp": "Escribe un número celular colombiano de 10 dígitos que empiece por 3.",
                 "availability": "Selecciona una opción de disponibilidad.",
                 "motivation": "Cuéntame un poco más (mínimo 10 caracteres).",
-                "paymentOption": "Selecciona una facilidad de pago.",
-                "budgetResponse": "Selecciona la opción que mejor describe tu situación."
+                "paymentOption": "Selecciona una facilidad de pago."
             }
         },
         "pasos": [
@@ -152,7 +151,7 @@
             },
             {
                 "numero": 2,
-                "title": "Disponibilidad y motivación",
+                "title": "Motivación y disponibilidad",
                 "fields": [
                     "Disponibilidad horaria",
                     "Motivación"
@@ -162,8 +161,7 @@
                 "numero": 3,
                 "title": "Detalles de inversión",
                 "fields": [
-                    "Facilidades de pago",
-                    "Relación con la inversión"
+                    "Facilidades de pago"
                 ]
             }
         ],
@@ -179,9 +177,9 @@
             "availability": {
                 "label": "Disponibilidad horaria",
                 "options": [
+                    "Fines de semana",
                     "Mañanas",
-                    "Tardes",
-                    "Fines de semana"
+                    "Tardes"
                 ]
             },
             "motivation": {
@@ -189,23 +187,17 @@
                 "placeholder": "Háblame de esa imagen, historia o pregunta que quieres llevar al papel..."
             },
             "paymentOption": {
-                "label": "Facilidades de pago"
+                "label": "¿Cómo deseas realizar la inversión?"
             }
         },
         "precio": {
             "valorTotal": "$1.440.000 COP",
-            "descripcion": "La inversión total por el ciclo de 24 horas de mentoría personalizada y presencial es de $1.440.000 COP.",
+            "descripcion": "Incluye 24 horas de mentoría personalizada y presencial.",
             "facilidadesPago": [
-                "Opción 1: Pago único con descuento.",
-                "Opción 2: 2 cuotas de $720.000 COP (la primera para reservar el cupo, la segunda en la sesión 4).",
-                "Opción 3: 3 cuotas mensuales de $480.000 COP."
-            ],
-            "preguntaFiltro": "¿Cuál de estas opciones describe mejor tu relación con la inversión del taller?",
-            "opcionesPresupuesto": [
-                "Sí, este rango está dentro de mi presupuesto.",
-                "Estoy evaluando cómo organizar la inversión.",
-                "No estoy seguro de poder asumirla en este momento.",
-                "En este momento, el taller está fuera de mi presupuesto."
+                "Pago único con descuento. 1 pago único por solo $1.296.000 COP.",
+                "2 cuotas de $720.000 COP (la primera para reservar el cupo, la segunda en la sesión 4).",
+                "3 cuotas mensuales de $480.000 COP.",
+                "Se sale del presupuesto, pero quiero recibir información sobre futuras ediciones."
             ]
         }
     }

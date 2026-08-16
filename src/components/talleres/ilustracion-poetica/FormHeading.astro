@@ -1,14 +1,24 @@
 ---
 interface Props {
+  eyebrow?: string;
   heading: string;
   description: string;
   id?: string;
 }
 
-const { heading, description, id = "lead-form-title" } = Astro.props;
+const { eyebrow, heading, description, id = "lead-form-title" } = Astro.props;
 ---
 
-<div class="form-heading">
-  <h3 id={id}>{heading}</h3>
+<section class="form-heading">
+  {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+  <h2 id={id}>{heading}</h2>
   <p>{description}</p>
-</div>
+</section>
+
+<style>
+  .form-heading {
+    @media screen and (min-width: 760px) {
+      margin: var(--space) 0;
+    }
+  }
+</style>

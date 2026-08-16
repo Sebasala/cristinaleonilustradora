@@ -8,6 +8,7 @@
   --opacity-high: 0.8;
   --opacity-full: 1;
   --space: 1.5rem;
+  --space-half: calc(0.5 * var(--space));
   --space-2: calc(2 * var(--space));
   --text-max-width: 31rem;
 }

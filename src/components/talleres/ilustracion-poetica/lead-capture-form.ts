@@ -10,7 +10,6 @@ type FormDataState = {
   availability: string;
   motivation: string;
   paymentOption: string;
-  budgetResponse: string;
 };
 
 const form = document.querySelector<HTMLFormElement>("#lead-capture-form");
@@ -40,10 +39,6 @@ if (form) {
     paymentOption:
       form.querySelector<HTMLInputElement>(
         'input[name="paymentOption"]:checked'
-      )?.value ?? "",
-    budgetResponse:
-      form.querySelector<HTMLInputElement>(
-        'input[name="budgetResponse"]:checked'
       )?.value ?? ""
   });
 
@@ -89,9 +84,6 @@ if (form) {
       case "paymentOption":
         if (!data.paymentOption) message = ui.validation.paymentOption;
         break;
-      case "budgetResponse":
-        if (!data.budgetResponse) message = ui.validation.budgetResponse;
-        break;
     }
 
     setError(field, message);
@@ -101,7 +93,7 @@ if (form) {
   const fieldsByStep: Record<number, string[]> = {
     1: ["fullName", "whatsapp"],
     2: ["availability", "motivation"],
-    3: ["paymentOption", "budgetResponse"]
+    3: ["paymentOption"]
   };
 
   const validateStep = (step: number) =>
@@ -145,7 +137,7 @@ if (form) {
         )
           control.value = saved.data?.[field] ?? "";
       });
-      ["availability", "paymentOption", "budgetResponse"].forEach((field) => {
+      ["availability", "paymentOption"].forEach((field) => {
         const value = saved.data?.[field as keyof FormDataState];
         if (typeof value === "string" && value) {
           const control = form.querySelector<HTMLInputElement>(
@@ -201,7 +193,6 @@ if (form) {
     const payload = {
       ...data,
       countryCode: "+57",
-      budgetResponse: data.budgetResponse,
       utms: Object.fromEntries(
         [
           "utm_source",

@@ -6,15 +6,11 @@ interface Props {
 }
 
 const { content } = Astro.props;
-const { pasos, fields } = content;
+const { fields } = content;
 const { fullName, whatsapp } = fields;
 ---
 
 <section class="form-step" data-step="1" aria-labelledby="step-1-title">
-	<div class="step-heading">
-		<p class="step-number">Paso 1 de {pasos.length}</p>
-		<h4 id="step-1-title">{pasos[0].title}</h4>
-	</div>
 
 	<div class="field-group">
 		<label for="full-name">{fullName.label}</label>
@@ -28,7 +24,6 @@ const { fullName, whatsapp } = fields;
 			<span aria-hidden="true">+57</span>
 			<input id="whatsapp" name="whatsapp" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="10" placeholder={whatsapp.placeholder} required aria-describedby="whatsapp-help whatsapp-error" />
 		</div>
-		<p class="field-help" id="whatsapp-help">{whatsapp.help}</p>
 		<p class="field-error" id="whatsapp-error" data-error-for="whatsapp" aria-live="polite"></p>
 	</div>
 
@@ -36,3 +31,11 @@ const { fullName, whatsapp } = fields;
 		<button class="button button-primary" type="button" data-next="2">{content.ui.continueAvailability}</button>
 	</div>
 </section>
+
+<style>
+	.form-step {
+		@media screen and (min-width: 760px) {
+			margin: var(--space) 0;
+		}
+	}
+</style>

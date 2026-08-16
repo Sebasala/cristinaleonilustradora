@@ -1,37 +1,15 @@
+// TODO: Move this styles to global forms styles, and remove this file
 .form-step[hidden] {
   display: none;
-}
-
-.step-number,
-.price-label {
-  margin: 0 0 0.35rem;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-accent);
 }
 
 .step-heading h4 {
   margin-top: 0;
 }
 
-.price-highlight {
-  margin: 0 0 var(--space-2);
-  border-left: 4px solid var(--color-accent);
-  padding: var(--space);
-  background: color-mix(in srgb, var(--color-accent) 8%, white);
-}
-
-.price-highlight p:last-child {
-  margin-bottom: 0;
-}
-
 .price-value {
   margin: 0 0 0.5rem;
   font-size: clamp(1.5rem, 5vw, 2.25rem);
-  font-weight: 700;
-  color: var(--color-accent);
 }
 
 .step-actions {
@@ -41,31 +19,7 @@
   margin-top: var(--space-2);
 }
 
-.button {
-  width: 100%;
-  border: 1px solid var(--color-accent);
-  padding: 0.85rem 1rem;
-  font: inherit;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.button-primary {
-  background: var(--color-accent);
-  color: var(--color-light);
-}
-
-.button-secondary {
-  background: transparent;
-  color: var(--color-accent);
-}
-
-.button:hover,
-.button:focus-visible {
-  filter: brightness(1.15);
-}
-
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 760px) {
   .option-grid-three {
     grid-template-columns: repeat(3, 1fr);
   }
