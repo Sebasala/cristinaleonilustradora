@@ -8,8 +8,6 @@ export type Precio = {
   valorTotal: string;
   descripcion: string;
   facilidadesPago: string[];
-  preguntaFiltro: string;
-  opcionesPresupuesto: string[];
 };
 
 export type FieldCopy = {

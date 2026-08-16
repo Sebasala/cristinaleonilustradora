@@ -11,16 +11,17 @@ const { availability, motivation } = fields;
 ---
 
 <section class="form-step" data-step="2" aria-labelledby="step-2-title" hidden>
-	<div class="step-heading">
-		<p class="step-number">Paso 2 de {pasos.length}</p>
-		<h4 id="step-2-title">{pasos[1].title}</h4>
+	<div class="field-group">
+		<label for="motivation">{motivation.label}</label>
+		<textarea id="motivation" name="motivation" minlength="10" rows="5" required placeholder={motivation.placeholder} aria-describedby="motivation-error"></textarea>
+		<p class="field-error" data-error-for="motivation" aria-live="polite"></p>
 	</div>
 
 	<fieldset class="field-group option-fieldset">
 		<legend>{availability.label}</legend>
 		<div class="option-grid option-grid-three">
 			{availability.options?.map((option, index) => (
-				<label class="choice-card chip-card" for={`availability-${index}`}>
+				<label class="choice-card" for={`availability-${index}`}>
 					<input id={`availability-${index}`} type="radio" name="availability" value={option} required />
 					<span>{option}</span>
 				</label>
@@ -28,12 +29,6 @@ const { availability, motivation } = fields;
 		</div>
 		<p class="field-error" data-error-for="availability" aria-live="polite"></p>
 	</fieldset>
-
-	<div class="field-group">
-		<label for="motivation">{motivation.label}</label>
-		<textarea id="motivation" name="motivation" minlength="10" rows="5" required placeholder={motivation.placeholder} aria-describedby="motivation-error"></textarea>
-		<p class="field-error" data-error-for="motivation" aria-live="polite"></p>
-	</div>
 
 	<div class="step-actions">
 		<button class="button button-secondary" type="button" data-previous="1">{ui.back}</button>

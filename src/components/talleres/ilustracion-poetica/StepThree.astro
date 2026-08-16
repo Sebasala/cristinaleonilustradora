@@ -6,18 +6,13 @@ interface Props {
 }
 
 const { content } = Astro.props;
-const { pasos, fields, precio, ui } = content;
+const { fields, precio, ui } = content;
 const { paymentOption } = fields;
 ---
 
 <section class="form-step" data-step="3" aria-labelledby="step-3-title" hidden>
-	<div class="step-heading">
-		<p class="step-number">Paso 3 de {pasos.length}</p>
-		<h4 id="step-3-title">{pasos[2].title}</h4>
-	</div>
-
 	<div class="price-highlight">
-		<p class="price-label">{ui.priceLabel}</p>
+		<p class="eyebrow">{ui.priceLabel}</p>
 		<p class="price-value">{precio.valorTotal}</p>
 		<p>{precio.descripcion}</p>
 	</div>
@@ -33,19 +28,6 @@ const { paymentOption } = fields;
 			))}
 		</div>
 		<p class="field-error" data-error-for="paymentOption" aria-live="polite"></p>
-	</fieldset>
-
-	<fieldset class="field-group option-fieldset budget-fieldset">
-		<legend>{precio.preguntaFiltro}</legend>
-		<div class="payment-options">
-			{precio.opcionesPresupuesto.map((option, index) => (
-				<label class="choice-card payment-card" for={`budget-${index}`}>
-					<input id={`budget-${index}`} type="radio" name="budgetResponse" value={option} required />
-					<span>{option}</span>
-				</label>
-			))}
-		</div>
-		<p class="field-error" data-error-for="budgetResponse" aria-live="polite"></p>
 	</fieldset>
 
 	<div class="step-actions">

@@ -21,39 +21,54 @@ const { pasos, currentStep = 1, ariaLabel = "Progreso del formulario" } = Astro.
 
 		return (
 			<div class:list={["progress-step", { active: isActive, complete: isComplete }]} data-progress-step={stepNumber}>
-				<span class="progress-number">{paso.numero}</span>
-				<span>{paso.title}</span>
+				<p class="progress-number">{paso.numero}</p>
+				<p>{paso.title}</p>
 			</div>
 		);
 	})}
 </div>
 
 <style>
+	p {
+		text-align: center;
+	}
+
+	.progress-number {
+		border: 1px solid var(--color-black);
+		width: var(--space);
+		height: var(--space);
+		align-content: center;
+		border-radius: 50%;
+		margin: 0 auto;
+	}
 	.progress {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
-		gap: 0.4rem;
-		margin-bottom: var(--space-2);
+		gap: var(--space);
+		margin-bottom: var(--space);
 	}
 
 	.progress-step {
-		display: flex;
-		align-items: center;
-		gap: 0.45rem;
-		padding-top: 0.65rem;
-		border-top: 2px solid color-mix(in srgb, var(--color-accent) 18%, transparent);
-		font-size: 0.72rem;
-		line-height: 1.2;
-		color: color-mix(in srgb, var(--color-black) 55%, transparent);
+		opacity: var(--opacity-medium);
 	}
 
 	.progress-step.active,
 	.progress-step.complete {
-		border-color: var(--color-accent);
-		color: var(--color-accent);
+		opacity: var(--opacity-full);
+		p {
+			color: var(--color-accent);
+			opacity: var(--opacity-full);
+		}
+
+		.progress-number {
+			border-color: var(--color-accent);
+		}
 	}
 
-	.progress-number {
-		font-weight: 700;
+	.progress-step.active {
+		.progress-number {
+			background-color: var(--color-accent);
+			color: var(--color-light);
+		}
 	}
 </style>
