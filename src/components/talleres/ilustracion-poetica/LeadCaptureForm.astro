@@ -1,29 +1,19 @@
 ---
 import FormHeading from "./FormHeading.astro";
-import FormSteps from "./FormSteps.astro";
-import FormSuccess from "./FormSuccess.astro";
-import type { FormularioContent } from "./formulario.types";
-import ProgressSteps from "./ProgressSteps.astro";
-
-interface Props {
-	content: FormularioContent;
-}
 
 const { content } = Astro.props;
-const { ui, pasos, title } = content;
+const { title, heading, description } = content;
 ---
 
-<section class="formulario" id="formulario">
-	<FormHeading eyebrow={title} heading={content.heading} description={content.description} id="lead-form-title" />
-	<form class="lead-form" id="lead-capture-form" novalidate aria-labelledby="lead-form-title" data-ui={JSON.stringify(ui)}>
-		<ProgressSteps pasos={pasos} currentStep={1} ariaLabel={ui.progressLabel} />
-		<FormSteps content={content} />
-		<FormSuccess title={ui.successTitle} message={ui.successMessage} />
+<section class="form" id="form">
+	<FormHeading eyebrow={title} heading={heading} description={description} id="lead-form-title" />
+	<form class="lead-form" id="lead-capture-form" novalidate aria-labelledby="lead-form-title">
+		<h2>Form</h2>
 	</form>
 </section>
 
 <style>
-	.formulario {
+	.form {
 		max-width: var(--text-max-width);
 		margin: calc(4 * var(--space)) auto;
 	}

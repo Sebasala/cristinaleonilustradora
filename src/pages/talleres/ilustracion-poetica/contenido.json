@@ -47,7 +47,7 @@
     "cta": {
         "text": "Reserva tu cupo para proponer tu horario.",
         "label": "Reservar mi cupo",
-        "link": "#formulario"
+        "link": "#form"
     },
     "recorrido": {
         "title": "El Recorrido Metodológico",
@@ -117,88 +117,19 @@
             }
         ]
     },
-    "formulario": {
+    "form": {
         "title": "Reserva tu cupo",
         "heading": "Conversemos sobre tu proceso creativo",
         "description": "Cuéntame un poco sobre ti para encontrar la mejor manera de acompañarte.",
-        "ui": {
-            "progressLabel": "Progreso del formulario",
-            "back": "Atrás",
-            "continueAvailability": "Tú motivación y disponibilidad",
-            "continueInvestment": "¿Cuánto vale?",
-            "submit": "Reservar cupo y hablar con Cristina",
-            "priceLabel": "Inversión",
-            "successTitle": "Gracias por compartir tu información",
-            "successMessage": "Recibí tus datos. Me pondré en contacto contigo para conversar sobre tu cupo.",
-            "reviewErrors": "Revisa los campos marcados antes de continuar.",
-            "investmentError": "Selecciona una facilidad de pago.",
-            "validation": {
-                "fullName": "Escribe tu nombre completo (mínimo 3 caracteres).",
-                "whatsapp": "Escribe un número celular colombiano de 10 dígitos que empiece por 3.",
-                "availability": "Selecciona una opción de disponibilidad.",
-                "motivation": "Cuéntame un poco más (mínimo 10 caracteres).",
-                "paymentOption": "Selecciona una facilidad de pago."
-            }
-        },
-        "pasos": [
+        "steps": [
             {
-                "numero": 1,
-                "title": "Datos de contacto",
                 "fields": [
-                    "Nombre completo",
-                    "WhatsApp"
-                ]
-            },
-            {
-                "numero": 2,
-                "title": "Motivación y disponibilidad",
-                "fields": [
-                    "Disponibilidad horaria",
-                    "Motivación"
-                ]
-            },
-            {
-                "numero": 3,
-                "title": "Detalles de inversión",
-                "fields": [
-                    "Facilidades de pago"
+                    {
+                        "label": "Nombre: ",
+                        "type": "text"
+                    }
                 ]
             }
-        ],
-        "fields": {
-            "fullName": {
-                "label": "Nombre completo"
-            },
-            "whatsapp": {
-                "label": "WhatsApp",
-                "help": "Escribe los 10 dígitos de tu celular.",
-                "placeholder": "300 000 0000"
-            },
-            "availability": {
-                "label": "Disponibilidad horaria",
-                "options": [
-                    "Fines de semana",
-                    "Mañanas",
-                    "Tardes"
-                ]
-            },
-            "motivation": {
-                "label": "¿Por qué te interesa explorar la narrativa visual?",
-                "placeholder": "Háblame de esa imagen, historia o pregunta que quieres llevar al papel..."
-            },
-            "paymentOption": {
-                "label": "¿Cómo deseas realizar la inversión?"
-            }
-        },
-        "precio": {
-            "valorTotal": "$1.440.000 COP",
-            "descripcion": "Incluye 24 horas de mentoría personalizada y presencial.",
-            "facilidadesPago": [
-                "Pago único con descuento. 1 pago único por solo $1.296.000 COP.",
-                "2 cuotas de $720.000 COP (la primera para reservar el cupo, la segunda en la sesión 4).",
-                "3 cuotas mensuales de $480.000 COP.",
-                "Se sale del presupuesto, pero quiero recibir información sobre futuras ediciones."
-            ]
-        }
+        ]
     }
 }
