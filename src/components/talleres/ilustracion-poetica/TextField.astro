@@ -1,0 +1,78 @@
+---
+const {
+  content
+} = Astro.props;
+
+const { 
+  error,
+  label,
+  name,
+  placeholder = "",
+  required = true,
+  minLength = 3,
+  type = "text",
+  value = "",
+} = content;
+
+const errorId = `${name}-error`;
+---
+
+<div class="field-wrapper">
+  <label class="field-label" for={name}>
+    {required && <span class="required-indicator" aria-label="required">* </span>}
+    <span>{label}</span>
+  </label>
+
+  <input
+    type={type}
+    name={name}
+    id={name}
+    value={value}
+    placeholder={placeholder}
+    required={required}
+    minlength={required ? minLength : undefined}
+    aria-required={required}
+    aria-invalid="false"
+    aria-describedby={errorId}
+    data-required={required}
+  />
+
+  <p id={errorId} class="field-error" role="alert" hidden aria-live="polite">
+    {error}
+  </p>
+</div>
+
+<script is:inline define:vars={{ name, required, errorId, minLength }}>
+  const input = document.getElementById(name);
+  const errorElement = document.getElementById(errorId);
+  let hasBeenBlurred = false;
+
+  function isValid() {
+    const value = input.value.trim();
+
+    return input.validity.valid && (!required || value.length >= minLength);
+  }
+
+  function updateErrorDisplay() {
+    const shouldShow = hasBeenBlurred && !isValid();
+
+    if (shouldShow) {
+      errorElement.hidden = false;
+      input.setAttribute("aria-invalid", "true");
+    } else {
+      errorElement.hidden = true;
+      input.setAttribute("aria-invalid", "false");
+    }
+  }
+
+  input.addEventListener("blur", () => {
+    hasBeenBlurred = true;
+    updateErrorDisplay();
+  });
+
+  input.addEventListener("input", () => {
+    if (hasBeenBlurred) {
+      updateErrorDisplay();
+    }
+  });
+</script>
