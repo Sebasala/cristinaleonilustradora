@@ -123,12 +123,15 @@
         "description": "Cuéntame un poco sobre ti para encontrar la mejor manera de acompañarte.",
         "steps": [
             {
-                "fields": [
-                    {
+                "fields": {
+                    "name": {
+                        "error": "Por favor escribe tu nombre, al menos 3 caracteres.",
                         "label": "Nombre: ",
-                        "type": "text"
+                        "minLength": 3,
+                        "name": "Nombre",
+                        "placeholder": ""
                     }
-                ]
+                }
             }
         ]
     }
