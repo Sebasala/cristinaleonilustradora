@@ -17,7 +17,7 @@
     "espacio": {
         "title": "El Refugio en Cajicá",
         "description": "Nos reuniremos en mi taller rodeado de naturaleza en Cajicá, pensado como un lugar para detener el ritmo cotidiano y disfrutar. Un espacio de creación, conversación y café/té compartido, donde el arte se convierte en una forma de escuchar, imaginar y construir en comunidad.",
-        "quote": "Nunca miramos sólo una cosa; siempre miramos la relación entre las cosas y nosotros mismos.",
+        "quote": "\"Nunca miramos sólo una cosa; siempre miramos la relación entre las cosas y nosotros mismos.\"",
         "quoteAuthor": "John Berger"
     },
     "proyecto": {
@@ -125,11 +125,18 @@
             {
                 "fields": {
                     "name": {
-                        "error": "Por favor escribe tu nombre, al menos 3 caracteres.",
+                        "error": "¿Cómo te llamas? Al menos 3 caracteres.",
                         "label": "Nombre: ",
                         "minLength": 3,
                         "name": "Nombre",
-                        "placeholder": ""
+                        "placeholder": "Escribe tu nombre"
+                    },
+                    "whatsapp": {
+                        "error": "¿Cuál es tu número de WhatsApp? Asegúrate que sea un número válido.",
+                        "label": "WhatsApp: ",
+                        "name": "WhatsApp",
+                        "placeholder": "300 1234567",
+                        "type": "tel"
                     }
                 }
             }
