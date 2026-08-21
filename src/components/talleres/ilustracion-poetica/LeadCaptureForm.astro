@@ -1,17 +1,19 @@
 ---
 import FormHeading from "./FormHeading.astro";
 import TextField from "./TextField.astro";
+import WhatsAppField from "./WhatsAppField.astro";
 
 const { content } = Astro.props;
 const { title, heading, description, steps } = content;
 const { fields } = steps[0];
-const { name } = fields;
+const { name, whatsapp } = fields;
 ---
 
 <section class="form" id="form">
 	<FormHeading eyebrow={title} heading={heading} description={description} id="lead-form-title" />
 	<form class="lead-form" id="lead-capture-form" aria-labelledby="lead-form-title">
 		<TextField content={name} />
+		<WhatsAppField content={whatsapp} />
 	</form>
 </section>
 

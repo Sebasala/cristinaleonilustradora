@@ -19,25 +19,25 @@ const errorId = `${name}-error`;
 
 <div class="field-wrapper">
   <label class="field-label" for={name}>
-    {required && <span class="required-indicator" aria-label="required">* </span>}
     <span>{label}</span>
+    {required && <span class="required-indicator">* </span>}
   </label>
 
   <input
-    type={type}
-    name={name}
+    aria-describedby={errorId}
+    aria-invalid="false"
+    aria-required={required}
+    autocomplete="name"
     id={name}
-    value={value}
+    minlength={required ? minLength : undefined}
+    name={name}
     placeholder={placeholder}
     required={required}
-    minlength={required ? minLength : undefined}
-    aria-required={required}
-    aria-invalid="false"
-    aria-describedby={errorId}
-    data-required={required}
+    type={type}
+    value={value}
   />
 
-  <p id={errorId} class="field-error" role="alert" hidden aria-live="polite">
+  <p id={errorId} class="field-error" role="status" hidden aria-live="polite">
     {error}
   </p>
 </div>
@@ -45,6 +45,7 @@ const errorId = `${name}-error`;
 <script is:inline define:vars={{ name, required, errorId, minLength }}>
   const input = document.getElementById(name);
   const errorElement = document.getElementById(errorId);
+  const fieldWrapper = input.closest(".field-wrapper");
   let hasBeenBlurred = false;
 
   function isValid() {
@@ -63,6 +64,8 @@ const errorId = `${name}-error`;
       errorElement.hidden = true;
       input.setAttribute("aria-invalid", "false");
     }
+
+    fieldWrapper.classList.toggle("invalid", shouldShow);
   }
 
   input.addEventListener("blur", () => {

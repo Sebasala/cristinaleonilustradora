@@ -1,0 +1,107 @@
+---
+const {
+  content
+} = Astro.props;
+
+const {
+  error,
+  label,
+  name,
+  placeholder = "",
+  required = true,
+  minLength = 10,
+  type = "tel",
+  value = "",
+} = content;
+
+const errorId = `${name}-error`;
+const phonePattern = "[0-9]{3}[ \\-]?[0-9]{1}[ \\-]?[0-9]{2}[ \\-]?[0-9]{2}[ \\-]?[0-9]{2}";
+---
+
+<div class="field-wrapper">
+  <label class="field-label" for={name}>
+    <span>{label}</span>
+    <span class="visually-hidden">
+      El indicativo de Colombia +57 ya está incluido. Ingresa solo el número de teléfono.
+    </span>
+    {required && <span class="required-indicator">* </span>}
+  </label>
+
+  <div class="phone-input">
+    <span aria-hidden="true">+57</span>
+    <input
+      aria-describedby={errorId}
+      aria-invalid="false"
+      aria-required={required}
+      autocomplete="tel"
+      id={name}
+      inputmode="numeric"
+      maxlength={minLength + 4}
+      minlength={required ? minLength : undefined}
+      name={name}
+      pattern={phonePattern}
+      placeholder={placeholder}
+      required={required}
+      type={type}
+      value={value}
+    />
+  </div>
+
+  <p id={errorId} class="field-error" role="alert" hidden aria-live="polite">
+    {error}
+  </p>
+</div>
+
+<script is:inline define:vars={{ name, required, errorId, minLength, phonePattern }}>
+  const phoneRegex = new RegExp(`^${phonePattern}$`);
+  const input = document.getElementById(name);
+  const errorElement = document.getElementById(errorId);
+  const fieldWrapper = input.closest(".field-wrapper");
+  let hasBeenBlurred = false;
+
+  function removeCountryCode() {
+    input.value = input.value.replace(/^\s*\+57[\s-]*/, "");
+  }
+
+  function keepValidCharactersOnly() {
+    input.value = input.value.replace(/[^\d\s-]/g, "");
+  }
+
+  function isValid() {
+    const value = input.value.trim();
+     console.log('isValid', {
+      phoneRegex
+    });
+    const matchesPhoneFormat = phoneRegex.test(value);
+
+    return (!required && value === "") || (input.validity.valid && matchesPhoneFormat);
+  }
+
+  function updateErrorDisplay() {
+    const shouldShow = hasBeenBlurred && !isValid();
+
+    if (shouldShow) {
+      errorElement.hidden = false;
+      input.setAttribute("aria-invalid", "true");
+    } else {
+      errorElement.hidden = true;
+      input.setAttribute("aria-invalid", "false");
+    }
+
+    fieldWrapper.classList.toggle("invalid", shouldShow);
+  }
+
+  input.addEventListener("blur", () => {
+    hasBeenBlurred = true;
+    updateErrorDisplay();
+  });
+
+  input.addEventListener("input", () => {
+    removeCountryCode();
+    keepValidCharactersOnly();
+
+    if (hasBeenBlurred) {
+      updateErrorDisplay();
+    }
+  });
+</script>
