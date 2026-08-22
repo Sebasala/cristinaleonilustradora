@@ -1,0 +1,13 @@
+---
+import AvailabilityField from "./AvailabilityField.astro";
+import MotivationField from "./MotivationField.astro";
+
+const { content } = Astro.props;
+const { fields } = content;
+const { motivation, disponibilidad } = fields;
+---
+
+<section class="step-two">
+	<MotivationField content={motivation} />
+	<AvailabilityField content={disponibilidad} />
+</section>

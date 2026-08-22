@@ -1,6 +1,8 @@
 ---
 import FormHeading from "./FormHeading.astro";
 import StepOne from "./StepOne.astro";
+import StepThree from "./StepThree.astro";
+import StepTwo from "./StepTwo.astro";
 
 const { content } = Astro.props;
 const { title, heading, description, steps } = content;
@@ -10,6 +12,8 @@ const { title, heading, description, steps } = content;
 	<FormHeading eyebrow={title} heading={heading} description={description} id="lead-form-title" />
 	<form class="lead-form" id="lead-capture-form" aria-labelledby="lead-form-title">
 		<StepOne content={steps[0]} />
+		<StepTwo content={steps[1]} />
+		<StepThree content={steps[2]} />
 	</form>
 </section>
 

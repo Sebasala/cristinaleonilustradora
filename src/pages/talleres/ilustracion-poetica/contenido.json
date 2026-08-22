@@ -132,11 +132,52 @@
                         "placeholder": "Escribe tu nombre"
                     },
                     "whatsapp": {
-                        "error": "¿Cuál es tu número de WhatsApp? Asegúrate que sea un número válido.",
+                        "error": "¿Cuál es tu número de WhatsApp? 10 dígitos.",
                         "label": "WhatsApp: ",
                         "name": "WhatsApp",
                         "placeholder": "300 1234567",
                         "type": "tel"
+                    }
+                }
+            },
+            {
+                "fields": {
+                    "motivation": {
+                        "error": "Cuéntame un poco más. Mínimo 10 caracteres.",
+                        "label": "¿Qué te motiva a participar en el taller?",
+                        "minLength": 10,
+                        "name": "motivacion",
+                        "placeholder": "Háblame de esa imagen, historia o pregunta que quieres llevar al papel...",
+                        "rows": 5
+                    },
+                    "disponibilidad": {
+                        "error": "¿Qué días y horarios tienes disponibles?",
+                        "label": "¿Qué días y horarios tienes disponibles?",
+                        "name": "disponibilidad",
+                        "opciones": [
+                            "Fines de semana (mañana)",
+                            "Fines de semana (tarde)",
+                            "Entre semana (mañana)",
+                            "Entre semana (tarde)"
+                        ]
+                    }
+                }
+            },
+            {
+                "eyebrow": "Inversión",
+                "valorTotal": "$1.440.000 COP",
+                "description": "Incluye 24 horas de mentoría personalizada y presencial.",
+                "fields": {
+                    "paymentOptionsField": {
+                        "error": "Elige una opción de inversión que se ajuste a tu presupuesto.",
+                        "label": "¿Cómo deseas realizar la inversión?",
+                        "name": "inversion",
+                        "options": [
+                            "Pago único con descuento. 1 pago único por solo $1.296.000 COP.",
+                            "2 cuotas de $720.000 COP (la primera para reservar el cupo, la segunda en la sesión 4).",
+                            "3 cuotas mensuales de $480.000 COP.",
+                            "Se sale de mi presupuesto, pero quiero recibir información sobre futuras ediciones."
+                        ]
                     }
                 }
             }
