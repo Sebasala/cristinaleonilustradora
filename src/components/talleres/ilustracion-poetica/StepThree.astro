@@ -1,0 +1,100 @@
+---
+const { content } = Astro.props;
+const { eyebrow, valorTotal, description, fields } = content;
+const { paymentOptionsField } = fields;
+const { error, label, name, options } = paymentOptionsField;
+const errorId = `${name}-error`;
+---
+
+<section class="step-three">
+    <div class="copy">
+        {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+        {valorTotal && <p class="price">{valorTotal}</p>}
+        {description && <p class="description">{description}</p>}
+    </div>
+
+    <div class="field-wrapper">
+        <fieldset class="option-fieldset">
+        <legend class="options-label">
+            <span>{label}</span>
+            <span class="required-indicator"> *</span>
+        </legend>
+
+        <div class="option-grid option-grid-three" role="group" aria-label={label}>
+            {options.map((option: string, index: number) => {
+            const optionId = `${name}-${index}`;
+
+            return (
+                <label class="choice-card" for={optionId}>
+                <input
+                    id={optionId}
+                    name={name}
+                    type="radio"
+                    value={option}
+                    required
+                />
+                <span>{option}</span>
+                </label>
+            );
+            })}
+        </div>
+        </fieldset>
+
+        <p id={errorId} class="field-error" role="status" hidden aria-live="polite">
+        {error}
+        </p>
+    </div>
+</section>
+
+<style>
+    .price {
+        font-size: var(--font-size-3);
+    }
+
+    .copy {
+        margin-bottom: var(--space);
+    }
+
+    .field-wrapper {
+        min-height: calc(16 * var(--space));
+    }
+</style>
+
+<script is:inline define:vars={{ name, errorId }}>
+  const inputs = [...document.querySelectorAll(`input[name="${name}"]`)];
+  const errorElement = document.getElementById(errorId);
+  const fieldWrapper = errorElement.closest(".field-wrapper");
+  let hasBeenBlurred = false;
+
+  // TODO: Is this required? Isn't HTML5 validation enough? We can remove this if we don't need it.
+  function isValid() {
+    return inputs.some((input) => input.checked);
+  }
+
+  function updateErrorDisplay() {
+    const shouldShow = hasBeenBlurred && !isValid();
+
+    if (shouldShow) {
+      errorElement.hidden = false;
+      inputs.forEach((input) => input.setAttribute("aria-invalid", "true"));
+    } else {
+      errorElement.hidden = true;
+      inputs.forEach((input) => input.setAttribute("aria-invalid", "false"));
+    }
+
+    fieldWrapper.classList.toggle("invalid", shouldShow);
+  }
+
+  inputs.forEach((input) => {
+    input.addEventListener("blur", () => {
+      hasBeenBlurred = true;
+      updateErrorDisplay();
+    });
+
+    input.addEventListener("change", () => {
+      if (hasBeenBlurred) {
+        updateErrorDisplay();
+      }
+    });
+  });
+</script>

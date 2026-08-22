@@ -1,0 +1,83 @@
+---
+const { content } = Astro.props;
+
+const {
+  error,
+  label,
+  name,
+  placeholder = "",
+  required = true,
+  minLength = 10,
+  rows = 5,
+  value = "",
+} = content;
+
+const errorId = `${name}-error`;
+---
+
+<div class="field-wrapper">
+  <label class="textarea-label" for={name}>
+    <span>{label}</span>
+    {required && <span class="required-indicator"> *</span>}
+  </label>
+
+  <textarea
+    aria-describedby={errorId}
+    aria-invalid="false"
+    aria-required={required}
+    id={name}
+    minlength={required ? minLength : undefined}
+    name={name}
+    placeholder={placeholder}
+    required={required}
+    rows={rows}
+  >{value}</textarea>
+
+  <p id={errorId} class="field-error" role="status" hidden aria-live="polite">
+    {error}
+  </p>
+</div>
+
+<style>
+    .field-wrapper {
+        min-height: calc(8 * var(--space));
+    }
+</style>
+
+<script is:inline define:vars={{ name, required, errorId, minLength }}>
+  const textarea = document.getElementById(name);
+  const errorElement = document.getElementById(errorId);
+  const fieldWrapper = textarea.closest(".field-wrapper");
+  let hasBeenBlurred = false;
+
+  function isValid() {
+    const value = textarea.value.trim();
+
+    return textarea.validity.valid && (!required || value.length >= minLength);
+  }
+
+  function updateErrorDisplay() {
+    const shouldShow = hasBeenBlurred && !isValid();
+
+    if (shouldShow) {
+      errorElement.hidden = false;
+      textarea.setAttribute("aria-invalid", "true");
+    } else {
+      errorElement.hidden = true;
+      textarea.setAttribute("aria-invalid", "false");
+    }
+
+    fieldWrapper.classList.toggle("invalid", shouldShow);
+  }
+
+  textarea.addEventListener("blur", () => {
+    hasBeenBlurred = true;
+    updateErrorDisplay();
+  });
+
+  textarea.addEventListener("input", () => {
+    if (hasBeenBlurred) {
+      updateErrorDisplay();
+    }
+  });
+</script>

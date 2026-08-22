@@ -7,11 +7,6 @@
   margin-top: 0;
 }
 
-.price-value {
-  margin: 0 0 0.5rem;
-  font-size: clamp(1.5rem, 5vw, 2.25rem);
-}
-
 .step-actions {
   display: flex;
   flex-direction: column-reverse;
