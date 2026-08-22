@@ -1,0 +1,13 @@
+---
+import TextField from "./TextField.astro";
+import WhatsAppField from "./WhatsAppField.astro";
+
+const { content } = Astro.props;
+const { fields } = content;
+const { name, whatsapp } = fields;
+---
+
+<div class="step-one">
+	<TextField content={name} />
+	<WhatsAppField content={whatsapp} />
+</div>
