@@ -81,6 +81,10 @@ textarea:focus-visible,
   gap: 0.7rem;
 }
 
+[hidden] {
+  display: none;
+}
+
 .choice-card {
   position: relative;
   display: flex;

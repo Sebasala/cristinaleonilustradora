@@ -2,7 +2,6 @@
   "extends": "astro/tsconfigs/base",
   "compilerOptions": {
     "allowJs": true,
-    // TODO: Revisit path aliases if Astro requires an explicit base directory again.
     "paths": {
       "@assets/*": ["./src/assets/*"],
       "@components/*": ["./src/components/*"],

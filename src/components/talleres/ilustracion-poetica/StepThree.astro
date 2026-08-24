@@ -4,47 +4,47 @@ const { eyebrow, valorTotal, description, fields } = content;
 const { paymentOptionsField } = fields;
 const { error, label, name, options } = paymentOptionsField;
 const errorId = `${name}-error`;
+// TODO: Ofrecer un descuento a las personas que se inscriban en el taller antes de una fecha límite. Esto podría incentivar a los participantes a registrarse más temprano y asegurar su lugar en el taller.
 ---
 
-<section class="step-three">
-    <div class="copy">
-        {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-        {valorTotal && <p class="price">{valorTotal}</p>}
-        {description && <p class="description">{description}</p>}
+<div class="copy">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    {valorTotal && <p class="price">{valorTotal}</p>}
+    {description && <p class="description">{description}</p>}
+</div>
+
+<div class="field-wrapper">
+    <fieldset class="option-fieldset">
+    <legend class="options-label">
+        <span>{label}</span>
+        <span class="required-indicator"> *</span>
+    </legend>
+
+    <div class="option-grid option-grid-three" role="group" aria-label={label}>
+        {options.map((option: string, index: number) => {
+        const optionId = `${name}-${index}`;
+
+        return (
+            <label class="choice-card" for={optionId}>
+            <input
+                id={optionId}
+                name={name}
+                type="radio"
+                value={option}
+                required
+                checked={index === 0}
+            />
+            <span>{option}</span>
+            </label>
+        );
+        })}
     </div>
+    </fieldset>
 
-    <div class="field-wrapper">
-        <fieldset class="option-fieldset">
-        <legend class="options-label">
-            <span>{label}</span>
-            <span class="required-indicator"> *</span>
-        </legend>
-
-        <div class="option-grid option-grid-three" role="group" aria-label={label}>
-            {options.map((option: string, index: number) => {
-            const optionId = `${name}-${index}`;
-
-            return (
-                <label class="choice-card" for={optionId}>
-                <input
-                    id={optionId}
-                    name={name}
-                    type="radio"
-                    value={option}
-                    required
-                />
-                <span>{option}</span>
-                </label>
-            );
-            })}
-        </div>
-        </fieldset>
-
-        <p id={errorId} class="field-error" role="status" hidden aria-live="polite">
-        {error}
-        </p>
-    </div>
-</section>
+    <p id={errorId} class="field-error" role="status" hidden aria-live="polite">
+    {error}
+    </p>
+</div>
 
 <style>
     .price {

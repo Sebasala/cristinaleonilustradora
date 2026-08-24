@@ -10,10 +10,30 @@ const { title, heading, description, steps } = content;
 
 <section class="form" id="form">
 	<FormHeading eyebrow={title} heading={heading} description={description} id="lead-form-title" />
-	<form class="lead-form" id="lead-capture-form" aria-labelledby="lead-form-title">
-		<StepOne content={steps[0]} />
-		<StepTwo content={steps[1]} />
-		<StepThree content={steps[2]} />
+	<form class="lead-form" id="lead-capture-form" aria-labelledby="lead-form-title" novalidate>
+		<div class="form-steps">
+			<section class="form-step is-active" data-step-index="0">
+				<StepOne content={steps[0]} />
+			</section>
+			<section class="form-step" data-step-index="1" hidden>
+				<StepTwo content={steps[1]} />
+			</section>
+			<section class="form-step" data-step-index="2" hidden>
+				<StepThree content={steps[2]} />
+			</section>
+		</div>
+
+		<div class="step-actions">
+			<button type="button" class="button button-secondary step-back" data-step-action="prev" hidden>
+				Volver
+			</button>
+			<button type="button" class="button step-next" data-step-action="next">
+				Siguiente
+			</button>
+			<button type="submit" class="button step-submit" data-step-action="submit" hidden>
+				Reservar mi cupo
+			</button>
+		</div>
 	</form>
 </section>
 
@@ -22,7 +42,249 @@ const { title, heading, description, steps } = content;
 		max-width: var(--text-max-width);
 		margin: calc(4 * var(--space)) auto;
 	}
+
 	.copy {
 		margin: 0;
 	}
+
+	.form-step {
+		margin-bottom: 0;
+
+		@media screen and (min-width: 760px) {
+			margin-top: calc(2 * var(--space));
+		}
+	}
+
+	.step-actions {
+		display: flex;
+		flex-direction: column-reverse;
+		gap: var(--space-xs, 0.75rem);
+		margin-top: var(--space);
+	}
+
+	.button {
+		appearance: none;
+		border: none;
+		border-radius: var(--space);
+		cursor: pointer;
+		font: inherit;
+		padding: var(--space-half) var(--space);
+	}
+
+	.button:hover {
+		opacity: 0.96;
+		transform: translateY(-1px);
+	}
+
+	.button.is-disabled {
+		opacity: var(--opacity-medium);
+		cursor: not-allowed;
+		transform: none;
+	}
+
+	.button-secondary {
+		background: transparent;
+		border: 1px solid currentColor;
+		color: inherit;
+	}
+
+	@media screen and (min-width: 760px) {
+		.step-actions {
+			flex-direction: row;
+			justify-content: flex-end;
+		}
+
+		.button {
+			width: auto;
+		}
+	}
 </style>
+
+<script is:inline>
+	const isDevelopmentEnvironment = () => {
+		const hostname = window.location.hostname;
+		return hostname === "localhost" || hostname === "127.0.0.1" || hostname.endsWith(".local");
+	};
+
+	const getStepControls = (form) => {
+		const steps = [...form.querySelectorAll(".form-step")];
+		const prevButton = form.querySelector('[data-step-action="prev"]');
+		const nextButton = form.querySelector('[data-step-action="next"]');
+		const submitButton = form.querySelector('[data-step-action="submit"]');
+
+		const missingControls = [
+			!steps.length && "steps",
+			!prevButton && "prev button",
+			!nextButton && "next button",
+			!submitButton && "submit button",
+		].filter(Boolean);
+
+		if (missingControls.length) {
+			if (isDevelopmentEnvironment()) {
+				console.warn(
+					"Lead capture form is missing required step controls:",
+					missingControls.join(", ")
+				);
+			}
+			return null;
+		}
+
+		return {
+			steps,
+			prevButton,
+			nextButton,
+			submitButton,
+		};
+	};
+
+	const getFormControls = () => {
+		const form = document.getElementById("lead-capture-form");
+		if (!form) {
+			if (isDevelopmentEnvironment()) {
+				console.warn("Lead capture form not found on the page.");
+			}
+			return null;
+		}
+
+		const stepControls = getStepControls(form);
+		if (!stepControls) {
+			return null;
+		}
+
+		const { steps, prevButton, nextButton, submitButton } = stepControls;
+
+		return { form, steps, prevButton, nextButton, submitButton };
+	};
+
+	const getStepFields = (stepElement) => {
+		return [...stepElement.querySelectorAll("input, textarea")].filter((field) => field.name);
+	};
+
+	const getFirstInvalidStep = (steps) => {
+		for (let index = 0; index < steps.length; index++) {
+			const fields = [...steps[index].querySelectorAll("input, textarea")].filter((field) => field.name);
+	
+			const invalidField = fields.find((field) => !field.checkValidity());
+	
+			if (invalidField) {
+				return { index, field: invalidField };
+			}
+		}
+	
+		return null;
+	};
+
+	const isCurrentStepValid = (steps, currentStepIndex) => {
+		const currentStep = steps[currentStepIndex];
+		const fields = getStepFields(currentStep);
+
+		if (!fields.length) {
+			return true;
+		}
+
+		for (const field of fields) {
+			if (!field.checkValidity()) {
+				field.focus();
+				return false;
+			}
+		}
+
+		return true;
+	};
+
+	const isCurrentStepValidSilently = (steps, currentStepIndex) => {
+		const currentStep = steps[currentStepIndex];
+		const fields = getStepFields(currentStep);
+
+		if (!fields.length) {
+			return true;
+		}
+
+		return fields.every((field) => field.checkValidity());
+	};
+
+	const updateNextButtonState = (steps, nextButton, currentStepIndex) => {
+		const isStepValid = isCurrentStepValidSilently(steps, currentStepIndex);
+		nextButton.classList.toggle("is-disabled", !isStepValid);
+	};
+
+	const updateStepUI = (steps, prevButton, nextButton, submitButton, currentStepIndex) => {
+		steps.forEach((step, index) => {
+			const isActive = index === currentStepIndex;
+			step.hidden = !isActive;
+			step.classList.toggle("is-active", isActive);
+		});
+
+		prevButton.hidden = currentStepIndex === 0;
+		nextButton.hidden = currentStepIndex === steps.length - 1;
+		submitButton.hidden = currentStepIndex !== steps.length - 1;
+	};
+
+	const initializeLeadCaptureForm = () => {
+		const formControls = getFormControls();
+		if (!formControls) {
+			return;
+		}
+
+		const { form, steps, prevButton, nextButton, submitButton } = formControls;
+
+		let currentStepIndex = 0;
+
+		steps.forEach((step) => {
+			const fields = getStepFields(step);
+			fields.forEach((field) => {
+				field.addEventListener("input", () => {
+					updateNextButtonState(steps, nextButton, currentStepIndex);
+				});
+				field.addEventListener("change", () => {
+					updateNextButtonState(steps, nextButton, currentStepIndex);
+				});
+			});
+		});
+
+		prevButton.addEventListener("click", () => {
+			if (currentStepIndex > 0) {
+				currentStepIndex -= 1;
+				updateStepUI(steps, prevButton, nextButton, submitButton, currentStepIndex);
+				updateNextButtonState(steps, nextButton, currentStepIndex);
+			}
+		});
+
+		nextButton.addEventListener("click", () => {
+			if (!isCurrentStepValid(steps, currentStepIndex)) {
+				return;
+			}
+
+			currentStepIndex += 1;
+			updateStepUI(steps, prevButton, nextButton, submitButton, currentStepIndex);
+			updateNextButtonState(steps, nextButton, currentStepIndex);
+		});
+
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+		
+			const invalidStep = getFirstInvalidStep(steps);
+		
+			if (invalidStep) {
+				currentStepIndex = invalidStep.index;
+				updateStepUI(steps, prevButton, nextButton, submitButton, currentStepIndex);
+				updateNextButtonState(steps, nextButton, currentStepIndex);
+				invalidStep.field.focus();
+		
+				return;
+			}
+		
+			// if everything is valid, submit normally
+			form.submit();
+		});
+
+		updateStepUI(steps, prevButton, nextButton, submitButton, currentStepIndex);
+		updateNextButtonState(steps, nextButton, currentStepIndex);
+	};
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", initializeLeadCaptureForm);
+	} else {
+		initializeLeadCaptureForm();
+	}
+</script>
