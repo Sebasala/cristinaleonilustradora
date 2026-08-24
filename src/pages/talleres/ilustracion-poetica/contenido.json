@@ -126,14 +126,12 @@
                 "fields": {
                     "name": {
                         "error": "¿Cómo te llamas? Al menos 3 caracteres.",
-                        "label": "Nombre: ",
                         "minLength": 3,
                         "name": "Nombre",
                         "placeholder": "Escribe tu nombre"
                     },
                     "whatsapp": {
                         "error": "¿Cuál es tu número de WhatsApp? 10 dígitos.",
-                        "label": "WhatsApp: ",
                         "name": "WhatsApp",
                         "placeholder": "300 1234567",
                         "type": "tel"
@@ -166,17 +164,17 @@
             {
                 "eyebrow": "Inversión",
                 "valorTotal": "$1.440.000 COP",
-                "description": "Incluye 24 horas de mentoría personalizada y presencial.",
+                "description": "No es necesario hacer el pago todavía. El pago lo podrás hacer una vez definamos la fecha de inicio y confirmemos tu cupo.",
                 "fields": {
                     "paymentOptionsField": {
                         "error": "Elige una opción de inversión que se ajuste a tu presupuesto.",
-                        "label": "¿Cómo deseas realizar la inversión?",
+                        "label": "¿Cuál opción se ajustaría mejor a tu presupuesto?",
                         "name": "inversion",
                         "options": [
                             "Pago único con descuento. 1 pago único por solo $1.296.000 COP.",
                             "2 cuotas de $720.000 COP (la primera para reservar el cupo, la segunda en la sesión 4).",
                             "3 cuotas mensuales de $480.000 COP.",
-                            "Se sale de mi presupuesto, pero quiero recibir información sobre futuras ediciones."
+                            "Por lo pronto se sale de mi presupuesto, pero avísame cuando esté definida la fecha de inicio."
                         ]
                     }
                 }

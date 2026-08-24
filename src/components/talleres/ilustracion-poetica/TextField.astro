@@ -19,7 +19,7 @@ const errorId = `${name}-error`;
 
 <div class="field-wrapper">
   <label class="field-label" for={name}>
-    <span>{label}</span>
+    <span>{label ?? name}: </span>
     {required && <span class="required-indicator">* </span>}
   </label>
 
