@@ -65,11 +65,6 @@ const errorId = `${name}-error`;
   const fieldWrapper = errorElement.closest(".field-wrapper");
   let hasBeenBlurred = false;
 
-  // TODO: Is this required? Isn't HTML5 validation enough? We can remove this if we don't need it.
-  function isValid() {
-    return inputs.some((input) => input.checked);
-  }
-
   function updateErrorDisplay() {
     const shouldShow = hasBeenBlurred && !isValid();
 
