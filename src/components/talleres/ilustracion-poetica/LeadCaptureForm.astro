@@ -5,11 +5,11 @@ import StepThree from "./StepThree.astro";
 import StepTwo from "./StepTwo.astro";
 
 const { content } = Astro.props;
-const { title, heading, description, steps } = content;
+const { title, eyebrow, heading, description, steps } = content;
 ---
 
 <section class="form" id="form">
-	<FormHeading eyebrow={title} heading={heading} description={description} id="lead-form-title" />
+	<FormHeading eyebrow={eyebrow} heading={title} description={description} id="lead-form-title" />
 	<form class="lead-form" id="lead-capture-form" aria-labelledby="lead-form-title" novalidate>
 		<div class="form-steps">
 			<section class="form-step is-active" data-step-index="0">
@@ -28,6 +28,7 @@ const { title, heading, description, steps } = content;
 				Volver
 			</button>
 			<button type="button" class="button step-next" data-step-action="next">
+				<!-- // TODO: Make this button goes to of the step -->
 				Siguiente
 			</button>
 			<button type="submit" class="button step-submit" data-step-action="submit" hidden>
@@ -48,7 +49,7 @@ const { title, heading, description, steps } = content;
 	}
 
 	.form-step {
-		margin-bottom: 0;
+		margin-bottom: var(--space-2);
 
 		@media screen and (min-width: 760px) {
 			margin-top: calc(2 * var(--space));

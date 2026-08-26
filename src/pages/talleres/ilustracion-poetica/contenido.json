@@ -118,63 +118,83 @@
         ]
     },
     "form": {
-        "title": "Reserva tu cupo",
-        "heading": "Conversemos sobre tu proceso creativo",
-        "description": "Cuéntame un poco sobre ti para encontrar la mejor manera de acompañarte.",
+        "eyebrow": "Cupos Limitados (5 a 8 personas)",
+        "title": "Conversemos sobre tu proceso creativo",
+        "description": "Dado que trabajamos con un grupo muy íntimo, este formulario me ayuda a conocer tu búsqueda visual y confirmar si este espacio es el ideal para ti.",
         "steps": [
             {
+                "stepNumber": 1,
+                "stepTitle": "Sobre ti",
                 "fields": {
                     "name": {
-                        "error": "¿Cómo te llamas? Al menos 3 caracteres.",
+                        "label": "Tu nombre completo",
+                        "name": "nombre",
+                        "placeholder": "¿Cómo te gusta que te llamen?",
                         "minLength": 3,
-                        "name": "Nombre",
-                        "placeholder": "Escribe tu nombre"
+                        "error": "Por favor compártenos tu nombre para saber con quién conversamos."
                     },
                     "whatsapp": {
-                        "error": "¿Cuál es tu número de WhatsApp? 10 dígitos.",
-                        "name": "WhatsApp",
-                        "placeholder": "300 1234567",
-                        "type": "tel"
-                    }
-                }
-            },
-            {
-                "fields": {
-                    "motivation": {
-                        "error": "Cuéntame un poco más. Mínimo 10 caracteres.",
-                        "label": "¿Qué te motiva a participar en el taller?",
-                        "minLength": 10,
-                        "name": "motivacion",
-                        "placeholder": "Háblame de esa imagen, historia o pregunta que quieres llevar al papel...",
-                        "rows": 5
+                        "label": "Número de WhatsApp",
+                        "name": "whatsapp",
+                        "type": "tel",
+                        "placeholder": "Ej: 300 123 4567",
+                        "error": "Ingresa un número de WhatsApp válido a 10 dígitos para escribirte."
                     },
-                    "disponibilidad": {
-                        "error": "¿Qué días y horarios tienes disponibles?",
-                        "label": "¿Qué días y horarios tienes disponibles?",
-                        "name": "disponibilidad",
+                    "location": {
+                        "label": "¿Desde qué zona nos acompañarías?",
+                        "name": "location",
+                        "type": "select",
+                        "error": "Selecciona tu lugar de residencia.",
                         "opciones": [
-                            "Fines de semana (mañana)",
-                            "Fines de semana (tarde)",
-                            "Entre semana (mañana)",
-                            "Entre semana (tarde)"
+                            "Sabana (Cajicá, Chía, Cota, Zipaquirá, Sopó, Tabio)",
+                            "Bogotá Norte (Usaquén, Suba, Rosales, Chicó, Cedritos)",
+                            "Otras zonas de Bogotá"
                         ]
                     }
                 }
             },
             {
-                "eyebrow": "Inversión",
+                "stepNumber": 2,
+                "stepTitle": "Tu proyecto",
+                "fields": {
+                    "motivation": {
+                        "label": "¿Qué imagen, historia o proyecto personal te gustaría explorar?",
+                        "name": "motivacion",
+                        "rows": 4,
+                        "minLength": 10,
+                        "placeholder": "Cuéntame brevemente: ¿vienes con una idea de libro álbum, una serie visual o simplemente con el deseo de reencontrarte con el papel?",
+                        "error": "Cuéntanos unas pocas palabras sobre tu interés para entender tu búsqueda."
+                    },
+                    "disponibilidad": {
+                        "label": "¿Qué franja horaria se adapta mejor a tu rutina?",
+                        "name": "disponibilidad",
+                        "type": "radio",
+                        "error": "Por favor selecciona tu disponibilidad de tiempo.",
+                        "opciones": [
+                            "Sábados en la mañana (9:00 am a 12:00 m)",
+                            "Sábados en la tarde (2:00 pm a 5:00 pm)",
+                            "Entre semana en la mañana",
+                            "Tengo flexibilidad de horarios"
+                        ]
+                    }
+                }
+            },
+            {
+                "stepNumber": 3,
+                "stepTitle": "Inversión y Cupo",
+                "eyebrow": "Ciclo de 8 sesiones presenciales (24 horas)",
                 "valorTotal": "$1.440.000 COP",
-                "description": "No es necesario hacer el pago todavía. El pago lo podrás hacer una vez definamos la fecha de inicio y confirmemos tu cupo.",
+                "description": "No requieres hacer ningún pago en este momento. Coordinaremos tu reserva una vez validemos la afinidad de tu proyecto y los horarios del grupo.",
                 "fields": {
                     "paymentOptionsField": {
-                        "error": "Elige una opción de inversión que se ajuste a tu presupuesto.",
-                        "label": "¿Cuál opción se ajustaría mejor a tu presupuesto?",
-                        "name": "inversion",
+                        "label": "¿Qué modalidad de pago se adapta mejor a tu flujo?",
+                        "name": "esquema_pago",
+                        "error": "Por favor selecciona una alternativa de inversión.",
                         "options": [
-                            "Pago único con descuento. 1 pago único por solo $1.296.000 COP.",
-                            "2 cuotas de $720.000 COP (la primera para reservar el cupo, la segunda en la sesión 4).",
-                            "3 cuotas mensuales de $480.000 COP.",
-                            "Por lo pronto se sale de mi presupuesto, pero avísame cuando esté definida la fecha de inicio."
+                            "Pago único de contado / Tarifa preferencial: $1.296.000 COP",
+                            "2 cuotas de $720.000 COP (50% al reservar cupo, 50% en la sesión 4)",
+                            "3 cuotas de $480.000 COP (mensuales)",
+                            "Por el momento excede mi presupuesto (deseo recibir invitaciones a talleres cortos futuros)"
                         ]
                     }
                 }
