@@ -1,11 +1,13 @@
 ---
+import LocationField from "./LocationField.astro";
 import TextField from "./TextField.astro";
 import WhatsAppField from "./WhatsAppField.astro";
 
 const { content } = Astro.props;
 const { fields } = content;
-const { name, whatsapp } = fields;
+const { name, whatsapp, location } = fields;
 ---
 
 <TextField content={name} />
 <WhatsAppField content={whatsapp} />
+<LocationField content={location} />
