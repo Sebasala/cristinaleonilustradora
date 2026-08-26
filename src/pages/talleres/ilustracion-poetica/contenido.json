@@ -138,7 +138,7 @@
                         "name": "whatsapp",
                         "type": "tel",
                         "placeholder": "Ej: 300 123 4567",
-                        "error": "Ingresa un número de WhatsApp válido a 10 dígitos para escribirte."
+                        "error": "Ingresa un número de WhatsApp válido de 10 dígitos para escribirte."
                     },
                     "location": {
                         "label": "¿Desde qué zona nos acompañarías?",
@@ -155,7 +155,7 @@
             },
             {
                 "stepNumber": 2,
-                "stepTitle": "Tu proyecto",
+                "stepTitle": "Proyecto",
                 "fields": {
                     "motivation": {
                         "label": "¿Qué imagen, historia o proyecto personal te gustaría explorar?",
@@ -171,17 +171,17 @@
                         "type": "radio",
                         "error": "Por favor selecciona tu disponibilidad de tiempo.",
                         "opciones": [
-                            "Sábados en la mañana (9:00 am a 12:00 m)",
-                            "Sábados en la tarde (2:00 pm a 5:00 pm)",
+                            "Sábados en la mañana",
+                            "Sábados en la tarde",
                             "Entre semana en la mañana",
-                            "Tengo flexibilidad de horarios"
+                            "Entre semana en la tarde"
                         ]
                     }
                 }
             },
             {
                 "stepNumber": 3,
-                "stepTitle": "Inversión y Cupo",
+                "stepTitle": "Reserva",
                 "eyebrow": "Ciclo de 8 sesiones presenciales (24 horas)",
                 "valorTotal": "$1.440.000 COP",
                 "description": "No requieres hacer ningún pago en este momento. Coordinaremos tu reserva una vez validemos la afinidad de tu proyecto y los horarios del grupo.",

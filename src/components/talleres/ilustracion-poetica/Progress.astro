@@ -1,0 +1,74 @@
+---
+interface Props {
+	steps: { stepNumber: string | number; stepTitle: string }[];
+}
+
+const { steps } = Astro.props;
+---
+
+<ul class="progress">
+        {steps.map((step, index) => (
+            <li class="step-pill" class:list={{ "is-active": index === 0 }}>
+                <span class="step-number">{step.stepNumber}. </span> 
+                <span class="step-title">{step.stepTitle}</span>
+            </li>
+        ))}
+</ul>
+
+<style>
+    .progress {
+        display: flex;
+        justify-content: space-between;
+        margin: 0;
+    }
+
+    .step-pill {
+        color: var(--color-accent);
+        border-radius: var(--space-half);
+        width: 32%;
+        text-wrap: nowrap;
+        height: var(--space);
+        text-align: center;
+        background-color: var(--color-accent-light);
+        margin: 0;
+    }
+
+    .step-title,
+    .step-number {
+        opacity: var(--opacity-medium);
+    }
+
+    .step-pill.is-active,
+    .step-pill.is-completed {
+        opacity: var(--opacity-full);
+
+        .step-title,
+        .step-number {
+            opacity: var(--opacity-full);
+        }
+    }
+
+    .step-pill.is-active {
+        color: var(--color-accent-light);
+        background-color: var(--color-accent);
+    }
+
+    .step-pill.is-completed {
+        border: 1px solid var(--color-accent);
+        opacity: var(--opacity-full);
+    }
+
+    .step-number {
+        display: none;
+    }
+
+    @media screen and (min-width: 400px) {
+        .step-pill {
+            padding: 0 var(--space-half);
+        }
+
+        .step-number {
+            display: inline;
+        }
+    }
+</style>

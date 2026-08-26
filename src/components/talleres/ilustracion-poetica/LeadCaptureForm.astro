@@ -1,16 +1,18 @@
 ---
 import FormHeading from "./FormHeading.astro";
+import Progress from "./Progress.astro";
 import StepOne from "./StepOne.astro";
 import StepThree from "./StepThree.astro";
 import StepTwo from "./StepTwo.astro";
 
 const { content } = Astro.props;
-const { title, eyebrow, heading, description, steps } = content;
+const { title, eyebrow, description, steps } = content;
 ---
 
 <section class="form" id="form">
 	<FormHeading eyebrow={eyebrow} heading={title} description={description} id="lead-form-title" />
 	<form class="lead-form" id="lead-capture-form" aria-labelledby="lead-form-title" novalidate>
+		<Progress steps={steps} />
 		<div class="form-steps">
 			<section class="form-step is-active" data-step-index="0">
 				<StepOne content={steps[0]} />
@@ -28,7 +30,6 @@ const { title, eyebrow, heading, description, steps } = content;
 				Volver
 			</button>
 			<button type="button" class="button step-next" data-step-action="next">
-				<!-- // TODO: Make this button goes to of the step -->
 				Siguiente
 			</button>
 			<button type="submit" class="button step-submit" data-step-action="submit" hidden>
@@ -84,9 +85,8 @@ const { title, eyebrow, heading, description, steps } = content;
 	}
 
 	.button-secondary {
-		background: transparent;
-		border: 1px solid currentColor;
-		color: inherit;
+		border: 1px solid var(--color-accent);
+		color: var(--color-accent);
 	}
 
 	@media screen and (min-width: 760px) {
@@ -210,15 +210,27 @@ const { title, eyebrow, heading, description, steps } = content;
 	};
 
 	const updateStepUI = (steps, prevButton, nextButton, submitButton, currentStepIndex) => {
+		const progressSteps = [...document.querySelectorAll("#lead-capture-form .step-pill")];
+
 		steps.forEach((step, index) => {
 			const isActive = index === currentStepIndex;
 			step.hidden = !isActive;
 			step.classList.toggle("is-active", isActive);
+
+			const progressStep = progressSteps[index];
+			if (progressStep) {
+				progressStep.classList.toggle("is-active", isActive);
+				progressStep.classList.toggle("is-completed", index < currentStepIndex);
+			}
 		});
 
 		prevButton.hidden = currentStepIndex === 0;
 		nextButton.hidden = currentStepIndex === steps.length - 1;
 		submitButton.hidden = currentStepIndex !== steps.length - 1;
+	};
+
+	const scrollToFormTop = (form) => {
+		form.scrollIntoView({ behavior: "smooth", block: "start" });
 	};
 
 	const initializeLeadCaptureForm = () => {
@@ -248,6 +260,7 @@ const { title, eyebrow, heading, description, steps } = content;
 				currentStepIndex -= 1;
 				updateStepUI(steps, prevButton, nextButton, submitButton, currentStepIndex);
 				updateNextButtonState(steps, nextButton, currentStepIndex);
+				scrollToFormTop(form);
 			}
 		});
 
@@ -259,6 +272,7 @@ const { title, eyebrow, heading, description, steps } = content;
 			currentStepIndex += 1;
 			updateStepUI(steps, prevButton, nextButton, submitButton, currentStepIndex);
 			updateNextButtonState(steps, nextButton, currentStepIndex);
+			scrollToFormTop(form);
 		});
 
 		form.addEventListener("submit", (event) => {

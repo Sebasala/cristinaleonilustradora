@@ -1,9 +1,12 @@
-// TODO: Remove styles that are not being used in the form
+form {
+  padding: var(--space) 0 0;
+}
+
 label,
 legend {
   display: block;
   line-height: var(--space);
-  opacity: var(--opacity-high);
+  color: var(--color-accent);
 }
 
 input:not([type="radio"]),
@@ -51,13 +54,8 @@ textarea:focus-visible,
   opacity: var(--opacity-full);
 }
 
-.field-help,
 .field-error {
   margin: 0;
-}
-
-.field-help {
-  color: color-mix(in srgb, var(--color-black) 60%, transparent);
 }
 
 .field-error {
@@ -75,8 +73,7 @@ textarea:focus-visible,
   border: 0;
 }
 
-.option-grid,
-.payment-options {
+.option-grid {
   display: grid;
   gap: 0.7rem;
 }
