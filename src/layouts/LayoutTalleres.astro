@@ -1,6 +1,7 @@
 ---
 import Footer from "@components/Footer.astro";
 import '@styles/global.scss';
+const talleresUrl = new URL("/talleres", Astro.site).toString();
 const {
 	title,
 	description,
@@ -8,7 +9,7 @@ const {
 	ogTitle = "Cristina León Artista",
 	ogDescription = "Portafolio con ilustraciones de la artista plástica Cristina León de Bogotá Colombia",
 	ogType = "website",
-	ogUrl = "https://cristinaleonilustradora.com",
+	ogUrl = talleresUrl,
 	ogImage = "/img/cristina-leon-ilustradora-optimizado.svg"
 } = Astro.props;
 const properties = {

@@ -172,7 +172,6 @@
                         "error": "Por favor selecciona tu disponibilidad de tiempo.",
                         "opciones": [
                             "Sábados en la mañana",
-                            "Sábados en la tarde",
                             "Entre semana en la mañana",
                             "Entre semana en la tarde"
                         ]
@@ -196,6 +195,11 @@
                             "3 cuotas de $480.000 COP (mensuales)",
                             "Por el momento excede mi presupuesto (deseo recibir invitaciones a talleres cortos futuros)"
                         ]
+                    },
+                    "dataConsent": {
+                        "label": "He leído y acepto la [Política de Tratamiento de Datos Personales](/politica-de-privacidad). Autorizo a Cristina León a tratar mis datos para contactarme, gestionar mi inscripción en el taller y enviarme información sobre futuras convocatorias y proyectos artísticos.",
+                        "name": "autorizacion_datos",
+                        "error": "Debes autorizar el tratamiento de tus datos personales para continuar."
                     }
                 }
             }

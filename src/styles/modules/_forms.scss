@@ -119,6 +119,19 @@ textarea:focus-visible,
   color: var(--color-error);
 }
 
+.consent-label {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-half);
+  cursor: pointer;
+}
+
+.consent-label input {
+  width: auto;
+  height: var(--space);
+  accent-color: var(--color-accent);
+}
+
 .field-wrapper {
   min-height: calc(5 * var(--space));
 }

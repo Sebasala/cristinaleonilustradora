@@ -2,13 +2,16 @@
 import { Image } from "astro:assets";
 import LayoutTalleres from '../../layouts/LayoutTalleres.astro';
 import pajaro from './ilustracion-poetica/assets/pajaro.png';
+
+const talleresUrl = new URL("/talleres", Astro.site).toString();
 ---
 
 <LayoutTalleres
   title="Talleres"
   description="Explora los talleres de Cristina León en Bogotá."
-  agTitle="Talleres | Cristina León"
-  agDescription="Explora los talleres de Cristina León en Bogotá."
+  ogTitle="Talleres | Cristina León"
+  ogDescription="Explora los talleres de Cristina León en Bogotá."
+  ogUrl={talleresUrl}
 >
   <main>
     <h1>Talleres</h1>
@@ -32,5 +35,6 @@ import pajaro from './ilustracion-poetica/assets/pajaro.png';
 
   li {
     margin: 0 auto;
+    opacity: var(--opacity-full);
   }
 </style>

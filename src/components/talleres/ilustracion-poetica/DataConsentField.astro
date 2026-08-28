@@ -1,0 +1,65 @@
+---
+import { parseInlineLink } from "../../../utils/text";
+
+const { content } = Astro.props;
+const { name, error, label } = content;
+const errorId = `${name}-error`;
+const { beforeLink, linkLabel, linkHref, afterLink } = parseInlineLink(label);
+---
+
+<div class="field-wrapper consent-field-wrapper">
+    <label class="consent-label" for={name}>
+        <input id={name} name={name} type="checkbox" required aria-describedby={errorId} />
+        <span>
+            {beforeLink}
+            {linkLabel && <a href={linkHref!}>{linkLabel}</a>}
+            {afterLink}
+            <span class="required-indicator" aria-hidden="true"> *</span>
+        </span>
+    </label>
+
+    <p id={errorId} class="field-error" role="status" hidden aria-live="polite">
+        {error}
+    </p>
+</div>
+
+<style>
+    .consent-label {
+        color: var(--color-text);
+        opacity: var(--opacity-high);
+    }
+
+    a {
+        letter-spacing: 0px;
+    }
+
+    .consent-field-wrapper.invalid {
+        .consent-label {
+            color: var(--color-text);
+            opacity: var(--opacity-high);
+        }
+        
+    }
+
+</style>
+
+<script is:inline define:vars={{ name, errorId }}>
+    const input = document.getElementById(name);
+    const errorElement = document.getElementById(errorId);
+    const fieldWrapper = errorElement.closest(".field-wrapper");
+    let hasBeenBlurred = false;
+
+    function updateErrorDisplay() {
+        const shouldShow = hasBeenBlurred && !input.checkValidity();
+        errorElement.hidden = !shouldShow;
+        input.setAttribute("aria-invalid", String(shouldShow));
+        fieldWrapper.classList.toggle("invalid", shouldShow);
+    }
+
+    input.addEventListener("blur", () => {
+        hasBeenBlurred = true;
+        updateErrorDisplay();
+    });
+
+    input.addEventListener("change", updateErrorDisplay);
+</script>
