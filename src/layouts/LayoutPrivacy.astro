@@ -1,0 +1,61 @@
+---
+import LayoutTalleres from "@layouts/LayoutTalleres.astro";
+
+interface Frontmatter {
+  title: string;
+  owner: string;
+  activity: string;
+  effectiveDate: string;
+  updatedDate: string;
+  identification: string;
+  location: string;
+  website: string;
+  email: string;
+}
+
+interface Props {
+  frontmatter: Frontmatter;
+}
+
+const {
+  title,
+  owner,
+  activity,
+  effectiveDate,
+  updatedDate,
+  identification,
+  location,
+  website,
+  email,
+} = Astro.props.frontmatter;
+
+const privacyPolicyUrl = new URL("/politica-de-privacidad", Astro.site).toString();
+---
+
+<LayoutTalleres title={title} ogUrl={privacyPolicyUrl}>
+  <main class="privacy-policy">
+    <header class="privacy-header">
+      <p class="eyebrow">{owner} | {activity}</p>
+      <h2>{title}</h2>
+      <p><strong>Fecha de entrada en vigencia:</strong> {effectiveDate}</p>
+      <p><strong>Última actualización:</strong> {updatedDate}</p>
+    </header>
+
+    <slot />
+
+    <section class="policy-contact">
+      <h3>Contacto oficial</h3>
+      <p>{owner}<br />C.C {identification}<br />{location}<br /><a href={`mailto:${email}`}>{email}</a><br /><a href={website}>{website}</a></p>
+    </section>
+  </main>
+</LayoutTalleres>
+
+<style>
+  .privacy-policy {
+    padding: var(--space-2) 0;
+  }
+
+  .privacy-header {
+    margin-bottom: var(--space-2);
+  }
+</style>

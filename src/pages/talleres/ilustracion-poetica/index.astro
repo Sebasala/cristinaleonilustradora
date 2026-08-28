@@ -22,15 +22,17 @@ import planta from "./assets/planta.png";
 import taller from "./assets/taller.jpeg";
 
 const { metadata, hero, filosofia, espacio, proyecto, recorrido, mentora, logistica, form, faqs, cta } = contenido;
+
+const ilustracionPoeticaUrl = new URL("/talleres/ilustracion-poetica", Astro.site).toString();
 ---
 
 <LayoutTalleres
 	title={metadata.title}
 	description={metadata.description}
-	agTitle={metadata.title}
-	agDescription={metadata.description}
-	agUrl="https://cristinaleonilustradora.com/talleres/ilustracion-poetica"
-	agImage={metadata.ogImage}
+	 ogTitle={metadata.title}
+	 ogDescription={metadata.description}
+	 ogUrl={ilustracionPoeticaUrl}
+	 ogImage={metadata.ogImage}
 >
 	<main class="poetica-page">
 		<HeroSection content={hero} image={pajaro} />

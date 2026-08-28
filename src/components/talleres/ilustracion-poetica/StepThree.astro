@@ -1,7 +1,9 @@
 ---
+import DataConsentField from "./DataConsentField.astro";
+
 const { content } = Astro.props;
-const { eyebrow, valorTotal, description, stepNumber, stepTitle, fields } = content;
-const { paymentOptionsField } = fields;
+const { eyebrow, valorTotal, description, fields } = content;
+const { paymentOptionsField, dataConsent } = fields;
 const { error, label, name, options } = paymentOptionsField;
 const errorId = `${name}-error`;
 ---
@@ -14,36 +16,38 @@ const errorId = `${name}-error`;
 
 <div class="field-wrapper">
     <fieldset class="option-fieldset">
-    <legend class="options-label">
-        <span>{label}</span>
-        <span class="required-indicator"> *</span>
-    </legend>
+        <legend class="options-label">
+            <span>{label}</span>
+            <span class="required-indicator"> *</span>
+        </legend>
 
-    <div class="option-grid option-grid-three" role="group" aria-label={label}>
-        {options.map((option: string, index: number) => {
-        const optionId = `${name}-${index}`;
+        <div class="option-grid option-grid-three" role="group" aria-label={label}>
+            {options.map((option: string, index: number) => {
+                const optionId = `${name}-${index}`;
 
-        return (
-            <label class="choice-card" for={optionId}>
-            <input
-                id={optionId}
-                name={name}
-                type="radio"
-                value={option}
-                required
-                checked={index === 0}
-            />
-            <span>{option}</span>
-            </label>
-        );
-        })}
-    </div>
+                return (
+                    <label class="choice-card" for={optionId}>
+                    <input
+                        id={optionId}
+                        name={name}
+                        type="radio"
+                        value={option}
+                        required
+                        checked={index === 0}
+                    />
+                    <span>{option}</span>
+                    </label>
+                );
+            })}
+        </div>   
     </fieldset>
 
     <p id={errorId} class="field-error" role="status" hidden aria-live="polite">
     {error}
     </p>
 </div>
+
+<DataConsentField content={dataConsent} />
 
 <style>
     .price {

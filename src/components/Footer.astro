@@ -1,3 +1,6 @@
+---
+import { contactEmail } from "@config";
+---
 
 <footer>
   <ul class="contact-links-list">
@@ -7,7 +10,7 @@
       </a>
     </li>
     <li>
-      <a href="mailto:leon.cristina@gmail.com" class="contact-link">
+      <a href={`mailto:${contactEmail}`} class="contact-link">
         <img class="icon" src="/icons/email.svg" alt="Email">
       </a>
     </li>
@@ -16,5 +19,6 @@
 <style>
   li {
     margin-right: var(--space);
+    opacity: var(--opacity-full);
   }
 </style>

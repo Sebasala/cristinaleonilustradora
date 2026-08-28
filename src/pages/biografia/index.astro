@@ -53,7 +53,7 @@ const formacionAcademica = [
 			<h2>Trabajo</h2>
 			<ul>
 				{trabajo.map((item) => (
-					<li><p>{item.text}</p></li>
+					<li>{item.text}</li>
 				))}
 			</ul>
 		</section>
@@ -61,7 +61,7 @@ const formacionAcademica = [
 			<h2>Formación Académica</h2>
 			<ul>
 				{formacionAcademica.map((item) => (
-					<li><p>{item.text}</p></li>
+					<li>{item.text}</li>
 				))}
 			</ul>
 		</section>
@@ -69,7 +69,8 @@ const formacionAcademica = [
 </Layout>
 
 <style>
-  p {
+  li {
 	white-space: pre-line;
   }
+
 </style>
