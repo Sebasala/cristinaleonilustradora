@@ -1,5 +1,6 @@
 ---
 import LayoutTalleres from "@layouts/LayoutTalleres.astro";
+import { contactEmail } from "../config";
 
 interface Frontmatter {
   title: string;
@@ -10,7 +11,6 @@ interface Frontmatter {
   identification: string;
   location: string;
   website: string;
-  email: string;
 }
 
 interface Props {
@@ -25,11 +25,12 @@ const {
   updatedDate,
   identification,
   location,
-  website,
-  email,
 } = Astro.props.frontmatter;
 
 const privacyPolicyUrl = new URL("/politica-de-privacidad", Astro.site).toString();
+const website =
+  import.meta.env.SITE || "https://cristinaleonilustradora.com";
+  
 ---
 
 <LayoutTalleres title={title} ogUrl={privacyPolicyUrl}>
@@ -45,7 +46,11 @@ const privacyPolicyUrl = new URL("/politica-de-privacidad", Astro.site).toString
 
     <section class="policy-contact">
       <h3>Contacto oficial</h3>
-      <p>{owner}<br />C.C {identification}<br />{location}<br /><a href={`mailto:${email}`}>{email}</a><br /><a href={website}>{website}</a></p>
+      <p>{owner}<br />
+      C.C {identification}<br />
+      {location}<br />
+      <a href={`mailto:${contactEmail}`}>{contactEmail}</a><br />
+      <a href={website}>{website}</a></p>
     </section>
   </main>
 </LayoutTalleres>
