@@ -1,8 +1,10 @@
+@use "../base/breakpoints" as *;
+
 form {
   padding: var(--space) 0 0;
   min-height: calc(41 * var(--space));
 
-  @media (min-width: 760px) {
+  @media (min-width: $breakpoint-tablet) {
     min-height: calc(34 * var(--space));
   }
 }
@@ -71,6 +73,7 @@ textarea:focus-visible,
   margin: 0;
   position: absolute;
   bottom: 0;
+  min-height: var(--space-2);
 }
 
 .field-error {
@@ -147,7 +150,7 @@ textarea:focus-visible,
 }
 
 .field-wrapper {
-  min-height: calc(5 * var(--space));
+  padding-bottom: var(--space-2);
   position: relative;
 }
 
@@ -188,11 +191,10 @@ textarea:autofill {
 
 .form-step {
   height: calc(21 * var(--space));
-  overflow: scroll;
+  overflow: auto;
   margin: var(--space) 0 0;
 
-  // TODO: Investigate if media query can be a css variable instead of hardcoded value
-  @media (min-width: 760px) {
+  @media (min-width: $breakpoint-tablet) {
     height: calc(19 * var(--space));
   }
 }

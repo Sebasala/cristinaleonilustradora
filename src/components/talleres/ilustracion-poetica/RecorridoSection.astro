@@ -37,7 +37,9 @@ const { title, description, etapas } = content;
 	</div>
 </section>
 
-<style>
+<style lang="scss">
+	@use "../../../styles/base/breakpoints" as *;
+
 	.image {
 			margin: 0 0 0 auto;
 			width: 50px;
@@ -50,7 +52,7 @@ const { title, description, etapas } = content;
 			}
 		}
 	.recorrido {
-		@media screen and (min-width: 760px) {
+		@media screen and (min-width: $breakpoint-tablet) {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
 			gap: var(--space);

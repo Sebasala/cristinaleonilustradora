@@ -38,7 +38,9 @@ const errorId = `${name}-error`;
   </p>
 </div>
 
-<style>
+<style lang="scss">
+  @use "../../../styles/base/breakpoints" as *;
+
 
     textarea {
         height: calc(5 * var(--space));
@@ -46,7 +48,7 @@ const errorId = `${name}-error`;
     .field-wrapper {
         min-height: calc(10 * var(--space));
 
-        @media (min-width: 760px) {
+        @media (min-width: $breakpoint-tablet) {
             min-height: calc(9 * var(--space));
         }
     }

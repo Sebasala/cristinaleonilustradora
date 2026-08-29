@@ -15,7 +15,7 @@ const errorId = `${name}-error`;
         {description && <p class="description">{description}</p>}
     </div>
 
-    <div class="field-wrapper">
+    <div class="options-wrapper">
         <fieldset class="option-fieldset">
             <legend class="options-label">
                 <span>{label}</span>
@@ -51,12 +51,15 @@ const errorId = `${name}-error`;
     <DataConsentField content={dataConsent} />
 </section>
 
-<style>
+<style lang="scss">
+  @use "../../../styles/base/breakpoints" as *;
+
     .form-step {
 		height: calc(34 * var(--space));
+        overflow: visible;
 
-        @media (min-width: 760px) {
-            height: calc(27 * var(--space));
+        @media (min-width: $breakpoint-tablet) {
+            height: calc(26 * var(--space));
         }
 	}
     .price {

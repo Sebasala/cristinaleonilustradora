@@ -38,7 +38,9 @@ const { title, description, rutas, subtitle } = content;
 	</div>
 </section>
 
-<style>
+<style lang="scss">
+	@use "../../../styles/base/breakpoints" as *;
+
 	.proyecto {
 		.image {
 			margin: 0 auto var(--space-2);
@@ -52,7 +54,7 @@ const { title, description, rutas, subtitle } = content;
 			}
 		}
 
-		@media screen and (min-width: 760px) {
+		@media screen and (min-width: $breakpoint-tablet) {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
 			gap: var(--space);

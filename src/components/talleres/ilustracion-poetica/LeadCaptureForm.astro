@@ -33,7 +33,9 @@ const { title, eyebrow, description, steps } = content;
 	</form>
 </section>
 
-<style>
+<style lang="scss">
+	@use "../../../styles/base/breakpoints" as *;
+
 	.form {
 		max-width: var(--text-max-width);
 		margin: calc(4 * var(--space)) auto;
@@ -74,7 +76,7 @@ const { title, eyebrow, description, steps } = content;
 		color: var(--color-accent);
 	}
 
-	@media screen and (min-width: 760px) {
+	@media screen and (min-width: $breakpoint-tablet) {
 		.step-actions {
 			flex-direction: row;
 			justify-content: flex-end;
