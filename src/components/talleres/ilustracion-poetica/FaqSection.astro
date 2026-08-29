@@ -33,25 +33,23 @@ const { title, items } = content;
 	</div>
 </section>
 
-<style>
+<style lang="scss">
+	@use "../../../styles/base/breakpoints" as *;
+
 	.image {
 		margin: 0 auto var(--space);
 		width: 140px;
 		transform: rotate(-10deg);
 
-		@media screen and (min-width: 760px) {
+		@media screen and (min-width: $breakpoint-tablet) {
 			margin: 120px 0 0;
 		}
 	}
 	
 	.copy {
 
-		@media screen and (min-width: 760px) {
-			height: calc(18 * var(--space));
-		}
-
-		@media screen and (min-width: 1400px) {
-			width: 100%;
+		@media screen and (min-width: $breakpoint-tablet) {
+			height: calc(20 * var(--space));
 		}
 	}
 
@@ -62,6 +60,7 @@ const { title, items } = content;
 
 		p {
 			margin-top: var(--space);
+			max-width: calc(var(--text-max-width) - var(--space) * 5);
 		}
 
 		summary {
@@ -105,8 +104,8 @@ const { title, items } = content;
 	}
 
 	.faq-list {
-		height: calc(18 * var(--space));
-		@media screen and (min-width: 760px) {
+		height: calc(16 * var(--space));
+		@media screen and (min-width: $breakpoint-tablet) {
 			.faq-item {
 				padding: calc(0.5 * var(--space)) var(--space);
 				background-color: var(--color-accent-light);
@@ -120,7 +119,7 @@ const { title, items } = content;
 	.faq {
 		margin: 0 auto;
 
-		@media screen and (min-width: 760px) {
+		@media screen and (min-width: $breakpoint-tablet) {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
 			gap: var(--space-2);

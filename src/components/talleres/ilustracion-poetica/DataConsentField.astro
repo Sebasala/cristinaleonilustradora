@@ -24,6 +24,14 @@ const { beforeLink, linkLabel, linkHref, afterLink } = parseInlineLink(label);
 </div>
 
 <style>
+    .field-wrapper {
+        padding-bottom: 0;
+    }
+
+    .field-error {
+        bottom: calc(var(--space) * -2);
+    }
+    
     .consent-label {
         color: var(--color-text);
         opacity: var(--opacity-high);

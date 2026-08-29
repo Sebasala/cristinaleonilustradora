@@ -23,24 +23,21 @@ const { steps } = Astro.props;
     }
 
     .step-pill {
-        color: var(--color-accent);
-        border-radius: var(--space-half);
-        width: 32%;
-        text-wrap: nowrap;
-        height: var(--space);
-        text-align: center;
         background-color: var(--color-accent-light);
+        border-radius: var(--space-half);
+        border: 1px solid var(--color-black);
+        color: var(--color-black);
+        height: var(--space);
         margin: 0;
-    }
-
-    .step-title,
-    .step-number {
+        text-align: center;
+        text-wrap: nowrap;
+        width: 32%;
         opacity: var(--opacity-medium);
     }
 
-    .step-pill.is-active,
-    .step-pill.is-completed {
+    .step-pill.is-active {
         opacity: var(--opacity-full);
+        border-color: var(--color-accent);
 
         .step-title,
         .step-number {
@@ -54,8 +51,14 @@ const { steps } = Astro.props;
     }
 
     .step-pill.is-completed {
-        border: 1px solid var(--color-accent);
-        opacity: var(--opacity-full);
+        background-color: var(--color-black);
+        color: var(--color-accent-light);
+        opacity: var(--opacity-medium);
+
+        .step-title,
+        .step-number {
+            opacity: var(--opacity-full);
+        }
     }
 
     .step-number {
