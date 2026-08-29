@@ -7,5 +7,7 @@ const { fields } = content;
 const { motivation, disponibilidad } = fields;
 ---
 
-<MotivationField content={motivation} />
-<AvailabilityField content={disponibilidad} />
+<section class="form-step" data-step-index="1" hidden>
+    <MotivationField content={motivation} />
+    <AvailabilityField content={disponibilidad} />
+</section>

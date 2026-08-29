@@ -45,12 +45,6 @@ const errorId = `${name}-error`;
   </p>
 </div>
 
-<style>
-  .field-wrapper {
-    min-height: calc(13 * var(--space));
-  }
-</style>
-
 <script is:inline define:vars={{ name, errorId }}>
   const inputs = [...document.querySelectorAll(`input[name="${name}"]`)];
   const errorElement = document.getElementById(errorId);

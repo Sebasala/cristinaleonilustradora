@@ -8,58 +8,63 @@ const { error, label, name, options } = paymentOptionsField;
 const errorId = `${name}-error`;
 ---
 
-<div class="copy">
-    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-    {valorTotal && <p class="price">{valorTotal}</p>}
-    {description && <p class="description">{description}</p>}
-</div>
+<section class="form-step" data-step-index="2" hidden>
+    <div class="copy">
+        {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+        {valorTotal && <p class="price">{valorTotal}</p>}
+        {description && <p class="description">{description}</p>}
+    </div>
 
-<div class="field-wrapper">
-    <fieldset class="option-fieldset">
-        <legend class="options-label">
-            <span>{label}</span>
-            <span class="required-indicator"> *</span>
-        </legend>
+    <div class="field-wrapper">
+        <fieldset class="option-fieldset">
+            <legend class="options-label">
+                <span>{label}</span>
+                <span class="required-indicator"> *</span>
+            </legend>
 
-        <div class="option-grid option-grid-three" role="group" aria-label={label}>
-            {options.map((option: string, index: number) => {
-                const optionId = `${name}-${index}`;
+            <div class="option-grid option-grid-three" role="group" aria-label={label}>
+                {options.map((option: string, index: number) => {
+                    const optionId = `${name}-${index}`;
 
-                return (
-                    <label class="choice-card" for={optionId}>
-                    <input
-                        id={optionId}
-                        name={name}
-                        type="radio"
-                        value={option}
-                        required
-                        checked={index === 0}
-                    />
-                    <span>{option}</span>
-                    </label>
-                );
-            })}
-        </div>   
-    </fieldset>
+                    return (
+                        <label class="choice-card" for={optionId}>
+                        <input
+                            id={optionId}
+                            name={name}
+                            type="radio"
+                            value={option}
+                            required
+                            checked={index === 0}
+                        />
+                        <span>{option}</span>
+                        </label>
+                    );
+                })}
+            </div>   
+        </fieldset>
 
-    <p id={errorId} class="field-error" role="status" hidden aria-live="polite">
-    {error}
-    </p>
-</div>
+        <p id={errorId} class="field-error" role="status" hidden aria-live="polite">
+            {error}
+        </p>
+    </div>
 
-<DataConsentField content={dataConsent} />
+    <DataConsentField content={dataConsent} />
+</section>
 
 <style>
+    .form-step {
+		height: calc(34 * var(--space));
+
+        @media (min-width: 760px) {
+            height: calc(27 * var(--space));
+        }
+	}
     .price {
         font-size: var(--font-size-3);
     }
 
     .copy {
         margin-bottom: var(--space);
-    }
-
-    .field-wrapper {
-        min-height: calc(16 * var(--space));
     }
 </style>
 
