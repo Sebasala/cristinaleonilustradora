@@ -14,15 +14,9 @@ const { title, eyebrow, description, steps } = content;
 	<form class="lead-form" id="lead-capture-form" aria-labelledby="lead-form-title" novalidate>
 		<Progress steps={steps} />
 		<div class="form-steps">
-			<section class="form-step is-active" data-step-index="0">
-				<StepOne content={steps[0]} />
-			</section>
-			<section class="form-step" data-step-index="1" hidden>
-				<StepTwo content={steps[1]} />
-			</section>
-			<section class="form-step" data-step-index="2" hidden>
-				<StepThree content={steps[2]} />
-			</section>
+			<StepOne content={steps[0]} />
+			<StepTwo content={steps[1]} />
+			<StepThree content={steps[2]} />
 		</div>
 
 		<div class="step-actions">
@@ -48,20 +42,11 @@ const { title, eyebrow, description, steps } = content;
 	.copy {
 		margin: 0;
 	}
-
-	.form-step {
-		margin-bottom: var(--space-2);
-
-		@media screen and (min-width: 760px) {
-			margin-top: calc(2 * var(--space));
-		}
-	}
-
 	.step-actions {
 		display: flex;
-		flex-direction: column-reverse;
-		gap: var(--space-xs, 0.75rem);
-		margin-top: var(--space);
+		justify-content: flex-end;
+		gap: var(--space-half);
+		margin-top: var(--space-2);
 	}
 
 	.button {

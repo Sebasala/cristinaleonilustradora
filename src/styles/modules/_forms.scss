@@ -1,5 +1,10 @@
 form {
   padding: var(--space) 0 0;
+  min-height: calc(41 * var(--space));
+
+  @media (min-width: 760px) {
+    min-height: calc(34 * var(--space));
+  }
 }
 
 label,
@@ -9,13 +14,21 @@ legend {
   color: var(--color-accent);
 }
 
+input {
+  line-height: var(--space);
+}
+
+textarea {
+  height: calc(6 * var(--space));
+  line-height: var(--space);
+}
+
 input:not([type="radio"]),
 textarea {
   width: 100%;
   border: 1px solid var(--color-accent);
-  padding: var(--space-half);
+  padding: calc(var(--space-half) - 1px);
   background-color: var(--color-accent-light);
-  font: inherit;
   color: var(--color-black);
   border-radius: var(--space-half);
 }
@@ -56,6 +69,8 @@ textarea:focus-visible,
 
 .field-error {
   margin: 0;
+  position: absolute;
+  bottom: 0;
 }
 
 .field-error {
@@ -75,7 +90,7 @@ textarea:focus-visible,
 
 .option-grid {
   display: grid;
-  gap: 0.7rem;
+  gap: var(--space-half);
 }
 
 [hidden] {
@@ -86,10 +101,9 @@ textarea:focus-visible,
   position: relative;
   display: flex;
   align-items: flex-start;
-  gap: 0.7rem;
   margin: 0;
   border: 1px solid var(--color-accent);
-  padding: var(--space-half) var(--space);
+  padding: calc(var(--space-half) - 1px) var(--space);
   background: var(--color-accent-light);
   font-weight: 400;
   cursor: pointer;
@@ -134,6 +148,7 @@ textarea:focus-visible,
 
 .field-wrapper {
   min-height: calc(5 * var(--space));
+  position: relative;
 }
 
 input:-webkit-autofill,
@@ -169,4 +184,15 @@ textarea:autofill {
 .textarea-label,
 .options-label {
   margin-bottom: var(--space);
+}
+
+.form-step {
+  height: calc(21 * var(--space));
+  overflow: scroll;
+  margin: var(--space) 0 0;
+
+  // TODO: Investigate if media query can be a css variable instead of hardcoded value
+  @media (min-width: 760px) {
+    height: calc(19 * var(--space));
+  }
 }

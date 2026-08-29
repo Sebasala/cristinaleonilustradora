@@ -8,6 +8,8 @@ const { fields } = content;
 const { name, whatsapp, location } = fields;
 ---
 
-<TextField content={name} />
-<WhatsAppField content={whatsapp} />
-<LocationField content={location} />
+<section class="form-step is-active" data-step-index="0">
+    <TextField content={name} />
+    <WhatsAppField content={whatsapp} />
+    <LocationField content={location} />
+</section>
