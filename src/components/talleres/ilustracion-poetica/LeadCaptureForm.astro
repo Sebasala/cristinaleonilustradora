@@ -220,6 +220,80 @@ const { title, eyebrow, description, steps } = content;
 		form.scrollIntoView({ behavior: "smooth", block: "start" });
 	};
 
+	const FORM_STORAGE_KEY = "lead-capture-form:ilustracion-poetica";
+
+	const readStoredFormState = () => {
+		try {
+			const raw = window.localStorage.getItem(FORM_STORAGE_KEY);
+			return raw ? JSON.parse(raw) : null;
+		} catch (error) {
+			return null;
+		}
+	};
+
+	const writeStoredFormState = (state) => {
+		try {
+			window.localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(state));
+		} catch (error) {
+			// Ignore storage failures (e.g. private browsing, quota exceeded).
+		}
+	};
+
+	const clearStoredFormState = () => {
+		try {
+			window.localStorage.removeItem(FORM_STORAGE_KEY);
+		} catch (error) {
+			// Ignore storage failures.
+		}
+	};
+
+	const getNamedFields = (form) => [...form.elements].filter((field) => field.name);
+
+	const collectFormValues = (form) => {
+		const values = {};
+
+		getNamedFields(form).forEach((field) => {
+			if (field.type === "radio" || field.type === "checkbox") {
+				if (field.checked) {
+					values[field.name] = field.value;
+				}
+			} else {
+				values[field.name] = field.value;
+			}
+		});
+
+		return values;
+	};
+
+	const applyFormValues = (form, values) => {
+		if (!values) {
+			return;
+		}
+
+		getNamedFields(form).forEach((field) => {
+			if (!(field.name in values)) {
+				return;
+			}
+
+			const storedValue = values[field.name];
+
+			if (field.type === "radio" || field.type === "checkbox") {
+				field.checked = field.value === storedValue;
+			} else {
+				field.value = storedValue;
+			}
+
+			field.dispatchEvent(new Event("change", { bubbles: true }));
+		});
+	};
+
+	const saveFormProgress = (form, currentStepIndex) => {
+		writeStoredFormState({
+			step: currentStepIndex,
+			values: collectFormValues(form),
+		});
+	};
+
 	const initializeLeadCaptureForm = () => {
 		const formControls = getFormControls();
 		if (!formControls) {
@@ -228,16 +302,24 @@ const { title, eyebrow, description, steps } = content;
 
 		const { form, steps, prevButton, nextButton, submitButton } = formControls;
 
+		const storedState = readStoredFormState();
+		applyFormValues(form, storedState?.values);
+
 		let currentStepIndex = 0;
+		if (storedState && Number.isInteger(storedState.step)) {
+			currentStepIndex = Math.min(Math.max(storedState.step, 0), steps.length - 1);
+		}
 
 		steps.forEach((step) => {
 			const fields = getStepFields(step);
 			fields.forEach((field) => {
 				field.addEventListener("input", () => {
 					updateNextButtonState(steps, nextButton, currentStepIndex);
+					saveFormProgress(form, currentStepIndex);
 				});
 				field.addEventListener("change", () => {
 					updateNextButtonState(steps, nextButton, currentStepIndex);
+					saveFormProgress(form, currentStepIndex);
 				});
 			});
 		});
@@ -247,6 +329,7 @@ const { title, eyebrow, description, steps } = content;
 				currentStepIndex -= 1;
 				updateStepUI(steps, prevButton, nextButton, submitButton, currentStepIndex);
 				updateNextButtonState(steps, nextButton, currentStepIndex);
+				saveFormProgress(form, currentStepIndex);
 				scrollToFormTop(form);
 			}
 		});
@@ -259,6 +342,7 @@ const { title, eyebrow, description, steps } = content;
 			currentStepIndex += 1;
 			updateStepUI(steps, prevButton, nextButton, submitButton, currentStepIndex);
 			updateNextButtonState(steps, nextButton, currentStepIndex);
+			saveFormProgress(form, currentStepIndex);
 			scrollToFormTop(form);
 		});
 
@@ -277,6 +361,7 @@ const { title, eyebrow, description, steps } = content;
 			}
 		
 			// if everything is valid, submit normally
+			clearStoredFormState();
 			form.submit();
 		});
 
