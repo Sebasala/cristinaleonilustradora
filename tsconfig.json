@@ -10,7 +10,8 @@
       "@layouts/*": ["./src/layouts/*"],
       "@pages/*": ["./src/pages/*"],
       "@styles/*": ["./src/styles/*"],
-      "@talleres/*": ["./src/pages/talleres/*"]
+      "@talleres/*": ["./src/pages/talleres/*"],
+      "@scripts/*": ["./src/scripts/*"]
     }
   }
 }

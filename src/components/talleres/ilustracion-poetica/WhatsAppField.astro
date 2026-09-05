@@ -18,7 +18,7 @@ const errorId = `${name}-error`;
 const phonePattern = "[0-9]{3}[ \\-]?[0-9]{1}[ \\-]?[0-9]{2}[ \\-]?[0-9]{2}[ \\-]?[0-9]{2}";
 ---
 
-<div class="field-wrapper">
+<div class="field-wrapper" data-field-wrapper>
   <label class="field-label" for={name}>
     <span>{label ?? name}: </span>
     <span class="visually-hidden">
@@ -52,53 +52,3 @@ const phonePattern = "[0-9]{3}[ \\-]?[0-9]{1}[ \\-]?[0-9]{2}[ \\-]?[0-9]{2}[ \\-
   </p>
 </div>
 
-<script is:inline define:vars={{ name, required, errorId, minLength, phonePattern }}>
-  const phoneRegex = new RegExp(`^${phonePattern}$`);
-  const input = document.getElementById(name);
-  const errorElement = document.getElementById(errorId);
-  const fieldWrapper = input.closest(".field-wrapper");
-  let hasBeenBlurred = false;
-
-  function removeCountryCode() {
-    input.value = input.value.replace(/^\s*\+57[\s-]*/, "");
-  }
-
-  function keepValidCharactersOnly() {
-    input.value = input.value.replace(/[^\d\s-]/g, "");
-  }
-
-  function isValid() {
-    const value = input.value.trim();
-    const matchesPhoneFormat = phoneRegex.test(value);
-
-    return (!required && value === "") || (input.validity.valid && matchesPhoneFormat);
-  }
-
-  function updateErrorDisplay() {
-    const shouldShow = hasBeenBlurred && !isValid();
-
-    if (shouldShow) {
-      errorElement.hidden = false;
-      input.setAttribute("aria-invalid", "true");
-    } else {
-      errorElement.hidden = true;
-      input.setAttribute("aria-invalid", "false");
-    }
-
-    fieldWrapper.classList.toggle("invalid", shouldShow);
-  }
-
-  input.addEventListener("blur", () => {
-    hasBeenBlurred = true;
-    updateErrorDisplay();
-  });
-
-  input.addEventListener("input", () => {
-    removeCountryCode();
-    keepValidCharactersOnly();
-
-    if (hasBeenBlurred) {
-      updateErrorDisplay();
-    }
-  });
-</script>

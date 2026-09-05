@@ -17,12 +17,15 @@ const { eyebrow, heading, description, id = "lead-form-title" } = Astro.props;
 
 <style lang="scss">
   @use "../../../styles/base/breakpoints" as *;
-
   .form-heading {
-    margin-bottom: var(--space);
+    margin: var(--space) 0;
     
     @media screen and (min-width: $breakpoint-tablet) {
       margin: var(--space) 0;
     }
+  }
+
+  .eyebrow {
+    padding-top: var(--space);
   }
 </style>

@@ -2,18 +2,46 @@
 interface Props {
 	title: string;
 	message: string;
+	whatsappHref?: string;
+	whatsappLabel?: string;
+	whatsappMessage?: string;
 }
 
-const { title, message } = Astro.props;
+const {
+	title,
+	message,
+	whatsappHref,
+	whatsappLabel = "Escríbeme por WhatsApp",
+	whatsappMessage
+} = Astro.props;
 ---
 
 <div class="success-message" data-success hidden tabindex="-1" role="status" aria-live="polite">
 	<h3>{title}</h3>
 	<p>{message}</p>
+	{
+		whatsappHref && (
+			<a
+				class="button"
+				href={whatsappHref}
+				target="_blank"
+				rel="noopener noreferrer"
+				data-success-whatsapp
+				data-whatsapp-message={whatsappMessage}
+			>
+				{whatsappLabel}
+			</a>
+		)
+	}
 </div>
 
 <style>
 	.success-message {
 		text-align: center;
+	}
+
+	.success-message .button {
+		display: inline-block;
+		margin-top: var(--space);
 	}
 </style>

@@ -15,7 +15,8 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "netlify:dev": "netlify dev"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
@@ -25,6 +26,8 @@
     "typescript": "^6.0.0"
   },
   "devDependencies": {
+    "@types/node": "^26.4.0",
+    "netlify-cli": "^27.4.1",
     "sass": "^1.102.0"
   }
 }

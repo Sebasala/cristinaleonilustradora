@@ -4,11 +4,13 @@ interface Props {
 }
 
 const { steps } = Astro.props;
+// TODO: Make progress pills clickable
+// TODO: Make progress bar sticky
 ---
 
 <ul class="progress">
         {steps.map((step, index) => (
-            <li class="step-pill" class:list={{ "is-active": index === 0 }}>
+            <li class="step-pill" class:list={{ "is-active": index === 0 }} data-step-pill>
                 <span class="step-number">{step.stepNumber}. </span> 
                 <span class="step-title">{step.stepTitle}</span>
             </li>

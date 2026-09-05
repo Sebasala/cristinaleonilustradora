@@ -5,9 +5,10 @@ const { content } = Astro.props;
 const { name, error, label } = content;
 const errorId = `${name}-error`;
 const { beforeLink, linkLabel, linkHref, afterLink } = parseInlineLink(label);
+// TODO: When unchecking the consent checkbox after checking it show the validation error. 
 ---
 
-<div class="field-wrapper consent-field-wrapper">
+<div class="field-wrapper consent-field-wrapper" data-field-wrapper>
     <label class="consent-label" for={name}>
         <input id={name} name={name} type="checkbox" required aria-describedby={errorId} />
         <span>
@@ -53,33 +54,3 @@ const { beforeLink, linkLabel, linkHref, afterLink } = parseInlineLink(label);
     }
 
 </style>
-
-<script is:inline define:vars={{ name, errorId }}>
-    const input = document.getElementById(name);
-    const errorElement = document.getElementById(errorId);
-    const fieldWrapper = errorElement.closest(".field-wrapper");
-    const form = input.closest("form");
-    let hasBeenBlurred = false;
-
-    function updateErrorDisplay() {
-        const shouldShow = hasBeenBlurred && !input.checkValidity();
-        errorElement.hidden = !shouldShow;
-        input.setAttribute("aria-invalid", String(shouldShow));
-        fieldWrapper.classList.toggle("invalid", shouldShow);
-    }
-
-    function feedbackHandler() {
-        hasBeenBlurred = true;
-        updateErrorDisplay();
-    }
-
-    input.addEventListener("blur", () => {
-        feedbackHandler();
-    });
-
-    input.addEventListener("change", updateErrorDisplay);
-
-    form?.addEventListener("submit", () => {
-        feedbackHandler();
-    });
-</script>
