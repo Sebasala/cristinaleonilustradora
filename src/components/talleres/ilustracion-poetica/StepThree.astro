@@ -52,19 +52,18 @@ const errorId = `${name}-error`;
 </section>
 
 <style lang="scss">
-// TODO: Bug. Se está montando el mensaje de error de la politica de privacidad sobre los botones en desktop.
   @use "../../../styles/base/breakpoints" as *;
 
     .form-step {
-		height: calc(34 * var(--space));
+		height: calc(35 * var(--space));
         @media (min-width: $breakpoint-mobile-s) {
             overflow: visible;
         }
         @media (min-width: $breakpoint-mobile) {
-            height: calc(31 * var(--space));
+            height: calc(34 * var(--space));
         }
         @media (min-width: $breakpoint-tablet) {
-            height: calc(26 * var(--space));
+            height: calc(28 * var(--space));
         }
 	}
     .price {

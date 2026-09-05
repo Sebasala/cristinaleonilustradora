@@ -5,7 +5,6 @@ const { content } = Astro.props;
 const { name, error, label } = content;
 const errorId = `${name}-error`;
 const { beforeLink, linkLabel, linkHref, afterLink } = parseInlineLink(label);
-// TODO: When unchecking the consent checkbox after checking it show the validation error. 
 ---
 
 <div class="field-wrapper consent-field-wrapper" data-field-wrapper>

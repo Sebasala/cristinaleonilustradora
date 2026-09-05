@@ -1,5 +1,4 @@
 // Nombres de campo únicos: deben coincidir con las columnas del Google Sheet destino.
-// TODO: Unificar idioma de los campos.
 const FIELD_NAMES = {
   nombre: "nombre",
   whatsapp: "whatsapp",
