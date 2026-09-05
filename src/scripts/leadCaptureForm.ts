@@ -392,7 +392,15 @@ export const initializeLeadCaptureForm = () => {
       };
 
       field.addEventListener("input", saveProgress);
-      field.addEventListener("change", saveProgress);
+      field.addEventListener("change", () => {
+        if (
+          field instanceof HTMLInputElement &&
+          (field.type === "checkbox" || field.type === "radio")
+        ) {
+          touchedFieldNames.add(field.name);
+        }
+        saveProgress();
+      });
       field.addEventListener("blur", () => {
         touchedFieldNames.add(field.name);
         validateField(form, field, true);
