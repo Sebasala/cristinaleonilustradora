@@ -191,7 +191,8 @@ textarea:autofill {
 
 .form-step {
   height: calc(21 * var(--space));
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: visible;
   margin: var(--space) 0 0;
 
   @media (min-width: $breakpoint-tablet) {

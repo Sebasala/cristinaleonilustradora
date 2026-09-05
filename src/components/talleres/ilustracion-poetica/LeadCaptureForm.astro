@@ -1,12 +1,19 @@
 ---
 import FormHeading from "./FormHeading.astro";
+import FormStatus from "./FormStatus.astro";
+import FormSuccess from "./FormSuccess.astro";
 import Progress from "./Progress.astro";
 import StepOne from "./StepOne.astro";
 import StepThree from "./StepThree.astro";
 import StepTwo from "./StepTwo.astro";
 
 const { content } = Astro.props;
-const { title, eyebrow, description, steps } = content;
+const { title, eyebrow, description, steps, success } = content;
+
+const adminWhatsapp = import.meta.env.ADMIN_WHATSAPP_PHONE;
+const whatsappHref = adminWhatsapp
+	? `https://wa.me/${adminWhatsapp}?text=${encodeURIComponent(success.whatsappMessage)}`
+	: undefined;
 ---
 
 <section class="form" id="form">
@@ -30,7 +37,17 @@ const { title, eyebrow, description, steps } = content;
 				Reservar mi cupo
 			</button>
 		</div>
+
+		<FormStatus />
 	</form>
+
+	<FormSuccess
+		title={success.title}
+		message={success.message}
+		whatsappHref={whatsappHref}
+		whatsappLabel={success.whatsappLabel}
+		whatsappMessage={success.whatsappMessage}
+	/>
 </section>
 
 <style lang="scss">
@@ -88,290 +105,8 @@ const { title, eyebrow, description, steps } = content;
 	}
 </style>
 
-<script is:inline>
-	const isDevelopmentEnvironment = () => {
-		const hostname = window.location.hostname;
-		return hostname === "localhost" || hostname === "127.0.0.1" || hostname.endsWith(".local");
-	};
+<script>
+	import { initializeLeadCaptureForm } from "@scripts/leadCaptureForm";
 
-	const getStepControls = (form) => {
-		const steps = [...form.querySelectorAll(".form-step")];
-		const prevButton = form.querySelector('[data-step-action="prev"]');
-		const nextButton = form.querySelector('[data-step-action="next"]');
-		const submitButton = form.querySelector('[data-step-action="submit"]');
-
-		const missingControls = [
-			!steps.length && "steps",
-			!prevButton && "prev button",
-			!nextButton && "next button",
-			!submitButton && "submit button",
-		].filter(Boolean);
-
-		if (missingControls.length) {
-			if (isDevelopmentEnvironment()) {
-				console.warn(
-					"Lead capture form is missing required step controls:",
-					missingControls.join(", ")
-				);
-			}
-			return null;
-		}
-
-		return {
-			steps,
-			prevButton,
-			nextButton,
-			submitButton,
-		};
-	};
-
-	const getFormControls = () => {
-		const form = document.getElementById("lead-capture-form");
-		if (!form) {
-			if (isDevelopmentEnvironment()) {
-				console.warn("Lead capture form not found on the page.");
-			}
-			return null;
-		}
-
-		const stepControls = getStepControls(form);
-		if (!stepControls) {
-			return null;
-		}
-
-		const { steps, prevButton, nextButton, submitButton } = stepControls;
-
-		return { form, steps, prevButton, nextButton, submitButton };
-	};
-
-	const getStepFields = (stepElement) => {
-		return [...stepElement.querySelectorAll("input, textarea")].filter((field) => field.name);
-	};
-
-	const getFirstInvalidStep = (steps) => {
-		for (let index = 0; index < steps.length; index++) {
-			const fields = [...steps[index].querySelectorAll("input, textarea")].filter((field) => field.name);
-	
-			const invalidField = fields.find((field) => !field.checkValidity());
-	
-			if (invalidField) {
-				return { index, field: invalidField };
-			}
-		}
-	
-		return null;
-	};
-
-	const isCurrentStepValid = (steps, currentStepIndex) => {
-		const currentStep = steps[currentStepIndex];
-		const fields = getStepFields(currentStep);
-
-		if (!fields.length) {
-			return true;
-		}
-
-		for (const field of fields) {
-			if (!field.checkValidity()) {
-				field.focus();
-				return false;
-			}
-		}
-
-		return true;
-	};
-
-	const isCurrentStepValidSilently = (steps, currentStepIndex) => {
-		const currentStep = steps[currentStepIndex];
-		const fields = getStepFields(currentStep);
-
-		if (!fields.length) {
-			return true;
-		}
-
-		return fields.every((field) => field.checkValidity());
-	};
-
-	const updateNextButtonState = (steps, nextButton, currentStepIndex) => {
-		const isStepValid = isCurrentStepValidSilently(steps, currentStepIndex);
-		nextButton.classList.toggle("is-disabled", !isStepValid);
-	};
-
-	const updateStepUI = (steps, prevButton, nextButton, submitButton, currentStepIndex) => {
-		const progressSteps = [...document.querySelectorAll("#lead-capture-form .step-pill")];
-
-		steps.forEach((step, index) => {
-			const isActive = index === currentStepIndex;
-			step.hidden = !isActive;
-			step.classList.toggle("is-active", isActive);
-
-			const progressStep = progressSteps[index];
-			if (progressStep) {
-				progressStep.classList.toggle("is-active", isActive);
-				progressStep.classList.toggle("is-completed", index < currentStepIndex);
-			}
-		});
-
-		prevButton.hidden = currentStepIndex === 0;
-		nextButton.hidden = currentStepIndex === steps.length - 1;
-		submitButton.hidden = currentStepIndex !== steps.length - 1;
-	};
-
-	const scrollToFormTop = (form) => {
-		form.scrollIntoView({ behavior: "smooth", block: "start" });
-	};
-
-	const FORM_STORAGE_KEY = "lead-capture-form:ilustracion-poetica";
-
-	const readStoredFormState = () => {
-		try {
-			const raw = window.localStorage.getItem(FORM_STORAGE_KEY);
-			return raw ? JSON.parse(raw) : null;
-		} catch (error) {
-			return null;
-		}
-	};
-
-	const writeStoredFormState = (state) => {
-		try {
-			window.localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(state));
-		} catch (error) {
-			// Ignore storage failures (e.g. private browsing, quota exceeded).
-		}
-	};
-
-	const clearStoredFormState = () => {
-		try {
-			window.localStorage.removeItem(FORM_STORAGE_KEY);
-		} catch (error) {
-			// Ignore storage failures.
-		}
-	};
-
-	const getNamedFields = (form) => [...form.elements].filter((field) => field.name);
-
-	const collectFormValues = (form) => {
-		const values = {};
-
-		getNamedFields(form).forEach((field) => {
-			if (field.type === "radio" || field.type === "checkbox") {
-				if (field.checked) {
-					values[field.name] = field.value;
-				}
-			} else {
-				values[field.name] = field.value;
-			}
-		});
-
-		return values;
-	};
-
-	const applyFormValues = (form, values) => {
-		if (!values) {
-			return;
-		}
-
-		getNamedFields(form).forEach((field) => {
-			if (!(field.name in values)) {
-				return;
-			}
-
-			const storedValue = values[field.name];
-
-			if (field.type === "radio" || field.type === "checkbox") {
-				field.checked = field.value === storedValue;
-			} else {
-				field.value = storedValue;
-			}
-
-			field.dispatchEvent(new Event("change", { bubbles: true }));
-		});
-	};
-
-	const saveFormProgress = (form, currentStepIndex) => {
-		writeStoredFormState({
-			step: currentStepIndex,
-			values: collectFormValues(form),
-		});
-	};
-
-	const initializeLeadCaptureForm = () => {
-		const formControls = getFormControls();
-		if (!formControls) {
-			return;
-		}
-
-		const { form, steps, prevButton, nextButton, submitButton } = formControls;
-
-		const storedState = readStoredFormState();
-		applyFormValues(form, storedState?.values);
-
-		let currentStepIndex = 0;
-		if (storedState && Number.isInteger(storedState.step)) {
-			currentStepIndex = Math.min(Math.max(storedState.step, 0), steps.length - 1);
-		}
-
-		steps.forEach((step) => {
-			const fields = getStepFields(step);
-			fields.forEach((field) => {
-				field.addEventListener("input", () => {
-					updateNextButtonState(steps, nextButton, currentStepIndex);
-					saveFormProgress(form, currentStepIndex);
-				});
-				field.addEventListener("change", () => {
-					updateNextButtonState(steps, nextButton, currentStepIndex);
-					saveFormProgress(form, currentStepIndex);
-				});
-			});
-		});
-
-		prevButton.addEventListener("click", () => {
-			if (currentStepIndex > 0) {
-				currentStepIndex -= 1;
-				updateStepUI(steps, prevButton, nextButton, submitButton, currentStepIndex);
-				updateNextButtonState(steps, nextButton, currentStepIndex);
-				saveFormProgress(form, currentStepIndex);
-				scrollToFormTop(form);
-			}
-		});
-
-		nextButton.addEventListener("click", () => {
-			if (!isCurrentStepValid(steps, currentStepIndex)) {
-				return;
-			}
-
-			currentStepIndex += 1;
-			updateStepUI(steps, prevButton, nextButton, submitButton, currentStepIndex);
-			updateNextButtonState(steps, nextButton, currentStepIndex);
-			saveFormProgress(form, currentStepIndex);
-			scrollToFormTop(form);
-		});
-
-		form.addEventListener("submit", (event) => {
-			event.preventDefault();
-		
-			const invalidStep = getFirstInvalidStep(steps);
-		
-			if (invalidStep) {
-				currentStepIndex = invalidStep.index;
-				updateStepUI(steps, prevButton, nextButton, submitButton, currentStepIndex);
-				updateNextButtonState(steps, nextButton, currentStepIndex);
-				invalidStep.field.focus();
-		
-				return;
-			}
-		
-			// if everything is valid, submit normally
-			clearStoredFormState();
-			form.submit();
-		});
-
-		updateStepUI(steps, prevButton, nextButton, submitButton, currentStepIndex);
-		updateNextButtonState(steps, nextButton, currentStepIndex);
-	};
-
-	if (document.readyState === "loading") {
-		document.addEventListener("DOMContentLoaded", initializeLeadCaptureForm);
-	} else {
-		initializeLeadCaptureForm();
-	}
+	initializeLeadCaptureForm();
 </script>

@@ -17,7 +17,7 @@ const {
 const errorId = `${name}-error`;
 ---
 
-<div class="field-wrapper">
+<div class="field-wrapper" data-field-wrapper>
   <label class="field-label" for={name}>
     <span>{label ?? name}: </span>
     {required && <span class="required-indicator">* </span>}
@@ -42,40 +42,3 @@ const errorId = `${name}-error`;
   </p>
 </div>
 
-<script is:inline define:vars={{ name, required, errorId, minLength }}>
-  const input = document.getElementById(name);
-  const errorElement = document.getElementById(errorId);
-  const fieldWrapper = input.closest(".field-wrapper");
-  let hasBeenBlurred = false;
-
-  function isValid() {
-    const value = input.value.trim();
-
-    return input.validity.valid && (!required || value.length >= minLength);
-  }
-
-  function updateErrorDisplay() {
-    const shouldShow = hasBeenBlurred && !isValid();
-
-    if (shouldShow) {
-      errorElement.hidden = false;
-      input.setAttribute("aria-invalid", "true");
-    } else {
-      errorElement.hidden = true;
-      input.setAttribute("aria-invalid", "false");
-    }
-
-    fieldWrapper.classList.toggle("invalid", shouldShow);
-  }
-
-  input.addEventListener("blur", () => {
-    hasBeenBlurred = true;
-    updateErrorDisplay();
-  });
-
-  input.addEventListener("input", () => {
-    if (hasBeenBlurred) {
-      updateErrorDisplay();
-    }
-  });
-</script>

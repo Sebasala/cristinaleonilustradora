@@ -12,7 +12,7 @@ const {
 const errorId = `${name}-error`;
 ---
 
-<div class="options-wrapper">
+<div class="options-wrapper" data-field-wrapper>
   <fieldset class="option-fieldset">
     <legend class="options-label">
       <span>{label}</span>
@@ -45,40 +45,3 @@ const errorId = `${name}-error`;
   </p>
 </div>
 
-<script is:inline define:vars={{ name, errorId }}>
-  const inputs = [...document.querySelectorAll(`input[name="${name}"]`)];
-  const errorElement = document.getElementById(errorId);
-  const fieldWrapper = errorElement.closest(".field-wrapper");
-  let hasBeenBlurred = false;
-
-  function isValid() {
-    return inputs.some((input) => input.checked);
-  }
-
-  function updateErrorDisplay() {
-    const shouldShow = hasBeenBlurred && !isValid();
-
-    if (shouldShow) {
-      errorElement.hidden = false;
-      inputs.forEach((input) => input.setAttribute("aria-invalid", "true"));
-    } else {
-      errorElement.hidden = true;
-      inputs.forEach((input) => input.setAttribute("aria-invalid", "false"));
-    }
-
-    fieldWrapper.classList.toggle("invalid", shouldShow);
-  }
-
-  inputs.forEach((input) => {
-    input.addEventListener("blur", () => {
-      hasBeenBlurred = true;
-      updateErrorDisplay();
-    });
-
-    input.addEventListener("change", () => {
-      if (hasBeenBlurred) {
-        updateErrorDisplay();
-      }
-    });
-  });
-</script>

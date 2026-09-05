@@ -13,9 +13,10 @@ const {
 } = content;
 
 const errorId = `${name}-error`;
+// TODO: Block this textarea to be resizable;
 ---
 
-<div class="field-wrapper">
+<div class="field-wrapper" data-field-wrapper>
   <label class="textarea-label" for={name}>
     <span>{label}</span>
     {required && <span class="required-indicator"> *</span>}
@@ -44,9 +45,10 @@ const errorId = `${name}-error`;
 
     textarea {
         height: calc(5 * var(--space));
+        resize: none; // Block this textarea from being resizable
     }
     .field-wrapper {
-        min-height: calc(10 * var(--space));
+        min-height: calc(9 * var(--space));
 
         @media (min-width: $breakpoint-tablet) {
             min-height: calc(9 * var(--space));
@@ -54,40 +56,3 @@ const errorId = `${name}-error`;
     }
 </style>
 
-<script is:inline define:vars={{ name, required, errorId, minLength }}>
-  const textarea = document.getElementById(name);
-  const errorElement = document.getElementById(errorId);
-  const fieldWrapper = textarea.closest(".field-wrapper");
-  let hasBeenBlurred = false;
-
-  function isValid() {
-    const value = textarea.value.trim();
-
-    return textarea.validity.valid && (!required || value.length >= minLength);
-  }
-
-  function updateErrorDisplay() {
-    const shouldShow = hasBeenBlurred && !isValid();
-
-    if (shouldShow) {
-      errorElement.hidden = false;
-      textarea.setAttribute("aria-invalid", "true");
-    } else {
-      errorElement.hidden = true;
-      textarea.setAttribute("aria-invalid", "false");
-    }
-
-    fieldWrapper.classList.toggle("invalid", shouldShow);
-  }
-
-  textarea.addEventListener("blur", () => {
-    hasBeenBlurred = true;
-    updateErrorDisplay();
-  });
-
-  textarea.addEventListener("input", () => {
-    if (hasBeenBlurred) {
-      updateErrorDisplay();
-    }
-  });
-</script>
