@@ -12,17 +12,18 @@ const FIELD_NAMES = {
 
 const contenido = {
   metadata: {
-    title: "Taller de Ilustración Poética | Narrativa Visual y Lenguaje Propio",
+    title: "Taller de Ilustración Poética",
     description:
       "Ciclo presencial de 8 encuentros en Cajicá guiado por Cristina León. Diseña tu propio proyecto de ilustración y encuentra tu voz visual.",
     ogImage: "/images/og-narrativa-visual.jpg"
   },
   hero: {
-    title: "Taller de Ilustración Poética",
-    subtitle: "Narrativa Visual y Lenguaje Propio",
-    hook: "¿Cuándo fue la última vez que te permitiste habitar tu imaginación?",
+    eyebrow: "Experiencia presencial en Cajicá · 24 horas de mentoría",
+    title:
+      "Aprende a narrar con imágenes y encuentra el lenguaje visual que solo tú puedes dibujar.",
+    hook: "¿Cuándo fue la última vez que te permitiste habitar tu imaginación? Un ciclo íntimo de 8 encuentros en la Sabana para transformar vivencias en obra personal.",
     intro:
-      "Te invito a un ciclo de ocho sesiones donde transformaremos emociones, recuerdos y vivencias en imágenes con alma, respetando tu ritmo y tus necesidades."
+      "Transformaremos emociones, recuerdos y vivencias en imágenes con alma, respetando tu ritmo y tus necesidades."
   },
   filosofia: {
     title: "Tu voz, tu mirada, tu historia",
@@ -35,6 +36,11 @@ const contenido = {
     quote:
       '"Nunca miramos sólo una cosa; siempre miramos la relación entre las cosas y nosotros mismos."',
     quoteAuthor: "John Berger"
+  },
+  cta: {
+    text: "Cupo reducido en Cajicá. Elige tu ruta y horarios.",
+    label: "Postularme al taller",
+    link: "#form"
   },
   proyecto: {
     subtitle: "El Proyecto",
@@ -57,17 +63,12 @@ const contenido = {
     ]
   },
   mentora: {
-    eyebrow: "Tu guía en el viaje creativo",
+    eyebrow: "Mentoría de autor y acompañamiento",
     name: "Cristina León",
-    role: "Ilustradora y Maestra en Artes Plásticas",
-    bio: "Maestra en Artes Plásticas de la Universidad de Los Andes con especialización en Ilustración para publicaciones infantiles y juveniles en EINA (Barcelona). Cuenta con experiencia en docencia universitaria y escolar, acompañando procesos creativos desde la sensibilidad y el hacer.",
+    role: "Ilustradora, Autora y Maestra en Artes Plásticas",
+    bio: "Maestra en Artes Plásticas de la Universidad de los Andes con posgrado en Ilustración Editorial por EINA (Barcelona). Con amplia trayectoria en docencia universitaria y proyectos de autor, Cristina no enseña fórmulas ni técnicas rígidas: acompaña tu bitácora de manera cercana e individual, ayudándote a destrabar bloqueos creativos y a traducir tus vivencias en un universo visual propio.",
     quote:
-      "Mi propósito no es enseñar a dibujar 'correctamente', sino ofrecer herramientas para que cada persona encuentre su propia manera de narrar visualmente."
-  },
-  cta: {
-    text: "Reserva tu cupo para proponer tu horario.",
-    label: "Reservar mi cupo",
-    link: "#form"
+      "El dibujo poético no persigue la perfección técnica, sino la honestidad de la mirada. Mi rol es darte el espacio, el criterio y las herramientas para que descubras la historia que solo tú puedes ilustrar."
   },
   recorrido: {
     title: "El Recorrido Metodológico",
@@ -120,7 +121,7 @@ const contenido = {
       {
         label: "Materiales",
         value:
-          "No incluidos (se compartirá una lista sugerida al reservar el cupo)."
+          "En el taller dispondremos de materiales de exploración y soportes comunes; recibirás una guía sugerida para adquirir tu bitácora y herramientas personales según la ruta elegida."
       }
     ]
   },
@@ -222,17 +223,17 @@ const contenido = {
         eyebrow: "Ciclo de 8 sesiones presenciales (24 horas)",
         valorTotal: "$1.440.000 COP",
         description:
-          "No requieres hacer ningún pago en este momento. Coordinaremos tu reserva una vez validemos la afinidad de tu proyecto y los horarios del grupo.",
+          "No requieres hacer ningún pago en este momento. Coordinaremos tu reserva formal una vez validemos la afinidad de tu proyecto y los horarios disponibles del grupo.",
         fields: {
           paymentOptionsField: {
-            label: "¿Qué modalidad de pago se adapta mejor a tu flujo?",
+            label: "¿Qué esquema de inversión se adapta mejor a tu momento?",
             name: FIELD_NAMES.esquemaPago,
             error: "Por favor selecciona una alternativa de inversión.",
             options: [
-              "Pago único de contado / Tarifa preferencial: $1.296.000 COP",
+              "Pago único de contado: $1.440.000 COP (Incluye sesión individual 1 a 1 de revisión de obra al finalizar)",
               "2 cuotas de $720.000 COP (50% al reservar cupo, 50% en la sesión 4)",
-              "3 cuotas de $480.000 COP (mensuales)",
-              "Por el momento excede mi presupuesto (deseo recibir invitaciones a talleres cortos futuros)"
+              "3 cuotas mensuales de $480.000 COP (distribuidas a lo largo del proceso)",
+              "Por el momento excede mi presupuesto (deseo recibir avisos de talleres cortos y eventos)"
             ]
           },
           dataConsent: {
