@@ -4,7 +4,7 @@ import { Image } from "astro:assets";
 
 interface Props {
 	content: {
-		subtitle: string;
+		eyebrow: string;
 		title: string;
 		hook: string;
 		intro: string;
@@ -18,7 +18,7 @@ const { content, image } = Astro.props;
 <section class="content">
 	<Image class="image" src={image} alt="Pájaro" widths={[496]} />
 	<div class="copy">
-		<p class="eyebrow">{content.subtitle}</p>
+		<p class="eyebrow">{content.eyebrow}</p>
 		<h1>{content.title}</h1>
 		<p class="hook">{content.hook}</p>
 		<p>{content.intro}</p>
