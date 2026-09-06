@@ -58,8 +58,6 @@ const geo = {
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
 const pageDirUrl = canonicalUrl.endsWith("/") ? canonicalUrl : `${canonicalUrl}/`;
 const ogImageUrl = new URL(og?.image ?? "", pageDirUrl).toString();
-
-console.log("LayoutTalleres", { og });
 ---
 
 <!doctype html>
