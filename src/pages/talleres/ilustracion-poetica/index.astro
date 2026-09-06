@@ -9,8 +9,8 @@ import LogisticaSection from "@components/talleres/ilustracion-poetica/Logistica
 import MentoraSection from "@components/talleres/ilustracion-poetica/MentoraSection.astro";
 import ProyectoSection from "@components/talleres/ilustracion-poetica/ProyectoSection.astro";
 import RecorridoSection from "@components/talleres/ilustracion-poetica/RecorridoSection.astro";
+import contenido from "@data/taller-ilustracion-poetica";
 import LayoutTalleres from "@layouts/LayoutTalleres.astro";
-import contenido from "./contenido";
 
 import cristina from "./assets/cristina.jpeg";
 import hoja from "./assets/hoja.png";
@@ -22,17 +22,13 @@ import planta from "./assets/planta.png";
 import taller from "./assets/taller.jpeg";
 
 const { metadata, hero, filosofia, espacio, proyecto, recorrido, mentora, logistica, form, faqs, cta } = contenido;
-
-const ilustracionPoeticaUrl = new URL("/talleres/ilustracion-poetica", Astro.site).toString();
 ---
 
 <LayoutTalleres
 	title={metadata.title}
 	description={metadata.description}
-	 ogTitle={metadata.title}
-	 ogDescription={metadata.description}
-	 ogUrl={ilustracionPoeticaUrl}
-	 ogImage={metadata.ogImage}
+	geo={metadata.geo}
+	og={metadata.og}
 >
 	<main class="poetica-page">
 		<HeroSection content={hero} image={pajaro} />

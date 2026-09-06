@@ -13,8 +13,21 @@ const contenido = {
   metadata: {
     title: "Taller de Ilustración Poética",
     description:
-      "Ciclo presencial de 8 encuentros en Cajicá guiado por Cristina León. Diseña tu propio proyecto de ilustración y encuentra tu voz visual.",
-    ogImage: "/images/og-narrativa-visual.jpg"
+      "Descubre tu lenguaje propio en 8 sesiones presenciales con Cristina León en Cajicá. 24h de mentoría íntima para narrar con imágenes. Conoce el programa aquí.",
+    og: {
+      title: "Taller de Ilustración Poética con Cristina León",
+      description:
+        "Mentoría presencial de 24 horas en Cajicá para desbloquear tu estilo propio y narrar con imágenes. Cupo reducido.",
+      // TODO: Agregar la og:image cuando Titi me la pase
+      // image: "assets/og-ilustracion-poetica.jpg",
+      imageAlt: "Taller de Ilustración Poética con Cristina León en Cajicá"
+    },
+    geo: {
+      placeName: "Cajicá, Cundinamarca, Colombia",
+      position: "4.9186;-74.0275",
+      region: "CO-CUN",
+      icbm: "4.9186, -74.0275"
+    }
   },
   hero: {
     eyebrow: "Experiencia presencial en Cajicá · 24 horas de mentoría",
