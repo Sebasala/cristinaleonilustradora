@@ -1,53 +1,122 @@
 ---
 import Footer from "@components/Footer.astro";
+import { artistName, logo, logoAlt } from "@config";
 import '@styles/global.scss';
-const talleresUrl = new URL("/talleres", Astro.site).toString();
+
+interface Props {
+	title: string;
+	description: string;
+	titleSuffix?: string;
+	og?: {
+		title?: string;
+		description?: string;
+		image?: string;
+		imageAlt?: string;
+		imageHeight?: string;
+		imageWidth?: string;
+		locale?: string;
+		siteName?: string;
+		type?: string;
+	};
+	geo?: {
+		placeName?: string;
+		position?: string;
+		region?: string;
+		icbm?: string;
+	};
+}
+
 const {
 	title,
 	description,
 	titleSuffix = "Cristina León en Cajicá",
-	ogTitle = "Cristina León Artista",
-	ogDescription = "Portafolio con ilustraciones de la artista plástica Cristina León de Bogotá Colombia",
-	ogType = "website",
-	ogUrl = talleresUrl,
-	ogImage = "/img/cristina-leon-ilustradora-optimizado.svg"
+	og: providedOg = {},
+	geo: providedGeo = {},
 } = Astro.props;
-const properties = {
-	sufix: titleSuffix,
-	heading: "Cristina León",
-	pages: {
-		portafolio: {
-			href: "/",
-			label: "Portafolio"
-		},
-		biografia: {
-			href: "/biografia",
-			label: "Biografía"
-		}
-	}
+
+const og = {
+	title,
+	description,
+	image: "",
+	imageAlt: "",
+	imageHeight: "630",
+	imageWidth: "1200",
+	locale: "es_CO",
+	siteName: artistName,
+	type: "website",
+	...providedOg,
 };
-const { sufix, heading } = properties;
+
+const geo = {
+	placeName: "Cajicá, Cundinamarca, Colombia",
+	position: "4.9186;-74.0275",
+	region: "CO-CUN",
+	icbm: "4.9186, -74.0275",
+	...providedGeo,
+};
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const pageDirUrl = canonicalUrl.endsWith("/") ? canonicalUrl : `${canonicalUrl}/`;
+const ogImageUrl = new URL(og?.image ?? "", pageDirUrl).toString();
+
+console.log("LayoutTalleres", { og });
 ---
 
 <!doctype html>
 <html lang="es">
 	<head>
+		<!-- Renderizado del documento -->
 		<meta charset="UTF-8" />
-		<title>{title} | {sufix}</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<!-- SEO & MOTORES DE BÚSQUEDA -->
+		<title>{title} | {titleSuffix}</title>
 		<meta name="description" content={description} />
-		<meta property="og:title" content={ogTitle} />
-		<meta property="og:description" content={ogDescription} />
-		<meta property="og:type" content={ogType} />
-		<meta property="og:url" content={ogUrl} />
-		<meta property="og:image" content={ogImage} />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg" href="/img/logos/cl.svg" />
-		<meta name="generator" content={Astro.generator} />
+		<link rel="canonical" href={canonicalUrl} />
+		<meta name="robots" content="index, follow" />
+		<meta name="author" content={artistName} />
+
+		<!-- OPEN GRAPH / REDES SOCIALES / WHATSAPP (Meta Protocol) -->
+		<meta property="og:type" content={og.type} />
+		<meta property="og:url" content={canonicalUrl} />
+		<meta property="og:site_name" content={og.siteName} />
+		<meta property="og:title" content={og.title} />
+		<meta property="og:description" content={og.description} />
+		
+		{og.image && (
+			<>
+				<meta property="og:image" content={ogImageUrl} />
+				{og.imageAlt && <meta property="og:image:alt" content={og.imageAlt} />}
+				<meta property="og:image:height" content={og.imageHeight} />
+				<meta property="og:image:width" content={og.imageWidth} />
+				<meta property="og:locale" content={og.locale} />
+			</>
+		)}
+
+		<!-- TWITTER / X CARDS -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:description" content={og.description} />
+		{og.image && <meta name="twitter:image" content={ogImageUrl} />}
+		<meta name="twitter:title" content={og.title} />
+		<meta name="twitter:url" content={canonicalUrl} />
+		
+		<!-- 5. GEOLOCALIZACIÓN (SEO Local Cajicá / Sabana) -->
+		{geo.placeName && <meta name="geo.placename" content={geo.placeName} />}
+		{geo.position && <meta name="geo.position" content={geo.position} />}
+		{geo.region && <meta name="geo.region" content={geo.region} />}
+		{geo.icbm && <meta name="ICBM" content={geo.icbm} />}
+
+		<!-- 6. FAVICONS & RECURSOS EXTERNOS (Fuentes, Estilos, etc.) -->
+		<link rel="icon" type="image/svg" href={logo} />
+
+		<!-- // TODO: Investigar que fuentes se están renderizando en las paginas del taller para saber si la siguiente etiqueta es necesaria -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+
 	</head>
 	<body>
 		<header>
-			<h2>{heading}</h2>
-			<img class="logo" src="/img/logos/cristina-leon-ilustradora-optimizado.svg" alt="Cristina León Ilustradora, Bogotá, Colombia">
+			<h2>{artistName}</h2>
+			<img class="logo" src={logo} alt={logoAlt}>
 		</header>
 		<slot />
 		<Footer />

@@ -1,15 +1,15 @@
 ---
+import { artistName, contactEmail } from "@config";
 import LayoutTalleres from "@layouts/LayoutTalleres.astro";
-import { contactEmail } from "../config";
 
 interface Frontmatter {
-  title: string;
-  owner: string;
   activity: string;
+  description: string;
   effectiveDate: string;
-  updatedDate: string;
   identification: string;
   location: string;
+  title: string;
+  updatedDate: string;
   website: string;
 }
 
@@ -18,25 +18,27 @@ interface Props {
 }
 
 const {
-  title,
-  owner,
   activity,
+  description,
   effectiveDate,
-  updatedDate,
   identification,
   location,
+  title,
+  updatedDate,
 } = Astro.props.frontmatter;
 
-const privacyPolicyUrl = new URL("/politica-de-privacidad", Astro.site).toString();
 const website =
   import.meta.env.SITE || "https://cristinaleonilustradora.com";
   
 ---
 
-<LayoutTalleres title={title} ogUrl={privacyPolicyUrl}>
+<LayoutTalleres
+  title={title}
+  description={description}
+>
   <main class="privacy-policy">
     <header class="privacy-header">
-      <p class="eyebrow">{owner} | {activity}</p>
+      <p class="eyebrow">{artistName} | {activity}</p>
       <h2>{title}</h2>
       <p><strong>Fecha de entrada en vigencia:</strong> {effectiveDate}</p>
       <p><strong>Última actualización:</strong> {updatedDate}</p>
@@ -46,7 +48,7 @@ const website =
 
     <section class="policy-contact">
       <h3>Contacto oficial</h3>
-      <p>{owner}<br />
+      <p>{artistName}<br />
       C.C {identification}<br />
       {location}<br />
       <a href={`mailto:${contactEmail}`}>{contactEmail}</a><br />
