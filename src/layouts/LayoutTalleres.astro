@@ -29,7 +29,7 @@ interface Props {
 const {
 	title,
 	description,
-	titleSuffix = "Cristina León en Cajicá",
+	titleSuffix = `${artistName} en Cajicá`,
 	og: providedOg = {},
 	geo: providedGeo = {},
 } = Astro.props;
@@ -108,7 +108,10 @@ const ogImageUrl = new URL(og?.image ?? "", pageDirUrl).toString();
 		<link rel="icon" type="image/svg" href={logo} />
 
 		<!-- // TODO: Investigar que fuentes se están renderizando en las paginas del taller para saber si la siguiente etiqueta es necesaria -->
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
 
 	</head>
 	<body>
