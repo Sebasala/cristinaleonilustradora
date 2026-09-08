@@ -1,0 +1,117 @@
+---
+import { artistName, logo } from "@config";
+import '@styles/global.scss';
+
+interface Props {
+	title: string;
+	description: string;
+	titleSuffix?: string;
+	og?: {
+		title?: string;
+		description?: string;
+		image?: string;
+		imageAlt?: string;
+		imageHeight?: string;
+		imageWidth?: string;
+		locale?: string;
+		siteName?: string;
+		type?: string;
+	};
+	geo?: {
+		placeName?: string;
+		position?: string;
+		region?: string;
+		icbm?: string;
+	};
+}
+
+const {
+	title,
+	description,
+	titleSuffix = `${artistName} en Cajicá`,
+	og: providedOg = {},
+	geo: providedGeo = {},
+} = Astro.props;
+
+const og = {
+	title,
+	description,
+	image: "",
+	imageAlt: "",
+	imageHeight: "630",
+	imageWidth: "1200",
+	locale: "es_CO",
+	siteName: artistName,
+	type: "website",
+	...providedOg,
+};
+
+const geo = {
+	placeName: "Cajicá, Cundinamarca, Colombia",
+	position: "4.9186;-74.0275",
+	region: "CO-CUN",
+	icbm: "4.9186, -74.0275",
+	...providedGeo,
+};
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const pageDirUrl = canonicalUrl.endsWith("/") ? canonicalUrl : `${canonicalUrl}/`;
+const ogImageUrl = new URL(og?.image ?? "", pageDirUrl).toString();
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<!-- Renderizado del documento -->
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<!-- SEO & MOTORES DE BÚSQUEDA -->
+		<title>{title} | {titleSuffix}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonicalUrl} />
+		<meta name="robots" content="index, follow" />
+		<meta name="author" content={artistName} />
+
+		<!-- OPEN GRAPH / REDES SOCIALES / WHATSAPP (Meta Protocol) -->
+		<meta property="og:type" content={og.type} />
+		<meta property="og:url" content={canonicalUrl} />
+		<meta property="og:site_name" content={og.siteName} />
+		<meta property="og:title" content={og.title} />
+		<meta property="og:description" content={og.description} />
+		
+		{og.image && (
+			<>
+				<meta property="og:image" content={ogImageUrl} />
+				{og.imageAlt && <meta property="og:image:alt" content={og.imageAlt} />}
+				<meta property="og:image:height" content={og.imageHeight} />
+				<meta property="og:image:width" content={og.imageWidth} />
+				<meta property="og:locale" content={og.locale} />
+			</>
+		)}
+
+		<!-- TWITTER / X CARDS -->
+		<meta name="twitter:card" content={og.image ? "summary_large_image" : "summary"} />
+		<meta name="twitter:description" content={og.description} />
+		{og.image && <meta name="twitter:image" content={ogImageUrl} />}
+		<meta name="twitter:title" content={og.title} />
+		<meta name="twitter:url" content={canonicalUrl} />
+		
+		<!-- GEOLOCALIZACIÓN (SEO Local Cajicá / Sabana) -->
+		{geo.placeName && <meta name="geo.placename" content={geo.placeName} />}
+		{geo.position && <meta name="geo.position" content={geo.position} />}
+		{geo.region && <meta name="geo.region" content={geo.region} />}
+		{geo.icbm && <meta name="ICBM" content={geo.icbm} />}
+
+		<!-- FAVICONS & RECURSOS EXTERNOS (Fuentes, Estilos, etc.) -->
+		<link rel="icon" type="image/svg" href={logo} />
+
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+
+	</head>
+	<slot />
+</html>
+

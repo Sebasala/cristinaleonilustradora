@@ -1,5 +1,6 @@
 ---
 import Footer from "@components/Footer.astro";
+import LayoutGlobal from "@layouts/LayoutGlobal.astro";
 import '@styles/global.scss';
 const { title, url } = Astro.props;
 const properties = {
@@ -20,26 +21,22 @@ const { sufix, heading, pages } = properties;
 const { portafolio, biografia } = pages;
 const isPortafolio = url === portafolio.href;
 const isBiografia = url === biografia.href;
+
+const metadata = {
+	description: "Portafolio con ilustraciones de la artista plástica Cristina León de Bogotá Colombia",
+	icon: "/img/logos/cl.svg",
+	og: {
+		title: 'Portafolio de Cristina León'
+	}
+};
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<title>{title} | {sufix}</title>
-		<meta name="description" content="Portafolio con ilustraciones de la artista plástica Cristina León de Bogotá Colombia">
-		<meta property="og:title" content="Cristina León Artista" />
-		<meta property="og:description" content="Portafolio con ilustraciones de la artista plástica Cristina León de Bogotá Colombia" />
-		<meta property="og:type" content="website" />
-		<meta property="og:url" content="http://cristinaleonilustradora.com" />
-		<!-- // TODO: Add og:image and og:image:alt meta tags -->
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg" href="/img/logos/cl.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-	</head>
+<LayoutGlobal
+	title={title}
+	titleSuffix={sufix}
+	description={metadata.description}
+	og={metadata.og}
+>
 	<body>
 		<header>
 		
@@ -68,7 +65,7 @@ const isBiografia = url === biografia.href;
 		<slot />
 		<Footer />
 	</body>
-</html>
+</LayoutGlobal>
 
 <style>
 	li {
