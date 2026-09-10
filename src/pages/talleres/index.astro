@@ -1,7 +1,27 @@
 ---
-import { Image } from "astro:assets";
+import TallerCard from '../../components/talleres/TallerCard.astro';
 import LayoutTalleres from '../../layouts/LayoutTalleres.astro';
 import pajaro from './ilustracion-poetica/assets/pajaro.png';
+
+const content = {
+  id: "ilustracion-poetica",
+  title: "Taller de Ilustración Poética",
+  subtitle: "Narrativa visual y lenguaje propio",
+  slug: "/talleres/ilustracion-poetica/",
+  image: {
+    src: pajaro,
+    alt: "Taller de Ilustración Poética en Cajicá con Cristina León",
+  },
+  badges: ["Presencial · Cajicá", "Cupo Reducido"],
+  logistics: {
+    duration: "8 encuentros · 24 horas",
+    level: "Todos los niveles",
+    format: "Mentoría de autor"
+  },
+  excerpt:
+    "Un espacio íntimo en la Sabana para destrabar tu trazo, explorar la metáfora visual y transformar emociones en historias ilustradas.",
+  ctaText: "Ver programa completo"
+}
 ---
 
 <LayoutTalleres
@@ -14,9 +34,9 @@ import pajaro from './ilustracion-poetica/assets/pajaro.png';
     <nav>
       <ul>
         <li>
-          <a href="/talleres/ilustracion-poetica">
-            <Image class="image" src={pajaro} alt="Pájaro" widths={[496]} />
-            Taller de Ilustración Poética</a>
+          <TallerCard
+            content={content}
+          />
         </li>
       </ul>
     </nav>
@@ -25,7 +45,7 @@ import pajaro from './ilustracion-poetica/assets/pajaro.png';
 
 <style>
   h1, ul  {
-    margin-bottom: var(--space-2);
+    margin: var(--space) 0 var(--space-2);
   }
 
   li {
