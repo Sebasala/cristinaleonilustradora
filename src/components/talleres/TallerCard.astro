@@ -1,0 +1,129 @@
+---
+import { Image } from "astro:assets";
+
+interface TallerContent {
+  title: string;
+  subtitle: string;
+  slug: string;
+  image: {
+    src: ImageMetadata;
+    alt: string;
+  }
+  badges: string[];
+  logistics: {
+    duration: string;
+  };
+  excerpt: string;
+  ctaText: string;
+}
+
+interface Props {
+  content: TallerContent;
+}
+
+const { content } = Astro.props;
+---
+
+<div class="taller-card">
+    <article>
+        <div>
+            <ul>
+            {content.badges.map((badge) => (
+                <li>{badge}</li>
+            ))}
+            </ul>
+            <Image class="image" src={content.image.src} alt={content.image.alt} widths={[496]} />
+        </div>
+        <div>
+            <span class="duration">
+            {content.logistics.duration}
+            </span>
+            <hgroup>
+            <h2>
+                <a class="link" href={content.slug}>
+                    {content.title}
+                </a>
+            </h2>
+            <p class="subtitle">
+                {content.subtitle}
+            </p>
+            </hgroup>
+            <p>
+            {content.excerpt}
+            </p>
+            <div class="cta-container">
+                <span class="cta">
+                    {content.ctaText} <span>➔</span>
+                </span>
+            </div>
+        </div>
+    </article>
+</div>
+
+<style>
+    article {
+        position: relative;
+        border: 1px solid var(--color-accent-light);
+        padding: var(--space);
+        border-radius: calc(var(--space) * 1.5);
+        transition: box-shadow 0.3s ease;
+
+        &:hover {
+            box-shadow: 2px 2px 8px var(--color-accent-light);
+        }
+    }
+
+    ul {
+        margin-bottom: var(--space-half);
+    }
+
+    li {
+        display: inline-block;
+        background-color: var(--color-accent);
+        color: var(--color-light);
+        padding: 0 var(--space-half);
+        border-radius: var(--space-half);
+        margin: 0 var(--space-half) var(--space-half) 0;
+    }
+
+    .image {
+        margin-bottom: var(--space);
+    }
+
+    .duration {
+        color: var(--color-accent);
+        opacity: var(--opacity-medium);
+    }
+
+    h2 {
+        margin-bottom: 0;
+    }
+
+    .subtitle {
+        margin-bottom: var(--space);
+        color: var(--color-accent);
+    }
+
+    .link::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+    }
+
+    p, .cta {
+        color: var(--color-accent);
+        position: relative;
+        z-index: -1;
+    }
+
+    .cta-container {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .cta {
+        color: var(--color-accent);
+        opacity: var(--opacity-high);
+    }
+</style>

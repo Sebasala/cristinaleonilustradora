@@ -30,7 +30,7 @@ textarea {
   width: 100%;
   border: 1px solid var(--color-accent);
   padding: calc(var(--space-half) - 1px);
-  background-color: var(--color-accent-light);
+  background-color: var(--color-white);
   color: var(--color-black);
   border-radius: var(--space-half);
 }
@@ -107,7 +107,7 @@ textarea:focus-visible,
   margin: 0;
   border: 1px solid var(--color-accent);
   padding: calc(var(--space-half) - 1px) var(--space);
-  background: var(--color-accent-light);
+  background: var(--color-white);
   font-weight: 400;
   cursor: pointer;
   border-radius: var(--space);
@@ -159,8 +159,8 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 textarea:-webkit-autofill {
   -webkit-text-fill-color: var(--color-black);
-  -webkit-box-shadow: 0 0 0 1000px var(--color-accent-light) inset;
-  box-shadow: 0 0 0 1000px var(--color-accent-light) inset;
+  -webkit-box-shadow: 0 0 0 1000px var(--color-white) inset;
+  box-shadow: 0 0 0 1000px var(--color-white) inset;
   caret-color: var(--color-black);
   border: 1px solid var(--color-accent);
 }
@@ -168,7 +168,7 @@ textarea:-webkit-autofill {
 /* Standards-based selector (newer browsers) */
 input:autofill,
 textarea:autofill {
-  box-shadow: 0 0 0 1000px var(--color-accent-light) inset;
+  box-shadow: 0 0 0 1000px var(--color-white) inset;
   -webkit-text-fill-color: var(--color-black);
 }
 
