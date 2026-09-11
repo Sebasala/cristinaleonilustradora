@@ -6,21 +6,26 @@ const { title, url } = Astro.props;
 const properties = {
 	sufix: "Cristina León Artísta | Bogotá, Colombia",
 	heading: "Cristina León",
-	pages: {
-		portafolio: {
+	pages: [
+		{
 			href: "/",
-			label: "Portafolio"
+			label: "Portafolio",
+			hasGradient: true
 		},
-		biografia: {
+		{
 			href: "/biografia",
 			label: "Biografía"
+		},
+		/*
+		{
+			href: "/talleres",
+			label: "Talleres"
 		}
-	}
+		*/
+	]
 };
 const { sufix, heading, pages } = properties;
-const { portafolio, biografia } = pages;
-const isPortafolio = url === portafolio.href;
-const isBiografia = url === biografia.href;
+
 
 const metadata = {
 	description: "Portafolio con ilustraciones de la artista plástica Cristina León de Bogotá Colombia",
@@ -52,12 +57,11 @@ const metadata = {
 
 			<nav>
 				<ul class="nav-links-list">
-					<li>
-						<a class:list={["nav-link", "gradient", isPortafolio && "current-page"]} href={portafolio.href}>{portafolio.label}</a>
-					</li>
-					<li>
-						<a class:list={["nav-link", isBiografia && "current-page"]} href={biografia.href}>{biografia.label}</a>
-					</li>
+					{pages.map((page) => (
+						<li>
+							<a class:list={["nav-link", page.href === url && "current-page", page.hasGradient && "gradient"]} href={page.href}>{page.label}</a>
+						</li>
+					))}
 				</ul>
 			</nav>
 	
