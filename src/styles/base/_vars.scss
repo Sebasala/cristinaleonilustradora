@@ -1,6 +1,6 @@
 :root {
   --color-accent: #094757;
-  --color-accent-light: #09475743;
+  --color-accent-light: rgba(9, 71, 87, 0.2);
   --color-white: #ffffff;
   --color-black: black;
   --color-error: #8a0000;
@@ -17,4 +17,5 @@
   --font-size-2: 1.2rem;
   --font-size-3: 1.44rem;
   --color-text: var(--color-black);
+  --box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
 }

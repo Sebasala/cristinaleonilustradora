@@ -47,13 +47,10 @@ const metadata = {
 		
 			<div class="logo">
 				<a href="http://cristinaleonilustradora.com/" title="Cristina León Ilustradora, Bogotá, Colombia" class="link-img">
-				<img src="/img/logos/cl.svg" alt="Cristina León Ilustradora, Bogotá, Colombia">
+					<img src="/img/logos/cl.svg" alt="Cristina León Ilustradora, Bogotá, Colombia">
+					<h1>{heading}</h1>
 				</a>
 			</div>
-	
-			<a href="http://cristinaleonilustradora.com/" title="Cristina León Ilustradora, Bogotá, Colombia">
-			<h1>{heading}</h1>
-			</a>
 
 			<nav>
 				<ul class="nav-links-list">
@@ -71,7 +68,15 @@ const metadata = {
 	</body>
 </LayoutGlobal>
 
-<style>
+<style lang="scss">
+	@use "../styles/base/breakpoints" as *;
+
+	body {
+		@media screen and (min-width: $breakpoint-tablet) {
+			padding: var(--space-2);
+		}
+	}
+	
 	li {
 		margin-bottom: 0;
 		opacity: var(--opacity-full);
@@ -79,6 +84,21 @@ const metadata = {
 
 	.logo {
 		margin-bottom: var(--space);
+		height: var(--space-2);
+
+		a {
+			display: inline-flex;
+			align-items: center;
+		}
+
+		img {
+			height: var(--space-2);
+			margin-right: var(--space);
+		}
+
+		h1 {
+			margin: 0;
+		}
 	}
 
 	.gradient {

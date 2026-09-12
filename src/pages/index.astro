@@ -16,25 +16,35 @@ const {
 <Layout title={title} url={url}>
 	<main>
 		{images.map((image) => (
-			<Image src={image.src} alt={image.alt} height={600} />
+			<Image src={image.src} alt={image.alt} />
 		))}
 	</main>
 </Layout>
-<style>
+<style lang="scss">
+	@use "../styles/base/breakpoints" as *;
 	main {
 		text-align: center;
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: start;
-		max-width: 100%;
+		
+		@media screen and (min-width: $breakpoint-tablet) {
+			max-width: calc(100% + var(--space-2));
+			margin-left: calc(-2 * var(--space));
+		}
+
+		@media screen and (min-width: $breakpoint-desktop) {
+			margin-left: 0;
+		}
 	}
 	img {
-		margin-bottom: var(--space);
-	}
-	@media screen and (min-width: 828px) {
-		img {
-			margin-right: var(--space);
-			max-height: 21rem;
+		margin: 0 0 var(--space);
+		box-shadow: var(--box-shadow);
+		border-radius: calc(0.5 * var(--space-half));
+
+		@media screen and (min-width: $breakpoint-tablet) {
+			margin: 0 0 var(--space-2) var(--space-2);
+			max-height: calc(16 * var(--space));
 			width: auto;
 		}
 	}
