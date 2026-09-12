@@ -13,10 +13,6 @@ const imageModules = import.meta.glob<ImageMetadata>(
   }
 );
 
-console.log({ imageModules });
-const imageEntries = Object.entries(imageModules);
-console.log({ imageEntries });
-
 const images: ImageEntry[] = Object.entries(imageModules)
   .sort(([pathA], [pathB]) =>
     pathA.localeCompare(pathB, undefined, { numeric: true })
