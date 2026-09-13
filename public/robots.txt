@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Canonical Sitemap
+Sitemap: https://cristinaleon.art/sitemap-index.xml
