@@ -1,0 +1,6 @@
+# Forzar redirección 301 de cristinaleonilustradora.com a cristinaleon.art
+
+https://cristinaleonilustradora.com/* https://cristinaleon.art/:splat 301!
+http://cristinaleonilustradora.com/* https://cristinaleon.art/:splat 301!
+https://www.cristinaleonilustradora.com/* https://cristinaleon.art/:splat 301!
+http://www.cristinaleonilustradora.com/* https://cristinaleon.art/:splat 301!
