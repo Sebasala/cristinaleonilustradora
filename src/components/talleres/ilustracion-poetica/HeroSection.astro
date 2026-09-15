@@ -29,6 +29,7 @@ const { content, image } = Astro.props;
 	@use "../../../styles/base/breakpoints" as *;
 
 	.image {
+		transform: scaleX(-1);
 		margin: 0 auto var(--space-2);
 		max-width: 496px;
 		width: 100%;
@@ -46,10 +47,8 @@ const { content, image } = Astro.props;
 			gap: var(--space);
 
 			.image {
-				transform: scaleX(-1);
 				grid-column: 2;
 				margin: 0;
-				
 			}
 
 			.copy {
