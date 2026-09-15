@@ -3,17 +3,23 @@ import images from '@data/images';
 import Layout from '@layouts/Layout.astro';
 import { Image } from 'astro:assets';
 const properties = {
-	title: 'Portafolio',
+	title: 'Cristina León — Artista Visual y Narrativa Gráfica',
+	description: 'Obra artística, pintura y narrativa visual de Cristina León. Portafolio de autor, proyectos editoriales y formación en artes plásticas en Colombia.',
 	url: '/',
 	images,
+	og: {
+		description: "Portafolio de obra pictórica, narrativa visual y talleres de arte de Cristina León."
+	}
 }
 const {
 	title,
+	description,
 	url,
+	og,
 } = properties;
 ---
 
-<Layout title={title} url={url}>
+<Layout title={title} description={description} url={url} og={og}>
 	<main>
 		{images.map((image) => (
 			<Image src={image.src} alt={image.alt} />
