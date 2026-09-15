@@ -2,9 +2,8 @@
 import Footer from "@components/Footer.astro";
 import LayoutGlobal from "@layouts/LayoutGlobal.astro";
 import '@styles/global.scss';
-const { title, url } = Astro.props;
+const { title, description, og, url } = Astro.props;
 const properties = {
-	sufix: "Cristina León Artísta | Bogotá, Colombia",
 	heading: "Cristina León",
 	pages: [
 		{
@@ -24,23 +23,13 @@ const properties = {
 		*/
 	]
 };
-const { sufix, heading, pages } = properties;
-
-
-const metadata = {
-	description: "Portafolio con ilustraciones de la artista plástica Cristina León de Bogotá Colombia",
-	icon: "/img/logos/cl.svg",
-	og: {
-		title: 'Portafolio de Cristina León'
-	}
-};
+const { heading, pages } = properties;
 ---
 
 <LayoutGlobal
 	title={title}
-	titleSuffix={sufix}
-	description={metadata.description}
-	og={metadata.og}
+	description={description}
+	og={og}
 >
 	<body>
 		<header>
@@ -48,7 +37,10 @@ const metadata = {
 			<div class="logo">
 				<a href="http://cristinaleonilustradora.com/" title="Cristina León Ilustradora, Bogotá, Colombia" class="link-img">
 					<img src="/img/logos/cl.svg" alt="Cristina León Ilustradora, Bogotá, Colombia">
-					<h1>{heading}</h1>
+					<div>
+						<h1>{heading}</h1>
+						<p>Artista Plástica</p>
+					</div>
 				</a>
 			</div>
 
