@@ -1,31 +1,51 @@
 ---
+import { artistProfile, siteLanguage, siteUrl, websiteSchema } from '@config';
 import images from '@data/images';
 import Layout from '@layouts/Layout.astro';
 import { Image } from 'astro:assets';
+
+const description = 'Obra artística, pintura y narrativa visual de Cristina León. Portafolio de autor, proyectos editoriales y formación en artes plásticas en Colombia.';
 const properties = {
 	title: 'Cristina León — Artista Visual y Narrativa Gráfica',
-	description: 'Obra artística, pintura y narrativa visual de Cristina León. Portafolio de autor, proyectos editoriales y formación en artes plásticas en Colombia.',
 	url: '/',
+	structuredData: {
+		'@context': 'https://schema.org',
+		'@graph': [
+			{ ...websiteSchema },
+			{ ...artistProfile },
+			{
+				'@type': 'CollectionPage',
+				'@id': `${siteUrl}#portfolio`,
+				url: siteUrl,
+				name: 'Portafolio de Cristina León',
+				description,
+				isPartOf: { '@id': `${siteUrl}#website` },
+				about: { '@id': `${siteUrl}#artist` },
+				inLanguage: siteLanguage,
+			},
+		],
+	},
 	images,
 	og: {
-		description: "Portafolio de obra pictórica, narrativa visual y talleres de arte de Cristina León."
+		description: 'Portafolio de obra pictórica, narrativa visual y talleres de arte de Cristina León.'
 	}
 }
 const {
 	title,
-	description,
 	url,
+	structuredData,
 	og,
 } = properties;
 ---
 
-<Layout title={title} description={description} url={url} og={og}>
+<Layout title={title} description={description} url={url} og={og} structuredData={structuredData}>
 	<main>
 		{images.map((image) => (
 			<Image src={image.src} alt={image.alt} />
 		))}
 	</main>
 </Layout>
+
 <style lang="scss">
 	@use "../styles/base/breakpoints" as *;
 	main {

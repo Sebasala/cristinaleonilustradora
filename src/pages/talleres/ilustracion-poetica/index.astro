@@ -9,6 +9,7 @@ import LogisticaSection from "@components/talleres/ilustracion-poetica/Logistica
 import MentoraSection from "@components/talleres/ilustracion-poetica/MentoraSection.astro";
 import ProyectoSection from "@components/talleres/ilustracion-poetica/ProyectoSection.astro";
 import RecorridoSection from "@components/talleres/ilustracion-poetica/RecorridoSection.astro";
+import { artistProfile, siteLanguage, siteUrl } from '@config';
 import contenido from "@data/taller-ilustracion-poetica";
 import LayoutTalleres from "@layouts/LayoutTalleres.astro";
 
@@ -22,6 +23,51 @@ import planta from "./assets/planta.png";
 import taller from "./assets/taller.jpeg";
 
 const { metadata, hero, filosofia, espacio, proyecto, recorrido, mentora, logistica, form, faqs, cta } = contenido;
+const courseUrl = `${siteUrl}talleres/ilustracion-poetica`;
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Course',
+			'@id': `${courseUrl}#course`,
+			url: courseUrl,
+			name: metadata.title,
+			description: metadata.description,
+			inLanguage: siteLanguage,
+			provider: { '@id': `${siteUrl}#artist` },
+			instructor: { '@id': `${siteUrl}#artist` },
+			courseMode: 'onsite',
+			hasCourseInstance: {
+				'@type': 'CourseInstance',
+				courseMode: 'onsite',
+				location: {
+					'@type': 'Place',
+					name: 'Taller de Cristina León',
+					address: {
+						'@type': 'PostalAddress',
+						addressLocality: 'Cajicá',
+						addressRegion: 'Cundinamarca',
+						addressCountry: 'CO',
+					},
+				},
+			},
+		},
+		artistProfile,
+		{
+			'@type': 'FAQPage',
+			'@id': `${courseUrl}#faq`,
+			url: `${courseUrl}#faq`,
+			mainEntity: faqs.items.map((item) => ({
+				'@type': 'Question',
+				name: item.question,
+				acceptedAnswer: {
+					'@type': 'Answer',
+					text: item.answer,
+				},
+			})),
+		},
+	],
+};
 ---
 
 <LayoutTalleres
@@ -29,6 +75,7 @@ const { metadata, hero, filosofia, espacio, proyecto, recorrido, mentora, logist
 	description={metadata.description}
 	geo={metadata.geo}
 	og={metadata.og}
+	structuredData={structuredData}
 >
 	<main class="poetica-page">
 		<HeroSection content={hero} image={pajaro} />

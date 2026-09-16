@@ -1,8 +1,56 @@
 ---
+import { artistProfile, siteLanguage, siteUrl } from '@config';
 import Layout from '@layouts/Layout.astro';
 import '@styles/global.scss';
 const title = 'Biografía';
+const description = 'Artista visual y Maestra en Artes Plásticas por la Universidad de los Andes con posgrado en Ilustración para Publicaciones Infantiles y Juveniles en EINA Barcelona.';
 const url = '/biografia';
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'ProfilePage',
+			'@id': `${siteUrl}biografia/#profile`,
+			url: `${siteUrl}biografia`,
+			name: title,
+			description,
+			mainEntity: { '@id': `${siteUrl}#artist` },
+			inLanguage: siteLanguage,
+		},
+		{
+			...artistProfile,
+			alumniOf: [
+				{
+					'@type': 'EducationalOrganization',
+					name: 'EINA, Escola de Disseny i Art',
+					url: 'https://www.eina.cat/',
+				},
+				{
+					'@type': 'EducationalOrganization',
+					name: 'Universidad de los Andes',
+					url: 'https://uniandes.edu.co/',
+				},
+				{
+					'@type': 'EducationalOrganization',
+					name: 'Universidad El Bosque',
+					url: 'https://www.unbosque.edu.co/',
+				},
+			],
+			knowsAbout: [
+				'Acuarela',
+				'Artes plásticas',
+				'Dibujo',
+				'Enseñanza artística',
+				'Ilustración infantil',
+				'Narrativa visual',
+				'Pintura al óleo',
+			],
+		},
+	],
+};
+
+const profileData = structuredData['@graph'][1];
+const alumniOf = 'alumniOf' in profileData ? profileData.alumniOf : [];
 
 const trabajo = [
 	{
@@ -30,21 +78,9 @@ const trabajo = [
 		text: 'Exposición Colectiva de Arte, Club Médico de Bogotá, 2000',
 	},
 ];
-
-const formacionAcademica = [
-	{
-		text: 'Eina, Escola de Disseny i Art, Barcelona',
-	},
-	{
-		text: 'Universidad De Los Andes, Bogotá',
-	},
-	{
-		text: 'Universidad El Bosque, Bogotá',
-	},
-];
 ---
 
-<Layout title={title} url={url}>
+<Layout title={title} description={description} url={url} structuredData={structuredData}>
 	<main>
 		<div>
 			<p>Cristina León es artista plástica e ilustradora infantil, quién mezcla la pasión por el dibujo con la enseñanza a niños entre los 4 y los 7 años. Ellos la contagian cada día con su fantasía y así inspiran la gran mayoría de sus dibujos. Uno de sus propósito es despertar la conciencia en los niños sobre el cuidado del medio ambiente y de todos los seres que habitamos en la tierra. Es por esta razón que la gran mayoría de sus ilustraciones son animales, que además de tener un gusto particular por ellos, son una razón para sensibilizar a otros, promoviendo el gusto y el amor por diferentes seres vivos.</p>
@@ -60,8 +96,8 @@ const formacionAcademica = [
 		<section>
 			<h2>Formación Académica</h2>
 			<ul>
-				{formacionAcademica.map((item) => (
-					<li>{item.text}</li>
+				{alumniOf.map((item: { name: unknown; }) => (
+					<li>{item.name}</li>
 				))}
 			</ul>
 		</section>
