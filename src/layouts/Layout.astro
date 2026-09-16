@@ -2,7 +2,7 @@
 import Footer from "@components/Footer.astro";
 import LayoutGlobal from "@layouts/LayoutGlobal.astro";
 import '@styles/global.scss';
-const { title, description, og, url } = Astro.props;
+const { title, description, og, url, structuredData } = Astro.props;
 const properties = {
 	heading: "Cristina León",
 	pages: [
@@ -30,6 +30,7 @@ const { heading, pages } = properties;
 	title={title}
 	description={description}
 	og={og}
+	structuredData={structuredData}
 >
 	<body>
 		<header>

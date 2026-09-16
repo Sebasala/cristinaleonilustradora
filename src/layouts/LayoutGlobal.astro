@@ -5,6 +5,7 @@ import '@styles/global.scss';
 interface Props {
 	title: string;
 	description: string;
+	structuredData?: Record<string, unknown>;
 	og?: {
 		title?: string;
 		description?: string;
@@ -27,6 +28,7 @@ interface Props {
 const {
 	title,
 	description,
+	structuredData,
 	og: providedOg = {},
 	geo: providedGeo = {},
 } = Astro.props;
@@ -70,6 +72,9 @@ const ogImageUrl = new URL(og?.image ?? "", pageDirUrl).toString();
 		<link rel="canonical" href={canonicalUrl} />
 		<meta name="robots" content="index, follow" />
 		<meta name="author" content={artistName} />
+		{structuredData && (
+			<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+		)}
 
 		<!-- OPEN GRAPH / REDES SOCIALES / WHATSAPP (Meta Protocol) -->
 		<meta property="og:type" content={og.type} />
