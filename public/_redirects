@@ -1,6 +1,19 @@
-# Forzar redirección 301 de cristinaleonilustradora.com a cristinaleon.art
+# ==============================================================================
 
-https://cristinaleonilustradora.com/* https://cristinaleon.art/:splat 301!
-http://cristinaleonilustradora.com/* https://cristinaleon.art/:splat 301!
-https://www.cristinaleonilustradora.com/* https://cristinaleon.art/:splat 301!
-http://www.cristinaleonilustradora.com/* https://cristinaleon.art/:splat 301!
+# REGLAS DE REDIRECCIÓN 301 - OPTIMIZACIÓN SINGLE-HOP (CRISTINA LEÓN)
+
+# ==============================================================================
+
+# 1. Dominio Histórico (Apex) -> Canónico (Preservando trailing slash)
+
+https://cristinaleonilustradora.com/_ https://cristinaleon.art/:splat 301!
+http://cristinaleonilustradora.com/_ https://cristinaleon.art/:splat 301!
+
+# 2. Dominio Histórico (WWW) -> Canónico
+
+https://www.cristinaleonilustradora.com/_ https://cristinaleon.art/:splat 301!
+http://www.cristinaleonilustradora.com/_ https://cristinaleon.art/:splat 301!
+
+# 3. Dominio Canónico (WWW -> Apex)
+
+https://www.cristinaleon.art/* https://cristinaleon.art/:splat 301!
