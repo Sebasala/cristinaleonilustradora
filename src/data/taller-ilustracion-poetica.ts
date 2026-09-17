@@ -50,7 +50,7 @@ const contenido = {
     quoteAuthor: "John Berger"
   },
   cta: {
-    text: "Cupo reducido en Cajicá. Elige tu ruta y horarios.",
+    text: "Cupo reducido en Cajicá. Elige tu ruta.",
     label: "Postularme al taller",
     link: "#form"
   },

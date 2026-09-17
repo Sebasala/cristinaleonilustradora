@@ -15,12 +15,10 @@ const properties = {
 			href: "/biografia",
 			label: "Biografía"
 		},
-		/*
 		{
-			href: "/talleres",
-			label: "Talleres"
+			href: "/talleres/ilustracion-poetica/",
+			label: "Taller"
 		}
-		*/
 	]
 };
 const { heading, pages } = properties;
@@ -36,7 +34,7 @@ const { heading, pages } = properties;
 		<header>
 		
 			<div class="logo">
-				<a href="http://cristinaleonilustradora.com/" title="Cristina León Ilustradora, Bogotá, Colombia" class="link-img">
+				<a href="/" title="Cristina León Ilustradora, Bogotá, Colombia">
 					<img src="/img/logos/cl.svg" alt="Cristina León Ilustradora, Bogotá, Colombia">
 					<div>
 						<h1>{heading}</h1>
@@ -48,8 +46,8 @@ const { heading, pages } = properties;
 			<nav>
 				<ul class="nav-links-list">
 					{pages.map((page) => (
-						<li>
-							<a class:list={["nav-link", page.href === url && "current-page", page.hasGradient && "gradient"]} href={page.href}>{page.label}</a>
+						<li class:list={["nav-item", page.href === url && "current-page"]}>
+							<a class="nav-link" href={page.href}>{page.label}</a>
 						</li>
 					))}
 				</ul>
@@ -69,10 +67,28 @@ const { heading, pages } = properties;
 			padding: var(--space-2);
 		}
 	}
-	
+
+	header {
+		margin-bottom: calc(2 * var(--space-2));
+		@media screen and (min-width: $breakpoint-tablet) {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+	}
+
 	li {
 		margin-bottom: 0;
-		opacity: var(--opacity-full);
+		opacity: var(--opacity-high);
+	}
+	.nav-links-list {
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: 0;
+	}
+
+	.nav-link {
+		color: var(--color-text);
 	}
 
 	.logo {
@@ -92,21 +108,27 @@ const { heading, pages } = properties;
 		h1 {
 			margin: 0;
 		}
+
+		@media screen and (min-width: $breakpoint-tablet) {
+			margin-bottom: 0;
+		}
 	}
 
-	.gradient {
-		background: linear-gradient(
+	.current-page {
+		opacity: 1;
+		.nav-link{
+			background: linear-gradient(
 			90deg,
-			rgb(20, 96, 20),
-			rgb(41, 41, 178), 
-			rgb(179, 38, 179), 
-			rgb(175, 34, 34), 
-			rgb(171, 125, 40), 
-			rgb(177, 177, 41), 
-			rgb(20, 96, 20),
-			rgb(41, 41, 178)
+			rgb(3, 94, 3),
+			rgb(13, 13, 180), 
+			rgb(181, 11, 181), 
+			rgb(173, 13, 13), 
+			rgb(125, 84, 6), 
+			rgb(107, 107, 4), 
+			rgb(3, 96, 3),
+			rgb(14, 14, 180)
 		);
 		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
+		-webkit-text-fill-color: transparent;}
 	}
 </style>

@@ -1,7 +1,10 @@
 ---
+import cristina from "@assets/bio/cristina.jpeg";
 import { artistProfile, siteLanguage, siteUrl } from '@config';
 import Layout from '@layouts/Layout.astro';
 import '@styles/global.scss';
+import { Image } from 'astro:assets';
+
 const title = 'Biografía';
 const description = 'Artista visual y Maestra en Artes Plásticas por la Universidad de los Andes con posgrado en Ilustración para Publicaciones Infantiles y Juveniles en EINA Barcelona.';
 const url = '/biografia';
@@ -10,11 +13,11 @@ const structuredData = {
 	'@graph': [
 		{
 			'@type': 'ProfilePage',
-			'@id': `${siteUrl}biografia/#profile`,
-			url: `${siteUrl}biografia`,
+			'@id': `${siteUrl}/biografia/#profile`,
+			url: `${siteUrl}/biografia`,
 			name: title,
 			description,
-			mainEntity: { '@id': `${siteUrl}#artist` },
+			mainEntity: { '@id': `${siteUrl}/#artist` },
 			inLanguage: siteLanguage,
 		},
 		{
@@ -82,9 +85,10 @@ const trabajo = [
 
 <Layout title={title} description={description} url={url} structuredData={structuredData}>
 	<main>
-		<div>
+		<section class="intro">
+			<Image class="image" src={cristina} alt="Cristina" widths={[496]} />
 			<p>Cristina León es artista plástica e ilustradora infantil, quién mezcla la pasión por el dibujo con la enseñanza a niños entre los 4 y los 7 años. Ellos la contagian cada día con su fantasía y así inspiran la gran mayoría de sus dibujos. Uno de sus propósito es despertar la conciencia en los niños sobre el cuidado del medio ambiente y de todos los seres que habitamos en la tierra. Es por esta razón que la gran mayoría de sus ilustraciones son animales, que además de tener un gusto particular por ellos, son una razón para sensibilizar a otros, promoviendo el gusto y el amor por diferentes seres vivos.</p>
-		</div>
+		</section>
 		<section>
 			<h2>Trabajo</h2>
 			<ul>
@@ -104,9 +108,25 @@ const trabajo = [
 	</main>
 </Layout>
 
-<style>
-  li {
-	white-space: pre-line;
-  }
+<style lang="scss">
+	@use "../../styles/base/breakpoints" as *;
+
+	.intro {
+		@media screen and (min-width: $breakpoint-tablet) {
+			display: flex;
+			flex-direction: row;
+			gap: var(--space);
+		}
+	}
+	.image {
+		height: calc(11 * var(--space));
+		width: 100%;
+		max-width: calc(11 * var(--space));
+		margin-bottom: var(--space);
+		border-radius: var(--space);
+	}
+	li {
+		white-space: pre-line;
+	}
 
 </style>
