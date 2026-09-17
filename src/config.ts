@@ -1,24 +1,24 @@
 export const contactEmail = "leon.cristina@gmail.com";
 export const artistName = "Cristina León";
-export const siteUrl = "https://cristinaleon.art/";
+export const siteUrl = "https://cristinaleon.art";
 export const siteLanguage = "es-CO";
 export const logo = "/img/logos/cl.svg";
 export const logoAlt = "Cristina León — Ilustradora y Artista Visual";
 
 export const websiteSchema = {
   "@type": "WebSite",
-  "@id": `${siteUrl}#website`,
+  "@id": `${siteUrl}/#website`,
   url: siteUrl,
   name: "Cristina León | Arte y Narrativa Visual",
   inLanguage: siteLanguage,
   publisher: {
-    "@id": `${siteUrl}#artist`
+    "@id": `${siteUrl}/#artist`
   }
 };
 
 export const artistProfile = {
   "@type": "Person",
-  "@id": `${siteUrl}#artist`,
+  "@id": `${siteUrl}/#artist`,
   name: artistName,
   description:
     "Artista plástica e ilustradora infantil especializada en dibujo, ilustración y enseñanza artística.",

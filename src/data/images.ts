@@ -6,7 +6,7 @@ type ImageEntry = {
 };
 
 const imageModules = import.meta.glob<ImageMetadata>(
-  "/src/assets/*.{jpg,jpeg,png,webp}",
+  "/src/assets/portafolio/*.{jpg,jpeg,png,webp}",
   {
     eager: true,
     import: "default"

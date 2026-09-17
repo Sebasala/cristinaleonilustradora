@@ -1,7 +1,7 @@
 ---
+import pajaro from '@assets/taller/pajaro.png';
+import Layout from '@layouts/Layout.astro';
 import TallerCard from '../../components/talleres/TallerCard.astro';
-import LayoutTalleres from '../../layouts/LayoutTalleres.astro';
-import pajaro from './ilustracion-poetica/assets/pajaro.png';
 
 const content = {
   id: "ilustracion-poetica",
@@ -24,24 +24,22 @@ const content = {
 }
 ---
 
-<LayoutTalleres
+<Layout 
   title="Talleres"
   description="Explora los talleres de Cristina León en Bogotá."
 >
   <main>
-    <h1>Talleres</h1>
-    
-    <nav>
-      <ul>
-        <li>
-          <TallerCard
-            content={content}
-          />
-        </li>
-      </ul>
-    </nav>
-  </main>
-</LayoutTalleres>
+      <nav>
+        <ul>
+          <li>
+            <TallerCard
+              content={content}
+            />
+          </li>
+        </ul>
+      </nav>
+    </main>
+</Layout>
 
 <style>
   h1, ul  {

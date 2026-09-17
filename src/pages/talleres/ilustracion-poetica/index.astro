@@ -11,19 +11,20 @@ import ProyectoSection from "@components/talleres/ilustracion-poetica/ProyectoSe
 import RecorridoSection from "@components/talleres/ilustracion-poetica/RecorridoSection.astro";
 import { artistProfile, siteLanguage, siteUrl } from '@config';
 import contenido from "@data/taller-ilustracion-poetica";
-import LayoutTalleres from "@layouts/LayoutTalleres.astro";
+import Layout from '@layouts/Layout.astro';
 
-import cristina from "./assets/cristina.jpeg";
-import hoja from "./assets/hoja.png";
-import hoja2 from "./assets/hoja2.png";
-import hongos from "./assets/hongos.png";
-import pajaro from "./assets/pajaro.png";
-import pez from "./assets/pez.png";
-import planta from "./assets/planta.png";
-import taller from "./assets/taller.jpeg";
+import cristina from "@assets/bio/cristina.jpeg";
+import hoja from "@assets/taller/hoja.png";
+import hoja2 from "@assets/taller/hoja2.png";
+import hongos from "@assets/taller/hongos.png";
+import pajaro from "@assets/taller/pajaro.png";
+import pez from "@assets/taller/pez.png";
+import planta from "@assets/taller/planta.png";
+import taller from "@assets/taller/taller.jpeg";
 
 const { metadata, hero, filosofia, espacio, proyecto, recorrido, mentora, logistica, form, faqs, cta } = contenido;
-const courseUrl = `${siteUrl}talleres/ilustracion-poetica`;
+const path = '/talleres/ilustracion-poetica/';
+const courseUrl = `${siteUrl}${path}`;
 const structuredData = {
 	'@context': 'https://schema.org',
 	'@graph': [
@@ -34,8 +35,8 @@ const structuredData = {
 			name: metadata.title,
 			description: metadata.description,
 			inLanguage: siteLanguage,
-			provider: { '@id': `${siteUrl}#artist` },
-			instructor: { '@id': `${siteUrl}#artist` },
+			provider: { '@id': `${siteUrl}/#artist` },
+			instructor: { '@id': `${siteUrl}/#artist` },
 			courseMode: 'onsite',
 			hasCourseInstance: {
 				'@type': 'CourseInstance',
@@ -70,13 +71,7 @@ const structuredData = {
 };
 ---
 
-<LayoutTalleres
-	title={metadata.title}
-	description={metadata.description}
-	geo={metadata.geo}
-	og={metadata.og}
-	structuredData={structuredData}
->
+<Layout title={metadata.title} description={metadata.description} url={path} og={metadata.og} structuredData={structuredData}>
 	<main class="poetica-page">
 		<HeroSection content={hero} image={pajaro} />
 		<FilosofiaSection content={filosofia} image={hoja} />
@@ -87,7 +82,7 @@ const structuredData = {
 		<RecorridoSection content={recorrido} image={hongos} />
 		<LogisticaSection content={logistica} image={hoja2}/>
 		<FaqSection content={faqs} image={planta}/>
-		
+	
 	</main>
 	<LeadCaptureForm content={form} />
-</LayoutTalleres>
+</Layout>
