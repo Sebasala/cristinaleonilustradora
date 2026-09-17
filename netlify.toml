@@ -1,17 +1,76 @@
+# ==============================================================================
+# CONFIGURACIÓN DE PRODUCCIÓN: ASTRO + PNPM v12 + NODE 22 + NETLIFY EDGE
+# ==============================================================================
+
 [build]
   command = "pnpm build"
   publish = "dist"
-  functions = "netlify/functions"
 
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Frame-Options = "DENY"
-    X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+[build.environment]
+  NODE_VERSION = "22.12.0"
+  PNPM_FLAGS = "--frozen-lockfile"
+
+# ------------------------------------------------------------------------------
+# REGLAS DE REDIRECCIÓN EDGE (301 FORZADO - SINGLE HOP)
+# ------------------------------------------------------------------------------
+
+# 1. Apex Histórico -> Apex Canónico (Raíz)
+[[redirects]]
+  from = "https://cristinaleonilustradora.com/"
+  to = "https://cristinaleon.art/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://cristinaleonilustradora.com/"
+  to = "https://cristinaleon.art/"
+  status = 301
+  force = true
+
+# 2. Apex Histórico -> Rutas Profundas Canónicas
+[[redirects]]
+  from = "https://cristinaleonilustradora.com/*"
+  to = "https://cristinaleon.art/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://cristinaleonilustradora.com/*"
+  to = "https://cristinaleon.art/:splat"
+  status = 301
+  force = true
+
+# 3. WWW Histórico -> Apex Canónico
+[[redirects]]
+  from = "https://www.cristinaleonilustradora.com/*"
+  to = "https://cristinaleon.art/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://www.cristinaleonilustradora.com/*"
+  to = "https://cristinaleon.art/:splat"
+  status = 301
+  force = true
+
+# 4. WWW Canónico -> Apex Canónico
+[[redirects]]
+  from = "https://www.cristinaleon.art/*"
+  to = "https://cristinaleon.art/:splat"
+  status = 301
+  force = true
+
+# ------------------------------------------------------------------------------
+# HEADERS DE SEGURIDAD Y CACHÉ
+# ------------------------------------------------------------------------------
 
 [[headers]]
   for = "/_astro/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/sitemap-index.xml"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    Content-Type = "application/xml; charset=utf-8"

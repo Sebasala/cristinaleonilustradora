@@ -1,19 +1,27 @@
 # ==============================================================================
 
-# REGLAS DE REDIRECCIÓN 301 - OPTIMIZACIÓN SINGLE-HOP (CRISTINA LEÓN)
+# REGLAS DE REDIRECCIÓN 301 FORZADAS (RAÍZ + RUTAS PROFUNDAS)
 
 # ==============================================================================
 
-# 1. Dominio Histórico (Apex) -> Canónico (Preservando trailing slash)
+# 1. Apex Histórico -> Raíz Canónica (Intercepción forzada de index.html)
+
+https://cristinaleonilustradora.com/ https://cristinaleon.art/ 301!
+http://cristinaleonilustradora.com/ https://cristinaleon.art/ 301!
+
+# 2. Apex Histórico -> Rutas Profundas Canónicas (:splat)
 
 https://cristinaleonilustradora.com/_ https://cristinaleon.art/:splat 301!
 http://cristinaleonilustradora.com/_ https://cristinaleon.art/:splat 301!
 
-# 2. Dominio Histórico (WWW) -> Canónico
+# 3. WWW Histórico -> Canónico
 
+https://www.cristinaleonilustradora.com/ https://cristinaleon.art/ 301!
+http://www.cristinaleonilustradora.com/ https://cristinaleon.art/ 301!
 https://www.cristinaleonilustradora.com/_ https://cristinaleon.art/:splat 301!
 http://www.cristinaleonilustradora.com/_ https://cristinaleon.art/:splat 301!
 
-# 3. Dominio Canónico (WWW -> Apex)
+# 4. WWW Canónico -> Apex Canónico
 
+https://www.cristinaleon.art/ https://cristinaleon.art/ 301!
 https://www.cristinaleon.art/* https://cristinaleon.art/:splat 301!
