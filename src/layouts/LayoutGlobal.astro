@@ -55,8 +55,9 @@ const geo = {
 };
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
-const pageDirUrl = canonicalUrl.endsWith("/") ? canonicalUrl : `${canonicalUrl}/`;
-const ogImageUrl = new URL(og?.image ?? "", pageDirUrl).toString();
+
+const imageBaseUrl = import.meta.env.DEV ? Astro.url.origin : new URL("/", Astro.site).toString();
+const ogImageUrl = new URL(og?.image ?? "", imageBaseUrl).toString();
 ---
 
 <!doctype html>
