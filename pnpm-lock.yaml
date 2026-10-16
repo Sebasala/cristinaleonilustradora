@@ -25,6 +25,9 @@ importers:
       astro:
         specifier: ^7.2.8
         version: 7.2.8(@astrojs/markdown-remark@7.2.4(supports-color@10.2.2))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@netlify/blobs@11.0.2(supports-color@10.2.2))(@types/node@26.4.0)(jiti@2.7.0)(sass@1.102.0)(yaml@2.9.0)
+      nanostores:
+        specifier: ^1.5.5
+        version: 1.5.5
       sharp:
         specifier: 0.35.4
         version: 0.35.4(@types/node@26.4.0)
@@ -4084,6 +4087,10 @@ packages:
 
   nanospinner@1.2.2:
     resolution: {integrity: sha512-Zt/AmG6qRU3e+WnzGGLuMCEAO/dAu45stNbHY223tUxldaDAeE+FxSPsd9Q+j+paejmm0ZbrNVs5Sraqy3dRxA==}
+
+  nanostores@1.5.5:
+    resolution: {integrity: sha512-FixtE239Gl6Gz0ZGCK0WzvNwObNCIwVT+L7zQcf1QgcA6AzBxblzqe9OT88qiucNkhsjSOqiogSaF5jVbJiqSA==}
+    engines: {node: ^20.0.0 || >=22.0.0}
 
   negotiator@1.1.0:
     resolution: {integrity: sha512-NMPBRMJgiQHjbd8phG3Vebdx4kZ1H121rbl5IkMqeOsahptB9BKo/d7oJ3zTXqTgagn2bWlNSXkh0QUGM31RYg==}
@@ -10543,6 +10550,8 @@ snapshots:
   nanospinner@1.2.2:
     dependencies:
       picocolors: 1.1.1
+
+  nanostores@1.5.5: {}
 
   negotiator@1.1.0:
     dependencies:

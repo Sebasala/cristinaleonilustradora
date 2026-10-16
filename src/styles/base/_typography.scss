@@ -1,5 +1,14 @@
+/* roboto-flex-regular - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Roboto Flex";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/roboto-flex.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
 body {
-  font-family: "Roboto", sans-serif;
+  font-family: "Roboto Flex", sans-serif;
 }
 
 h1,

@@ -11,7 +11,8 @@
       "@pages/*": ["./src/pages/*"],
       "@styles/*": ["./src/styles/*"],
       "@talleres/*": ["./src/pages/talleres/*"],
-      "@scripts/*": ["./src/scripts/*"]
+      "@scripts/*": ["./src/scripts/*"],
+      "@stores/*": ["./src/stores/*"]
     }
   }
 }

@@ -1,0 +1,95 @@
+---
+import CalendarHero from '@components/calendar/CalendarHero.astro';
+import { artistProfile, siteLanguage, siteUrl, websiteSchema } from '@config';
+import calendarContent from '@data/calendarContent';
+import { calendarVariants } from '@data/calendarVariants';
+import Layout from '@layouts/Layout.astro';
+import { getImage } from 'astro:assets';
+
+const { metadata, product, checkout } = calendarContent;
+const { title, description, path: url } = metadata;
+
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{ ...websiteSchema },
+		{ ...artistProfile },
+		{
+			'@type': 'Product',
+			'@id': `${siteUrl}/calendar#product`,
+			name: product.name,
+			description,
+			inLanguage: siteLanguage,
+			brand: {
+				'@type': 'Person',
+				name: product.brand,
+			},
+			offers: Object.values(calendarVariants).map((variant) => ({
+				'@type': 'Offer',
+				price: String(variant.priceCOP),
+				priceCurrency: 'COP',
+				itemCondition: 'https://schema.org/NewCondition',
+				availability: 'https://schema.org/PreOrder',
+				url: `${siteUrl}/calendar#${variant.id}`,
+				name: variant.name,
+			})),
+		},
+	],
+};
+
+const ogImage = await getImage({ src: calendarVariants['desk-2027'].imageAsset, width: 1200, format: 'jpg' });
+const og = {
+	title,
+	description,
+	image: ogImage.src,
+	imageAlt: metadata.ogImageAlt,
+};
+---
+
+<Layout title={title} description={description} url={url} og={og} structuredData={structuredData}>
+	<main class="calendar-page">
+		<!-- Hero Principal de Venta Directa -->
+		<CalendarHero />
+
+		<!-- Sección de Checkout / Finalización de Orden (Target del CTA) -->
+		<section id="checkout" class="checkout-section" aria-labelledby="checkout-title">
+			<div class="checkout-card">
+				<header class="checkout-header">
+					<h2 id="checkout-title" class="checkout-title">{checkout.title}</h2>
+					<p class="checkout-subtitle">{checkout.subtitle}</p>
+				</header>
+
+				<div class="checkout-summary">
+					<p class="checkout-notice">
+						<strong>{checkout.noticeLead}</strong> {checkout.notice}
+					</p>
+					<p class="checkout-help">{checkout.help}</p>
+				</div>
+			</div>
+		</section>
+	</main>
+</Layout>
+
+<style lang="scss">
+	@use "../../styles/base/breakpoints" as *;
+
+	.calendar-page {
+		max-width: var(--max-width);
+
+		@media screen and (min-width: $breakpoint-tablet) {
+			max-width: var(--max-width-2);
+		}
+
+		@media screen and (min-width: $breakpoint-desktop) {
+			max-width: var(--max-width-3);
+		}
+	}
+
+	.checkout-header {
+		max-width: var(--max-width-2);
+
+		@media screen and (min-width: $breakpoint-desktop) {
+			max-width: var(--max-width-3);
+		}
+	}
+</style>

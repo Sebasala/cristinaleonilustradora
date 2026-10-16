@@ -3,6 +3,7 @@ import Footer from "@components/Footer.astro";
 import LayoutGlobal from "@layouts/LayoutGlobal.astro";
 import '@styles/global.scss';
 const { title, description, og, url, structuredData } = Astro.props;
+console.log({url});
 const properties = {
 	heading: "Cristina León",
 	pages: [
@@ -12,12 +13,16 @@ const properties = {
 			hasGradient: true
 		},
 		{
-			href: "/biografia",
-			label: "Biografía"
+			href: "/calendario",
+			label: "Calendario"
 		},
 		{
 			href: "/talleres/ilustracion-poetica/",
 			label: "Taller"
+		},
+		{
+			href: "/biografia",
+			label: "Biografía"
 		}
 	]
 };
@@ -46,6 +51,7 @@ const whatsappHref = whatsappPhone ? `https://wa.me/${whatsappPhone}` : undefine
 			</div>
 
 			<nav>
+				<!-- // TODO: Make it hamburger on mobile -->
 				<ul class="nav-links-list">
 					{pages.map((page) => (
 						<li class:list={["nav-item", page.href === url && "current-page"]}>
@@ -76,14 +82,13 @@ const whatsappHref = whatsappPhone ? `https://wa.me/${whatsappPhone}` : undefine
 	@use "../styles/base/breakpoints" as *;
 
 	body {
-		@media screen and (min-width: $breakpoint-tablet) {
+		@media screen and (min-width: $breakpoint-desktop) {
 			padding: var(--space-2);
 		}
 	}
 
 	header {
-		margin-bottom: calc(2 * var(--space-2));
-		@media screen and (min-width: $breakpoint-tablet) {
+		@media screen and (min-width: $breakpoint-desktop) {
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
@@ -98,6 +103,7 @@ const whatsappHref = whatsappPhone ? `https://wa.me/${whatsappPhone}` : undefine
 		display: flex;
 		justify-content: space-between;
 		margin-bottom: 0;
+		flex-wrap: wrap;
 	}
 
 	.nav-link {
@@ -126,7 +132,7 @@ const whatsappHref = whatsappPhone ? `https://wa.me/${whatsappPhone}` : undefine
 			font-size: 18.5px;
 		}
 
-		@media screen and (min-width: $breakpoint-tablet) {
+		@media screen and (min-width: $breakpoint-desktop) {
 			margin-bottom: 0;
 		}
 	}

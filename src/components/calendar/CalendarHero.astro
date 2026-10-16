@@ -1,0 +1,560 @@
+---
+import { Image } from 'astro:assets';
+import calendarContent from '@data/calendarContent';
+import {
+	calendarVariants,
+	calendarVariantsList,
+	DEFAULT_VARIANT_ID,
+	formatCOP,
+} from '@data/calendarVariants';
+
+const defaultVariant = calendarVariants[DEFAULT_VARIANT_ID];
+const deskVariant = calendarVariants['desk-2027'];
+const wallVariant = calendarVariants['wall-2027'];
+const { hero } = calendarContent;
+---
+
+<section class="calendar-hero" aria-labelledby="calendar-hero-title">
+	<div class="calendar-hero__container">
+		<div class="calendar-hero__media" aria-label="Visor de fotografía del calendario">
+			<div class="viewer-frame">
+				<div class="viewer-aspect-box">
+					<Image
+						src={deskVariant.imageAsset}
+						alt={deskVariant.alt}
+						class="viewer-img is-visible"
+						data-viewer-variant="desk-2027"
+						widths={[272, 377, 496, 594, 670]}
+						sizes="
+							(max-width: 320px) 272px,
+							(max-width: 425px) 377px,
+							(max-width: 760px) 496px,
+							(max-width: 1200px) 670px,
+							(min-width: 1200px) 594px
+							"
+						loading="eager"
+						fetchpriority="high"
+						quality={40}
+					/>
+					<Image
+						src={wallVariant.imageAsset}
+						alt={wallVariant.alt}
+						class="viewer-img"
+						data-viewer-variant="wall-2027"
+						widths={[272, 377, 496, 594, 670]}
+						sizes="
+							(max-width: 320px) 272px,
+							(max-width: 425px) 377px,
+							(max-width: 760px) 496px,
+							(max-width: 1200px) 670px,
+							(min-width: 1200px) 594px
+							"
+						loading="lazy"
+						quality={40}
+					/>
+				</div>
+			</div>
+			<div class="selector-wrapper">
+					<label class="selector-label" id="variant-selector-label">{hero.selectorLabel}</label>
+					<div
+						class="variant-tabs"
+						role="tablist"
+						aria-labelledby="variant-selector-label"
+					>
+						{
+							calendarVariantsList.map((variant) => {
+								const isDefault = variant.id === DEFAULT_VARIANT_ID;
+								return (
+									<button
+										type="button"
+										role="tab"
+										id={`tab-${variant.id}`}
+										class={`variant-pill ${isDefault ? 'is-active' : ''}`}
+										data-variant-id={variant.id}
+										aria-selected={isDefault ? 'true' : 'false'}
+										aria-controls="variant-specs-panel"
+										tabindex={isDefault ? '0' : '-1'}
+									>
+										<span class="pill-text">{variant.shortName}</span>
+									</button>
+								);
+							})
+						}
+					</div>
+				</div>
+		</div>
+		<div class="calendar-hero__content">
+			<div class="hero-badges">
+				{hero.badges.map((badge) => <span class="badge">{badge}</span>)}
+			</div>
+
+			<header class="hero-header">
+				<h1 id="calendar-hero-title" class="hero-title">
+					<span class="eyebrow">{hero.eyebrow}</span>
+					{hero.title}
+					<span class="hero-subtitle">{hero.subtitle}</span>
+				</h1>
+			</header>
+
+			<div
+				id="variant-specs-panel"
+				class="specs-panel"
+				role="tabpanel"
+				aria-labelledby={`tab-${DEFAULT_VARIANT_ID}`}
+			>
+				<h2 class="variant-badge" data-spec="badge">
+					{defaultVariant.badge}
+				</h2>
+
+				<dl class="specs-list">
+					<div class="spec-item">
+						<dt class="spec-term">{hero.specs.dimensions}</dt>
+						<dd class="spec-desc" data-spec="dimensions">{defaultVariant.dimensions}</dd>
+					</div>
+
+					<div
+						class="spec-item spec-item--base"
+						data-spec="base-container"
+						style={defaultVariant.base ? '' : 'display: none;'}
+					>
+						<dt class="spec-term">{hero.specs.base}</dt>
+						<dd class="spec-desc" data-spec="base">{defaultVariant.base || ''}</dd>
+					</div>
+
+					<div class="spec-item">
+						<dt class="spec-term">{hero.specs.paper.label}</dt>
+						<dd class="spec-desc">{hero.specs.paper.value}</dd>
+					</div>
+				</dl>
+			</div>
+
+			<div class="action-card">
+				<div class="price-container">
+					<p class="price-label">{hero.price.label}</p>
+					<div class="price-amount" data-spec="price">
+						{formatCOP(defaultVariant.priceCOP)}
+					</div>
+				</div>
+
+				<a href={hero.cta.href} class="button cta-button" id="hero-cta-btn">
+					{hero.cta.label}
+				</a>
+			</div>
+
+			<aside class="trust-section" aria-label={hero.ariaLabels.trust}>
+				{hero.trust.map((item) => (
+					<div class="trust-item">
+						<svg
+							class="trust-icon"
+							viewBox="0 0 24 24"
+							width="20"
+							height="20"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							{item.icon === 'shield' ? (
+								<>
+									<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+									<path d="m9 12 2 2 4-4" />
+								</>
+							) : (
+								<>
+									<rect x="1" y="3" width="15" height="13" />
+									<polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+									<circle cx="5.5" cy="18.5" r="2.5" />
+									<circle cx="18.5" cy="18.5" r="2.5" />
+								</>
+							)}
+						</svg>
+						<span class="trust-text">{item.text}</span>
+					</div>
+				))}
+			</aside>
+		</div>
+	</div>
+	<section>
+		<h2 class="description-title">{hero.subtitle}</h2>
+		<p class="hero-intro">{hero.intro}</p>
+	</section>
+</section>
+
+<script>
+	import { calendarVariants, formatCOP, type CalendarVariantId } from '@data/calendarVariants';
+import { selectedVariant, setSelectedVariant } from '@stores/cartStore';
+
+	const initCalendarHero = () => {
+		const root = document.querySelector<HTMLElement>('.calendar-hero');
+		if (!root) return;
+
+		const tabs = root.querySelectorAll<HTMLButtonElement>('.variant-pill');
+		const specBadge = root.querySelector<HTMLElement>('[data-spec="badge"]');
+		const specsPanel = root.querySelector<HTMLElement>('#variant-specs-panel');
+		const specDimensions = root.querySelector<HTMLElement>('[data-spec="dimensions"]');
+		const specBase = root.querySelector<HTMLElement>('[data-spec="base"]');
+		const specPrice = root.querySelector<HTMLElement>('[data-spec="price"]');
+		const viewerImages = root.querySelectorAll<HTMLImageElement>('.viewer-img');
+		const ctaBtn = root.querySelector<HTMLAnchorElement>('#hero-cta-btn');
+
+		// Actualiza el DOM según la variante activa
+		const updateUI = (variantId: CalendarVariantId) => {
+			const variant = calendarVariants[variantId];
+			if (!variant) return;
+
+			// Actualizar estado de las píldoras / tabs
+			tabs.forEach((tab) => {
+				const isSelected = tab.dataset.variantId === variantId;
+				tab.classList.toggle('is-active', isSelected);
+				tab.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+				tab.setAttribute('tabindex', isSelected ? '0' : '-1');
+			});
+
+			// Actualizar especificaciones
+			specsPanel?.setAttribute('aria-labelledby', `tab-${variantId}`);
+			if (specBadge) specBadge.textContent = variant.badge;
+			if (specDimensions) specDimensions.textContent = variant.dimensions;
+			if (specBase) specBase.textContent = variant.base;
+
+			// Actualizar precio formateado
+			if (specPrice) {
+				specPrice.textContent = formatCOP(variant.priceCOP);
+			}
+
+			// Alternar visibilidad de las imágenes en el visor (0 CLS)
+			viewerImages.forEach((img) => {
+				const isMatching = img.dataset.viewerVariant === variantId;
+				img.classList.toggle('is-visible', isMatching);
+			});
+		};
+
+		// Event listeners en cada píldora
+		tabs.forEach((tab, index) => {
+			tab.addEventListener('click', () => {
+				const variantId = tab.dataset.variantId as CalendarVariantId;
+				if (variantId) {
+					setSelectedVariant(variantId);
+				}
+			});
+
+			// Navegación por teclado (Flechas Izquierda / Derecha)
+			tab.addEventListener('keydown', (e: KeyboardEvent) => {
+				let targetIndex = -1;
+				if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+					targetIndex = (index + 1) % tabs.length;
+				} else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+					targetIndex = (index - 1 + tabs.length) % tabs.length;
+				}
+
+				if (targetIndex >= 0) {
+					e.preventDefault();
+					const targetTab = tabs[targetIndex];
+					targetTab.focus();
+					const variantId = targetTab.dataset.variantId as CalendarVariantId;
+					if (variantId) {
+						setSelectedVariant(variantId);
+					}
+				}
+			});
+		});
+
+		// Smooth scroll al pulsar el botón CTA si existe #checkout en la página
+		if (ctaBtn) {
+			ctaBtn.addEventListener('click', (e) => {
+				const target = document.querySelector('#checkout');
+				if (target) {
+					e.preventDefault();
+					target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+					history.pushState(null, '', '#checkout');
+				}
+			});
+		}
+
+		// Suscripción al store de Nano Stores
+		selectedVariant.subscribe((variantId) => {
+			updateUI(variantId);
+		});
+	};
+
+	initCalendarHero();
+</script>
+
+<style lang="scss">
+	@use "../../styles/base/breakpoints" as *;
+
+	.viewer-aspect-box {
+		position: relative;
+		display: grid;
+		grid-template-columns: 1fr;
+		border-radius: calc(0.5 * var(--space));
+		overflow: hidden;
+		background: #eef1ec;
+		height: calc(16 * var(--space));
+	}
+	.viewer-img {
+		grid-area: 1 / 1;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		opacity: 0;
+		transform: scale(0.98);
+		pointer-events: none;
+		transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+		will-change: opacity, transform;
+
+		&.is-visible {
+			opacity: 1;
+			transform: scale(1);
+			pointer-events: auto;
+		}
+	}
+	.hero-badges {
+		margin: var(--space) 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-half);
+	}
+
+	.badge {
+		background-color: var(--color-accent);
+		line-height: calc(var(--space) - 2px);
+		border: 1px solid var(--color-light);
+		display: inline-block;
+		padding: 0 var(--space-half);
+		border-radius: var(--space-half);
+		color: var(--color-white);
+		opacity: var(--opacity-medium);
+	}
+
+	.hero-header {
+		max-width: var(--max-width-2);
+	}
+
+	.eyebrow {
+		margin-bottom: 0;
+		font-size: var(--font-size-1);
+		display: block;
+		letter-spacing: normal;
+		opacity: var(--opacity-high);
+	}
+
+	.hero-subtitle {
+		display: block;
+		font-size: var(--font-size-1);
+		letter-spacing: normal;
+		opacity: var(--opacity-high);
+	}
+
+	.variant-tabs {
+		background-color: var(--color-white);
+		border-radius: var(--space);
+		width: 100%;
+		margin-bottom: var(--space);
+		display: flex;
+		box-shadow: var(--box-shadow);
+	}
+
+	.variant-pill {
+		background-color: transparent;
+		border: 0;
+		padding: var(--space-half) var(--space-half);
+		color: var(--color-accent);
+		cursor: pointer;
+		flex: 1 0 auto;
+
+		&.is-active {
+			background-color: var(--color-accent);
+			color: var(--color-white);
+			border-radius: var(--space);
+		}
+	}
+
+	.pill-text {
+		line-height: var(--space);
+	}
+
+	.spec-item {
+		margin-bottom: var(--space);
+	}
+
+	.spec-term,
+	.spec-desc {
+		line-height: var(--space);
+	}
+	.spec-term {
+		
+		opacity: var(--opacity-high);
+	}
+
+	.spec-desc {
+		opacity: var(--opacity-medium);
+	}
+
+	.action-card {
+		background-color: var(--color-white);
+		padding: var(--space-half);
+		border-radius: calc(var(--space) * 1.5);
+		box-shadow: var(--box-shadow);
+		margin-bottom: var(--space);
+	}
+
+	.price-container {
+		margin-bottom: var(--space);
+		padding: var(--space-half) var(--space) 0;
+	}
+
+	.price-label {
+		margin-bottom: 0;
+		opacity: var(--opacity-high);
+	}
+
+	.price-amount {
+		line-height: var(--space);
+		font-size: var(--font-size-3);
+		opacity: var(--opacity-high);
+	}
+
+	.cta-button {
+		width: 100%;
+		text-align: center;
+	}
+
+	.trust-section {
+		margin-bottom: var(--space);
+	}
+
+	.trust-item {
+		display: flex;
+		align-items: center;
+		gap: var(--space-half);
+		line-height: var(--space);
+		opacity: var(--opacity-high);
+	}
+
+	.trust-icon {
+		display: inline-block;
+	}
+
+	
+	@media (min-width: $breakpoint-mobile-s) {
+		.selector-wrapper {
+			display: flex;
+			align-items: center;
+			height: calc(2 * var(--space));
+			gap: var(--space-half);
+			margin: var(--space) 0 0;
+		}
+
+		.variant-tabs {
+			width: max-content;
+			margin-bottom: 0;
+		}
+
+		.variant-pill {
+			padding: var(--space-half) var(--space);
+		}
+	}
+	
+	@media (min-width: $breakpoint-mobile) {
+		.action-card {
+			display: flex;
+			align-items: center;
+			width: max-content;
+		}
+
+		.cta-button {
+			width: auto;
+		}
+
+		.price-container {
+			padding: 0 var(--space);
+			margin: 0;
+		}
+	}
+
+	@media (min-width: $breakpoint-tablet) {
+		.viewer-aspect-box {
+			height: calc(31 * var(--space));
+		}
+
+		.hero-badges {
+			padding: var(--space-half) 0;
+		}
+
+		.hero-header {
+			display: flex;
+			justify-content: space-between;
+			gap: var(--space);
+			margin: var(--space-2) 0;
+		}
+
+		.selector-wrapper {
+			margin-left: auto;
+			width: max-content;
+		}
+
+		.calendar-hero__content {
+			margin-top: calc(-3 * var(--space));
+		}
+
+		.specs-list {
+			display: flex;
+			justify-content: space-between;
+		}
+
+		.action-card {
+			margin: var(--space) 0 var(--space);
+		}
+
+		.trust-section {
+			margin-bottom: var(--space-2);
+		}
+	}
+
+	@media (min-width: $breakpoint-desktop) {
+		.calendar-hero__container {
+			display: flex;
+			gap: var(--space-2);
+			position: relative;
+		}
+
+		.calendar-hero__media {
+			flex: 1 1 500px;
+		}
+
+		.viewer-aspect-box {
+			height: calc(27 * var(--space));
+		}
+
+		.selector-wrapper {
+			position: absolute;
+			margin: 0;
+			top: 0;
+			right: 79px;
+		}
+
+		.calendar-hero__content {
+			margin-top: calc(3 * var(--space));
+		}
+
+		.hero-badges {
+			margin: 0;
+			padding: 0;
+		}
+
+		.hero-header {
+			display: block;
+			margin: var(--space) 0;
+		}
+
+		.hero-title {
+			margin: 0 0 var(--space-2);
+		}
+
+		.specs-list {
+			display: block;
+		}
+	}
+</style>
