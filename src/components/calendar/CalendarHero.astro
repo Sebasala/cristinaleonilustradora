@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import HeroMediaSlider from './HeroMediaSlider.astro';
 import calendarContent from '@data/calendarContent';
 import {
 	calendarVariants,
@@ -9,8 +9,6 @@ import {
 } from '@data/calendarVariants';
 
 const defaultVariant = calendarVariants[DEFAULT_VARIANT_ID];
-const deskVariant = calendarVariants['desk-2027'];
-const wallVariant = calendarVariants['wall-2027'];
 const { hero } = calendarContent;
 ---
 
@@ -19,39 +17,7 @@ const { hero } = calendarContent;
 		<div class="calendar-hero__media" aria-label="Visor de fotografía del calendario">
 			<div class="viewer-frame">
 				<div class="viewer-aspect-box">
-					<Image
-						src={deskVariant.imageAsset}
-						alt={deskVariant.alt}
-						class="viewer-img is-visible"
-						data-viewer-variant="desk-2027"
-						widths={[272, 377, 496, 594, 670]}
-						sizes="
-							(max-width: 320px) 272px,
-							(max-width: 425px) 377px,
-							(max-width: 760px) 496px,
-							(max-width: 1200px) 670px,
-							(min-width: 1200px) 594px
-							"
-						loading="eager"
-						fetchpriority="high"
-						quality={40}
-					/>
-					<Image
-						src={wallVariant.imageAsset}
-						alt={wallVariant.alt}
-						class="viewer-img"
-						data-viewer-variant="wall-2027"
-						widths={[272, 377, 496, 594, 670]}
-						sizes="
-							(max-width: 320px) 272px,
-							(max-width: 425px) 377px,
-							(max-width: 760px) 496px,
-							(max-width: 1200px) 670px,
-							(min-width: 1200px) 594px
-							"
-						loading="lazy"
-						quality={40}
-					/>
+					<HeroMediaSlider />
 				</div>
 			</div>
 			<div class="selector-wrapper">
@@ -196,7 +162,6 @@ import { selectedVariant, setSelectedVariant } from '@stores/cartStore';
 		const specDimensions = root.querySelector<HTMLElement>('[data-spec="dimensions"]');
 		const specBase = root.querySelector<HTMLElement>('[data-spec="base"]');
 		const specPrice = root.querySelector<HTMLElement>('[data-spec="price"]');
-		const viewerImages = root.querySelectorAll<HTMLImageElement>('.viewer-img');
 		const ctaBtn = root.querySelector<HTMLAnchorElement>('#hero-cta-btn');
 
 		// Actualiza el DOM según la variante activa
@@ -223,11 +188,6 @@ import { selectedVariant, setSelectedVariant } from '@stores/cartStore';
 				specPrice.textContent = formatCOP(variant.priceCOP);
 			}
 
-			// Alternar visibilidad de las imágenes en el visor (0 CLS)
-			viewerImages.forEach((img) => {
-				const isMatching = img.dataset.viewerVariant === variantId;
-				img.classList.toggle('is-visible', isMatching);
-			});
 		};
 
 		// Event listeners en cada píldora
@@ -292,23 +252,6 @@ import { selectedVariant, setSelectedVariant } from '@stores/cartStore';
 		overflow: hidden;
 		background: #eef1ec;
 		height: calc(16 * var(--space));
-	}
-	.viewer-img {
-		grid-area: 1 / 1;
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		opacity: 0;
-		transform: scale(0.98);
-		pointer-events: none;
-		transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-		will-change: opacity, transform;
-
-		&.is-visible {
-			opacity: 1;
-			transform: scale(1);
-			pointer-events: auto;
-		}
 	}
 	.hero-badges {
 		margin: var(--space) 0;
@@ -403,6 +346,7 @@ import { selectedVariant, setSelectedVariant } from '@stores/cartStore';
 	.price-container {
 		margin-bottom: var(--space);
 		padding: var(--space-half) var(--space) 0;
+		text-align: center;
 	}
 
 	.price-label {
@@ -471,6 +415,7 @@ import { selectedVariant, setSelectedVariant } from '@stores/cartStore';
 		.price-container {
 			padding: 0 var(--space);
 			margin: 0;
+			text-align: left;
 		}
 	}
 
