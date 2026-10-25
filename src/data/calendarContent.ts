@@ -40,6 +40,25 @@ const calendarContent = {
       { icon: "truck", text: "Despacho inmediato a partir de noviembre" }
     ]
   },
+  productSpecs: {
+    eyebrow: "Materialidad y formatos",
+    title: "Una ficha clara para elegir tu formato",
+    introduction:
+      "Compara las medidas, el soporte y el uso recomendado para encontrar el calendario que mejor se adapta a tu espacio.",
+    comparison: {
+      title: "Comparativa de formatos",
+      formatLabel: "Formato",
+      dimensionsLabel: "Medidas",
+      supportLabel: "Soporte y encuadernación",
+      useLabel: "Uso ideal"
+    },
+    paper: {
+      title: "Papel para tus ilustraciones",
+      description:
+        "Papel ecológico de alto gramaje, descrito para acompañar las ilustraciones del calendario.",
+      note: "La composición exacta y el comportamiento con cada instrumento de escritura pueden confirmarse antes de la compra."
+    }
+  },
   checkout: {
     title: "Reserva y Compra Segura",
     subtitle:
