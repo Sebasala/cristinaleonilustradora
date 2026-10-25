@@ -1,5 +1,6 @@
 ---
 import CalendarHero from '@components/calendar/CalendarHero.astro';
+import ProductSpecs from '@components/sections/ProductSpecs.astro';
 import { artistProfile, siteLanguage, siteUrl, websiteSchema } from '@config';
 import calendarContent from '@data/calendarContent';
 import { calendarVariants } from '@data/calendarVariants';
@@ -50,6 +51,8 @@ const og = {
 	<main class="calendar-page">
 		<!-- Hero Principal de Venta Directa -->
 		<CalendarHero />
+
+		<ProductSpecs />
 
 		<!-- Sección de Checkout / Finalización de Orden (Target del CTA) -->
 		<section id="checkout" class="checkout-section" aria-labelledby="checkout-title">

@@ -1,0 +1,141 @@
+---
+import calendarContent from '@data/calendarContent';
+import { calendarVariantsList } from '@data/calendarVariants';
+
+const { productSpecs } = calendarContent;
+const { comparison, paper, packaging } = productSpecs;
+---
+
+<section class="product-specs" aria-labelledby="product-specs-title">
+	<div class="product-specs__content">
+		<header class="product-specs__header">
+			<p class="product-specs__eyebrow">{productSpecs.eyebrow}</p>
+			<h2 id="product-specs-title">{productSpecs.title}</h2>
+			<p>{productSpecs.introduction}</p>
+		</header>
+
+		<table>
+			<caption>{comparison.title}</caption>
+			<thead>
+				<tr>
+					<th scope="col" class="format-label">{comparison.formatLabel}</th>
+					{calendarVariantsList.map((variant) => <th scope="col">{variant.shortName}</th>)}
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th scope="row">{comparison.dimensionsLabel}</th>
+					{calendarVariantsList.map((variant) => <td>{variant.dimensions}</td>)}
+				</tr>
+				<tr>
+					<th scope="row">{comparison.supportLabel}</th>
+					{calendarVariantsList.map((variant) => <td>{variant.base}</td>)}
+				</tr>
+				<tr>
+					<th scope="row">{comparison.useLabel}</th>
+					{calendarVariantsList.map((variant) => <td>{variant.idealUse}</td>)}
+				</tr>
+			</tbody>
+		</table>
+
+		<div class="product-specs__details">
+			<article class="product-specs__detail">
+				<svg class="product-specs__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+					<path d="M5 3.75h10l4 4v12.5H5V3.75Z" />
+					<path d="M15 3.75v4h4M8 12h8M8 15.5h8" />
+				</svg>
+				<div>
+					<h3>{paper.title}</h3>
+					<p>{paper.description}</p>
+					<p class="product-specs__note">{paper.note}</p>
+				</div>
+			</article>
+		</div>
+	</div>
+</section>
+
+<style lang="scss">
+	@use "../../styles/base/breakpoints" as *;
+
+	.product-specs__header {
+		margin-bottom: var(--space-2);
+		max-width: var(--max-width-2);
+	}
+
+	.product-specs__eyebrow {
+		margin-bottom: 0;
+		opacity: var(--opacity-high);
+	}
+
+	table {
+		border-collapse: collapse;
+		text-align: left;
+		width: calc(100% + var(--space));
+		margin-left: calc(-1 * var(--space-half));
+		margin-bottom: var(--space-2);
+	}
+
+	caption {
+		text-align: left;
+		opacity: var(--opacity-high);
+		line-height: var(--space);
+		padding: var(--space-half);
+	}
+
+	th,
+	td {
+		border-bottom: 1px solid var(--color-light);
+		line-height: var(--space);
+		padding: var(--space-half);
+	}
+
+	th {
+		opacity: var(--opacity-high);
+	}
+
+	td {
+		opacity: var(--opacity-medium);
+	}
+
+	tbody th,
+	.format-label {
+		display: none;
+	}
+
+	tbody tr:last-child th,
+	tbody tr:last-child td {
+		border-bottom: 0;
+	}
+	.product-specs__detail {
+		margin: var(--space) 0;
+	}
+
+	.product-specs__icon {
+		width: var(--space-2);
+		opacity: var(--opacity-high);
+		stroke: currentColor;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		stroke-width: 1.5;
+		margin-bottom: var(--space);
+	}
+
+	.product-specs__note {
+		font-size: var(--font-size-1);
+	}
+
+	@media screen and (min-width: $breakpoint-tablet) {
+		.product-specs__header {
+			max-width: var(--max-width-3);
+		}
+
+		tbody th,
+		.format-label {
+			display: table-cell;
+		}
+
+		.product-specs__details {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+</style>

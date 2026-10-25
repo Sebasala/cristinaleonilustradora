@@ -10,6 +10,7 @@ export interface CalendarVariant {
   shortName: string;
   dimensions: string;
   base: string;
+  idealUse: string;
   priceCOP: number;
   badge: string;
   imageAsset: ImageMetadata;
@@ -32,9 +33,10 @@ export const calendarVariants: Record<CalendarVariantId, CalendarVariant> = {
     alt: "Calendario de Escritorio 2027 - Cristina León",
     badge: "Ideal para el escritorio",
     base: "Base triangular plegable",
-    dimensions: "15 x 21 cm (A5)",
+    dimensions: "15 × 21 cm / A5",
     id: "desk-2027",
     imageAsset: deskHeroImg,
+    idealUse: "Escritorio de trabajo o estudio personal",
     name: "Calendario de Escritorio 2027",
     priceCOP: 65000,
     shortName: "Escritorio"
@@ -42,10 +44,11 @@ export const calendarVariants: Record<CalendarVariantId, CalendarVariant> = {
   "wall-2027": {
     alt: "Calendario de Pared 2027 con Wire-O - Cristina León",
     badge: "Formato lámina decorativa",
-    base: "Colgador Wire-O metálico superior",
-    dimensions: "30 x 42 cm (A3)",
+    base: "Argollado Wire-O metálico con colgador central",
+    dimensions: "30 × 42 cm / A3",
     id: "wall-2027",
     imageAsset: wallHeroImg,
+    idealUse: "Pared de sala o estudio creativo",
     name: "Calendario de Pared 2027",
     priceCOP: 85000,
     shortName: "Pared"
