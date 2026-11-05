@@ -11,12 +11,14 @@
   letter-spacing: 0rem;
   border-radius: var(--space);
   display: inline-block;
+  line-height: var(--space);
 }
 
 .button-secondary {
   background-color: transparent;
   color: var(--color-accent);
   border: 1px solid var(--color-accent);
+  line-height: var(--space);
 }
 
 .eyebrow {

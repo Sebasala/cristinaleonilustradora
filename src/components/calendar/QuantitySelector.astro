@@ -1,0 +1,179 @@
+---
+import calendarContent from '@data/calendarContent';
+
+const { hero } = calendarContent;
+---
+
+<div class="quantity-container">
+	<p class="quantity-label">{hero.quantityLabel}</p>
+	<div class="quantity-selector" data-quantity-selector>
+		<button type="button" class="stepper-btn" data-action="decrement" aria-label="Disminuir cantidad">−</button>
+		<input
+			type="text"
+			inputmode="numeric"
+			pattern="[0-9]*"
+			class="stepper-input"
+			value="1"
+			min="1"
+			max="10"
+			aria-label="Cantidad de calendarios"
+		/>
+		<button type="button" class="stepper-btn" data-action="increment" aria-label="Aumentar cantidad">+</button>
+	</div>
+</div>
+
+<script>
+	import {
+$itemQuantity,
+decrementQuantity,
+incrementQuantity,
+MAX_QTY,
+MIN_QTY,
+setQuantity,
+} from '@stores/orderStore';
+
+	const root = document.querySelector<HTMLElement>('[data-quantity-selector]');
+	const input = root?.querySelector<HTMLInputElement>('.stepper-input');
+	const minus = root?.querySelector<HTMLButtonElement>('[data-action="decrement"]');
+	const plus = root?.querySelector<HTMLButtonElement>('[data-action="increment"]');
+
+	if (root && input && minus && plus) {
+		input.addEventListener('input', () => {
+			input.value = input.value.replace(/\D/g, '');
+			const n = parseInt(input.value, 10);
+			if (!Number.isNaN(n) && n >= MIN_QTY && n <= MAX_QTY) {
+				setQuantity(n);
+			}
+		});
+
+		input.addEventListener('blur', () => {
+			const n = parseInt(input.value, 10);
+			if (input.value === '' || Number.isNaN(n) || n < MIN_QTY) {
+				setQuantity(MIN_QTY);
+			} else if (n > MAX_QTY) {
+				setQuantity(MAX_QTY);
+			}
+			input.value = String($itemQuantity.get());
+		});
+
+		input.addEventListener('keydown', (e) => {
+			if (e.key === 'ArrowUp') {
+				e.preventDefault();
+				incrementQuantity();
+			} else if (e.key === 'ArrowDown') {
+				e.preventDefault();
+				decrementQuantity();
+			} else if (e.key === 'Enter') {
+				e.preventDefault();
+				input.blur();
+			}
+		});
+
+		minus.addEventListener('click', decrementQuantity);
+		plus.addEventListener('click', incrementQuantity);
+
+		$itemQuantity.subscribe((qty) => {
+			// No pisar un campo vacío mientras el usuario escribe
+			const typing = document.activeElement === input && input.value === '';
+			if (!typing) input.value = String(qty);
+			minus.disabled = qty <= MIN_QTY;
+			plus.disabled = qty >= MAX_QTY;
+		});
+	}
+</script>
+
+<style lang="scss">
+	@use "../../styles/base/breakpoints" as *;
+
+	.quantity-container {
+		display: flex;
+		flex-direction: column-reverse;
+		align-items: center;
+
+		@media (min-width: $breakpoint-mobile) {
+			flex-direction: row;
+		}
+
+		@media (min-width: $breakpoint-tablet) {
+			flex-direction: column-reverse;
+		}
+
+		@media (min-width: $breakpoint-desktop) {
+			flex-direction: row;
+		}
+	}
+
+	.quantity-label {
+		margin: 0;
+
+		@media (min-width: $breakpoint-mobile-s) {
+			margin-right: var(--space-half);
+		}
+	}
+
+	.quantity-selector {
+		display: inline-flex;
+		align-items: center;
+		border: 1px solid var(--color-accent);
+		border-radius: 999px;
+		background: var(--color-light);
+		overflow: hidden;
+		height: var(--space-2);
+	}
+
+	.stepper-btn {
+		border: 3px solid var(--color-light);
+		background: transparent;
+		color: var(--color-accent);
+		cursor: pointer;
+		transition: background-color 0.2s ease;
+		line-height: var(--space);
+		width: var(--space-2);
+		height: var(--space-2);
+		border-radius: var(--space);
+
+		&:hover:not(:disabled) {
+			background: var(--color-accent);
+			color: var(--color-white);
+		}
+
+		&:disabled {
+			opacity: 0.35;
+			cursor: not-allowed;
+		}
+
+		&:focus-visible {
+			outline: 2px solid var(--color-accent);
+			outline-offset: -4px;
+			border-radius: 999px;
+		}
+	}
+
+	.stepper-input {
+		width: 3rem;
+		border: 0;
+		background: transparent;
+		text-align: center;
+		font: inherit;
+		color: var(--color-black);
+		appearance: textfield;
+		-moz-appearance: textfield;
+
+		&::-webkit-outer-spin-button,
+		&::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+
+		&:focus {
+			outline: none;
+		}
+
+		&:focus-visible {
+			outline: 1px solid var(--color-accent);
+			outline-offset: -1px;
+			border-radius: var(--space-half);
+			background: var(--color-white);
+		}
+	}
+</style>
