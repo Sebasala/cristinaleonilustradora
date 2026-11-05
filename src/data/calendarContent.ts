@@ -22,15 +22,17 @@ const calendarContent = {
     intro:
       "Doce meses ilustrados que celebran la biodiversidad y la calma visual. Impreso sobre papel ecológico de alto gramaje para acompañar y vestir tus espacios día a día.",
     selectorLabel: "Formato:",
+    quantityLabel: "Cantidad",
     specs: {
       dimensions: "Dimensiones",
       base: "Soporte",
       paper: { label: "Papel", value: "Ecológico de alto gramaje" }
     },
     price: {
-      label: "Inversión",
+      label: "Unidad",
       unit: "COP / unidad"
     },
+    subtotalLabel: "Subtotal",
     cta: {
       label: "Quiero mi Calendario",
       href: "#checkout"

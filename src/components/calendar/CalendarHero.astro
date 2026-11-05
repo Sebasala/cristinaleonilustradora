@@ -1,5 +1,6 @@
 ---
 import HeroMediaSlider from './HeroMediaSlider.astro';
+import QuantitySelector from './QuantitySelector.astro';
 import calendarContent from '@data/calendarContent';
 import {
 	calendarVariants,
@@ -96,15 +97,24 @@ const { hero } = calendarContent;
 
 			<div class="action-card">
 				<div class="price-container">
-					<p class="price-label">{hero.price.label}</p>
-					<div class="price-amount" data-spec="price">
-						{formatCOP(defaultVariant.priceCOP)}
+					<div class="price-info">
+						<p class="price-label">{hero.price.label}</p>
+						<div class="price-amount" data-spec="price">
+							{formatCOP(defaultVariant.priceCOP)}
+						</div>
 					</div>
+					<QuantitySelector />
 				</div>
 
-				<a href={hero.cta.href} class="button cta-button" id="hero-cta-btn">
-					{hero.cta.label}
-				</a>
+				<div class="subtotal-wrapper">
+					<div class="price-subtotal">
+						<div class="subtotal-label">{hero.subtotalLabel}</div>
+						<div class="subtotal-amount" data-spec="subtotal">{formatCOP(defaultVariant.priceCOP)}</div>
+					</div>
+					<a href={hero.cta.href} class="button cta-button" id="hero-cta-btn">
+						{hero.cta.label}
+					</a>
+				</div>
 			</div>
 
 			<aside class="trust-section" aria-label={hero.ariaLabels.trust}>
@@ -149,8 +159,9 @@ const { hero } = calendarContent;
 </section>
 
 <script>
-	import { calendarVariants, formatCOP, type CalendarVariantId } from '@data/calendarVariants';
+import { calendarVariants, formatCOP, type CalendarVariantId } from '@data/calendarVariants';
 import { selectedVariant, setSelectedVariant } from '@stores/cartStore';
+import { $subtotal } from '@stores/orderStore';
 
 	const initCalendarHero = () => {
 		const root = document.querySelector<HTMLElement>('.calendar-hero');
@@ -231,6 +242,11 @@ import { selectedVariant, setSelectedVariant } from '@stores/cartStore';
 				}
 			});
 		}
+
+		const subtotalEl = root.querySelector<HTMLElement>('[data-spec="subtotal"]');
+		$subtotal.subscribe((total) => {
+			if (subtotalEl) subtotalEl.textContent = formatCOP(total);
+		});
 
 		// Suscripción al store de Nano Stores
 		selectedVariant.subscribe((variantId) => {
@@ -345,17 +361,37 @@ import { selectedVariant, setSelectedVariant } from '@stores/cartStore';
 
 	.price-container {
 		margin-bottom: var(--space);
-		padding: var(--space-half) var(--space) 0;
+		padding: 0;
 		text-align: center;
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.price-info {
+		flex-grow: 1;
 	}
 
 	.price-label {
 		margin-bottom: 0;
-		opacity: var(--opacity-high);
+		opacity: var(--opacity-medium);
 	}
 
 	.price-amount {
 		line-height: var(--space);
+		opacity: var(--opacity-high);
+	}
+
+	.price-subtotal {
+		line-height: var(--space);
+		margin-bottom: var(--space);
+		text-align: center;
+	}
+
+	.subtotal-label {
+		opacity: var(--opacity-medium);
+	}
+
+	.subtotal-amount {
 		font-size: var(--font-size-3);
 		opacity: var(--opacity-high);
 	}
@@ -402,20 +438,21 @@ import { selectedVariant, setSelectedVariant } from '@stores/cartStore';
 	}
 	
 	@media (min-width: $breakpoint-mobile) {
-		.action-card {
+		.subtotal-wrapper {
 			display: flex;
+			flex-direction: row;
 			align-items: center;
-			width: max-content;
+			justify-content: space-between;
 		}
 
-		.cta-button {
-			width: auto;
-		}
-
-		.price-container {
-			padding: 0 var(--space);
+		.price-subtotal,
+		.price-info {
 			margin: 0;
 			text-align: left;
+			margin-left: var(--space);
+		}
+		.cta-button {
+			width: auto;
 		}
 	}
 
@@ -451,6 +488,19 @@ import { selectedVariant, setSelectedVariant } from '@stores/cartStore';
 
 		.action-card {
 			margin: var(--space) 0 var(--space);
+			display: flex;
+			justify-content: space-between;
+			align-items: flex-start;
+			padding-bottom: 0;
+		}
+
+		.price-container {
+			margin: 0;
+		}
+
+		.price-info,
+		.price-subtotal {
+			margin-right: var(--space);
 		}
 
 		.trust-section {
@@ -500,6 +550,21 @@ import { selectedVariant, setSelectedVariant } from '@stores/cartStore';
 
 		.specs-list {
 			display: block;
+		}
+
+		.action-card {
+			flex-direction: column;
+			width: 372px;
+			padding: var(--space-half);
+		}
+
+		.subtotal-wrapper,
+		.price-container {
+			width: 100%;
+		}
+
+		.price-container {
+			margin-bottom: var(--space);
 		}
 	}
 </style>
