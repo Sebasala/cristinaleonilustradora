@@ -64,11 +64,7 @@ const calendarContent = {
   checkout: {
     title: "Reserva y Compra Segura",
     subtitle:
-      "Completa tus datos para confirmar tu pedido. Te contactaremos vía WhatsApp para coordinar el despacho seguro a tu dirección.",
-    noticeLead: "Despacho garantizado:",
-    notice:
-      "A partir de noviembre 2026. Recibirás tu número de guía de mensajería asegurada.",
-    help: "¿Tienes dudas sobre los formatos o compras corporativas? Escríbenos directamente o haz clic en el botón de WhatsApp flotante."
+      "Completa tus datos para confirmar tu pedido. Te contactaremos vía WhatsApp para coordinar el despacho seguro a tu dirección."
   }
 } as const;
 

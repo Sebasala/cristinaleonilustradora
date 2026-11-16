@@ -1,6 +1,7 @@
 import { atom, computed } from 'nanostores';
 import { calendarVariants } from '@data/calendarVariants';
 import { selectedVariant } from '@stores/cartStore';
+import { calculateShippingRate } from '@data/colombiaTerritory';
 
 export const MIN_QTY = 1;
 export const MAX_QTY = 10;
@@ -10,6 +11,19 @@ export const $itemQuantity = atom<number>(MIN_QTY);
 export const $subtotal = computed(
 	[selectedVariant, $itemQuantity],
 	(variantId, quantity) => calendarVariants[variantId].priceCOP * quantity,
+);
+
+export const $shippingDepartment = atom<string>('');
+export const $shippingCity = atom<string>('');
+
+export const $shippingCost = computed(
+	[$shippingDepartment, $shippingCity, $itemQuantity],
+	calculateShippingRate,
+);
+
+export const $grandTotal = computed(
+	[$subtotal, $shippingCost],
+	(subtotal, shippingCost) => subtotal + shippingCost,
 );
 
 export const setQuantity = (value: number): void => {

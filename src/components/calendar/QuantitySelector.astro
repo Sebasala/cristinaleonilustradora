@@ -5,7 +5,7 @@ const { hero } = calendarContent;
 ---
 
 <div class="quantity-container">
-	<p class="quantity-label">{hero.quantityLabel}</p>
+	<label class="quantity-label">{hero.quantityLabel}</label>
 	<div class="quantity-selector" data-quantity-selector>
 		<button type="button" class="stepper-btn" data-action="decrement" aria-label="Disminuir cantidad">−</button>
 		<input
@@ -85,11 +85,12 @@ setQuantity,
 <style lang="scss">
 	@use "../../styles/base/breakpoints" as *;
 
-	.quantity-container {
-		display: flex;
-		flex-direction: column-reverse;
-		align-items: center;
+	label {
+		padding-left: var(--space);
+	}
 
+	.quantity-container {
+		margin: var(--space) 0;
 		@media (min-width: $breakpoint-mobile) {
 			flex-direction: row;
 		}
@@ -103,20 +104,12 @@ setQuantity,
 		}
 	}
 
-	.quantity-label {
-		margin: 0;
-
-		@media (min-width: $breakpoint-mobile-s) {
-			margin-right: var(--space-half);
-		}
-	}
-
 	.quantity-selector {
 		display: inline-flex;
 		align-items: center;
 		border: 1px solid var(--color-accent);
 		border-radius: 999px;
-		background: var(--color-light);
+		background: var(--color-white);
 		overflow: hidden;
 		height: var(--space-2);
 	}

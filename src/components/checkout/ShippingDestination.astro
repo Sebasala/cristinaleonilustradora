@@ -1,0 +1,204 @@
+---
+import {
+COLOMBIA_DEPARTMENTS,
+SUGGESTED_CITIES,
+} from '@data/colombiaTerritory';
+---
+
+<section class="shipping-destination" aria-labelledby="shipping-destination-title" data-shipping-destination>
+
+	<div class="shipping-fields">
+		<div class="shipping-field">
+			<label for="shipping-department">Departamento</label>
+			<select id="shipping-department" name="department" data-department>
+				<option value="">Selecciona un departamento</option>
+				{COLOMBIA_DEPARTMENTS.map((department) => (
+					<option value={department}>{department}</option>
+				))}
+			</select>
+		</div>
+
+		<div class="shipping-field">
+			<label for="shipping-city">Ciudad o municipio</label>
+			<input
+				id="shipping-city"
+				name="city"
+				type="text"
+				list="shipping-city-suggestions"
+				placeholder="Escribe tu ciudad o municipio"
+				autocomplete="address-level2"
+				data-city
+			/>
+			<datalist id="shipping-city-suggestions">
+				{SUGGESTED_CITIES.map((city) => <option value={city} />)}
+			</datalist>
+		</div>
+	</div>
+
+	<dl class="order-totals" aria-live="polite">
+		<div class="total-row">
+			<dt>Subtotal</dt>
+			<dd data-subtotal></dd>
+		</div>
+		<div class="total-row">
+			<dt>Costo de envío</dt>
+			<dd data-shipping-cost></dd>
+		</div>
+		<div class="total-row total-row-grand">
+			<dt>Total definitivo</dt>
+			<dd data-grand-total></dd>
+		</div>
+	</dl>
+	<p class="shipping-provisional" data-shipping-provisional>
+		Tarifa provisional hasta completar departamento y municipio.
+	</p>
+</section>
+
+<script>
+	import { formatCOP } from '@data/calendarVariants';
+import {
+$grandTotal,
+$itemQuantity,
+$shippingCity,
+$shippingCost,
+$shippingDepartment,
+$subtotal,
+} from '@stores/orderStore';
+
+	const root = document.querySelector<HTMLElement>('[data-shipping-destination]');
+	const departmentInput = root?.querySelector<HTMLSelectElement>('[data-department]');
+	const cityInput = root?.querySelector<HTMLInputElement>('[data-city]');
+	const subtotalOutput = root?.querySelector<HTMLElement>('[data-subtotal]');
+	const shippingOutput = root?.querySelector<HTMLElement>('[data-shipping-cost]');
+	const grandTotalOutput = root?.querySelector<HTMLElement>('[data-grand-total]');
+	const provisionalNotice = root?.querySelector<HTMLElement>('[data-shipping-provisional]');
+
+	if (
+		departmentInput &&
+		cityInput &&
+		subtotalOutput &&
+		shippingOutput &&
+		grandTotalOutput &&
+		provisionalNotice
+	) {
+		const renderTotals = (): void => {
+			const quantity = $itemQuantity.get();
+			const hasCompleteDestination =
+				Boolean($shippingDepartment.get().trim()) &&
+				Boolean($shippingCity.get().trim());
+
+			subtotalOutput.textContent = formatCOP($subtotal.get());
+			shippingOutput.textContent =
+				quantity >= 3 ? '¡Envío Gratis!' : formatCOP($shippingCost.get());
+			grandTotalOutput.textContent = formatCOP($grandTotal.get());
+			provisionalNotice.hidden = quantity >= 3 || hasCompleteDestination;
+		};
+
+		departmentInput.value = $shippingDepartment.get();
+		cityInput.value = $shippingCity.get();
+
+		departmentInput.addEventListener('change', () => {
+			$shippingDepartment.set(departmentInput.value);
+		});
+		cityInput.addEventListener('input', () => {
+			$shippingCity.set(cityInput.value);
+		});
+
+		$subtotal.subscribe(renderTotals);
+		$shippingCost.subscribe(renderTotals);
+		$grandTotal.subscribe(renderTotals);
+		$itemQuantity.subscribe(renderTotals);
+		$shippingDepartment.subscribe(renderTotals);
+		$shippingCity.subscribe(renderTotals);
+	}
+</script>
+
+<style lang="scss">
+	label {
+		padding-left: var(--space);
+	}
+
+	.shipping-destination {
+		margin: var(--space) 0;
+	}
+
+	.shipping-title {
+		margin: 0 0 var(--space);
+	}
+
+	.shipping-fields {
+		display: grid;
+		gap: var(--space);
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+	}
+
+	.shipping-field {
+		position: relative;
+
+		input,
+		select {
+			appearance: none;
+			width: 100%;
+			height: var(--space-2);
+			padding: var(--space-half) var(--space);
+			border: 1px solid var(--color-accent);
+			border-radius: var(--space);
+
+			&::-webkit-calendar-picker-indicator {
+				appearance: none !important;
+				display: none !important;
+			}
+		}
+
+		select {
+			background-image: url('/icons/arrow-down-circle-svgrepo-com.svg');
+			background-repeat: no-repeat;
+			background-position: right var(--space-half) center;
+			background-size: var(--space);
+			padding-right: var(--space-2);
+		}
+
+		:focus-visible {
+			outline: 2px solid var(--color-accent);
+			outline-offset: 2px;
+		}
+	}
+
+	.order-totals {
+		max-width: 400px;
+		margin: var(--space-2) 0 0 auto;
+	}
+
+	.total-row {
+		display: flex;
+		justify-content: space-between;
+		gap: var(--space);
+		margin: var(--space) 0;
+		line-height: var(--space);
+		opacity: var(--opacity-high);
+
+
+		dd {
+			margin: 0;
+			text-align: right;
+		}
+	}
+
+	.total-row-grand {
+		padding-top: var(--space);
+		border-top: 1px solid var(--color-accent);
+		font-size: var(--font-size-2)
+	}
+
+	.shipping-provisional {
+		margin-left: auto;
+		max-width: 400px;
+		color: var(--color-black);
+		font-size: 0.875rem;
+		opacity: var(--opacity-medium);
+
+		&[hidden] {
+			display: none;
+		}
+	}
+</style>

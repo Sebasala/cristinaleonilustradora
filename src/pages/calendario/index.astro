@@ -1,5 +1,6 @@
 ---
 import CalendarHero from '@components/calendar/CalendarHero.astro';
+import Checkout from '@components/checkout/Checkout.astro';
 import ProductSpecs from '@components/sections/ProductSpecs.astro';
 import { artistProfile, siteLanguage, siteUrl, websiteSchema } from '@config';
 import calendarContent from '@data/calendarContent';
@@ -7,7 +8,7 @@ import { calendarVariants } from '@data/calendarVariants';
 import Layout from '@layouts/Layout.astro';
 import { getImage } from 'astro:assets';
 
-const { metadata, product, checkout } = calendarContent;
+const { metadata, product } = calendarContent;
 const { title, description, path: url } = metadata;
 
 const structuredData = {
@@ -54,22 +55,7 @@ const og = {
 
 		<ProductSpecs />
 
-		<!-- Sección de Checkout / Finalización de Orden (Target del CTA) -->
-		<section id="checkout" class="checkout-section" aria-labelledby="checkout-title">
-			<div class="checkout-card">
-				<header class="checkout-header">
-					<h2 id="checkout-title" class="checkout-title">{checkout.title}</h2>
-					<p class="checkout-subtitle">{checkout.subtitle}</p>
-				</header>
-
-				<div class="checkout-summary">
-					<p class="checkout-notice">
-						<strong>{checkout.noticeLead}</strong> {checkout.notice}
-					</p>
-					<p class="checkout-help">{checkout.help}</p>
-				</div>
-			</div>
-		</section>
+		<Checkout />
 	</main>
 </Layout>
 
@@ -88,11 +74,4 @@ const og = {
 		}
 	}
 
-	.checkout-header {
-		max-width: var(--max-width-2);
-
-		@media screen and (min-width: $breakpoint-desktop) {
-			max-width: var(--max-width-3);
-		}
-	}
 </style>
