@@ -1,13 +1,12 @@
 ---
-import HeroMediaSlider from './HeroMediaSlider.astro';
-import QuantitySelector from './QuantitySelector.astro';
 import calendarContent from '@data/calendarContent';
 import {
-	calendarVariants,
-	calendarVariantsList,
-	DEFAULT_VARIANT_ID,
-	formatCOP,
+calendarVariants,
+calendarVariantsList,
+DEFAULT_VARIANT_ID,
+formatCOP,
 } from '@data/calendarVariants';
+import HeroMediaSlider from './HeroMediaSlider.astro';
 
 const defaultVariant = calendarVariants[DEFAULT_VARIANT_ID];
 const { hero } = calendarContent;
@@ -22,33 +21,33 @@ const { hero } = calendarContent;
 				</div>
 			</div>
 			<div class="selector-wrapper">
-					<label class="selector-label" id="variant-selector-label">{hero.selectorLabel}</label>
-					<div
-						class="variant-tabs"
-						role="tablist"
-						aria-labelledby="variant-selector-label"
-					>
-						{
-							calendarVariantsList.map((variant) => {
-								const isDefault = variant.id === DEFAULT_VARIANT_ID;
-								return (
-									<button
-										type="button"
-										role="tab"
-										id={`tab-${variant.id}`}
-										class={`variant-pill ${isDefault ? 'is-active' : ''}`}
-										data-variant-id={variant.id}
-										aria-selected={isDefault ? 'true' : 'false'}
-										aria-controls="variant-specs-panel"
-										tabindex={isDefault ? '0' : '-1'}
-									>
-										<span class="pill-text">{variant.shortName}</span>
-									</button>
-								);
-							})
-						}
-					</div>
+				<label class="selector-label" id="variant-selector-label">{hero.selectorLabel}</label>
+				<div
+					class="variant-tabs"
+					role="tablist"
+					aria-labelledby="variant-selector-label"
+				>
+					{
+						calendarVariantsList.map((variant) => {
+							const isDefault = variant.id === DEFAULT_VARIANT_ID;
+							return (
+								<button
+									type="button"
+									role="tab"
+									id={`tab-${variant.id}`}
+									class={`variant-pill ${isDefault ? 'is-active' : ''}`}
+									data-variant-id={variant.id}
+									aria-selected={isDefault ? 'true' : 'false'}
+									aria-controls="variant-specs-panel"
+									tabindex={isDefault ? '0' : '-1'}
+								>
+									<span class="pill-text">{variant.shortName}</span>
+								</button>
+							);
+						})
+					}
 				</div>
+			</div>
 		</div>
 		<div class="calendar-hero__content">
 			<div class="hero-badges">
@@ -103,18 +102,11 @@ const { hero } = calendarContent;
 							{formatCOP(defaultVariant.priceCOP)}
 						</div>
 					</div>
-					<QuantitySelector />
 				</div>
 
-				<div class="subtotal-wrapper">
-					<div class="price-subtotal">
-						<div class="subtotal-label">{hero.subtotalLabel}</div>
-						<div class="subtotal-amount" data-spec="subtotal">{formatCOP(defaultVariant.priceCOP)}</div>
-					</div>
-					<a href={hero.cta.href} class="button cta-button" id="hero-cta-btn">
-						{hero.cta.label}
-					</a>
-				</div>
+				<a href={hero.cta.href} class="button cta-button" id="hero-cta-btn">
+					{hero.cta.label}
+				</a>
 			</div>
 
 			<aside class="trust-section" aria-label={hero.ariaLabels.trust}>
@@ -161,7 +153,6 @@ const { hero } = calendarContent;
 <script>
 import { calendarVariants, formatCOP, type CalendarVariantId } from '@data/calendarVariants';
 import { selectedVariant, setSelectedVariant } from '@stores/cartStore';
-import { $subtotal } from '@stores/orderStore';
 
 	const initCalendarHero = () => {
 		const root = document.querySelector<HTMLElement>('.calendar-hero');
@@ -242,11 +233,6 @@ import { $subtotal } from '@stores/orderStore';
 				}
 			});
 		}
-
-		const subtotalEl = root.querySelector<HTMLElement>('[data-spec="subtotal"]');
-		$subtotal.subscribe((total) => {
-			if (subtotalEl) subtotalEl.textContent = formatCOP(total);
-		});
 
 		// Suscripción al store de Nano Stores
 		selectedVariant.subscribe((variantId) => {
@@ -438,11 +424,15 @@ import { $subtotal } from '@stores/orderStore';
 	}
 	
 	@media (min-width: $breakpoint-mobile) {
-		.subtotal-wrapper {
+		.price-container {
+			margin: 0;
+		}
+
+		.action-card {
 			display: flex;
-			flex-direction: row;
-			align-items: center;
+			gap: var(--space);
 			justify-content: space-between;
+			padding: var(--space-half);
 		}
 
 		.price-subtotal,
@@ -491,7 +481,6 @@ import { $subtotal } from '@stores/orderStore';
 			display: flex;
 			justify-content: space-between;
 			align-items: flex-start;
-			padding-bottom: 0;
 		}
 
 		.price-container {
@@ -527,7 +516,7 @@ import { $subtotal } from '@stores/orderStore';
 			position: absolute;
 			margin: 0;
 			top: 0;
-			right: 79px;
+			right: 74px; 
 		}
 
 		.calendar-hero__content {
@@ -550,21 +539,6 @@ import { $subtotal } from '@stores/orderStore';
 
 		.specs-list {
 			display: block;
-		}
-
-		.action-card {
-			flex-direction: column;
-			width: 372px;
-			padding: var(--space-half);
-		}
-
-		.subtotal-wrapper,
-		.price-container {
-			width: 100%;
-		}
-
-		.price-container {
-			margin-bottom: var(--space);
 		}
 	}
 </style>

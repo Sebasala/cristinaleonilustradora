@@ -1,0 +1,30 @@
+---
+import QuantitySelector from '@components/calendar/QuantitySelector.astro';
+import ShippingDestination from '@components/checkout/ShippingDestination.astro';
+import calendarContent from '@data/calendarContent';
+
+const { checkout } = calendarContent;
+---
+
+<section id="checkout" class="checkout-section" aria-labelledby="checkout-title">
+	<div class="checkout-card">
+		<header class="checkout-header">
+			<h2 id="checkout-title" class="checkout-title">{checkout.title}</h2>
+			<p class="checkout-subtitle">{checkout.subtitle}</p>
+		</header>
+		<QuantitySelector />
+		<ShippingDestination />
+	</div>
+</section>
+
+<style lang="scss">
+	@use "../../styles/base/breakpoints" as *;
+
+	.checkout-header {
+		max-width: var(--max-width-2);
+
+		@media screen and (min-width: $breakpoint-desktop) {
+			max-width: var(--max-width-3);
+		}
+	}
+</style>
