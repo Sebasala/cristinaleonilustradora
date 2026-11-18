@@ -6,7 +6,7 @@ COLOMBIA_DEPARTMENTS
 
 import calendarContent from '@data/calendarContent';
 
-const { checkout: { shippingDestination } } = calendarContent;
+const { checkout: { shippingDestination, destinationTitle } } = calendarContent;
 const SUGGESTED_CITIES = Object.keys(
 	CITY_DEPARTMENTS
 );
@@ -19,6 +19,7 @@ const SUGGESTED_CITIES = Object.keys(
 	data-free-shipping-label={shippingDestination.freeShippingLabel}
 >
 
+	<h3 id="shipping-destination-title">{destinationTitle}</h3>
 	<div class="shipping-fields">
 		<div class="shipping-field">
 			<label for="shipping-department">{shippingDestination.departmentLabel}</label>
