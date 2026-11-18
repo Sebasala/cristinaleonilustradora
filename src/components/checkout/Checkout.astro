@@ -43,6 +43,7 @@ const { checkout } = calendarContent;
 		padding: var(--space-half) var(--space-half) var(--space);
 		border-radius: calc(1.5 * var(--space));
 		box-shadow: var(--box-shadow);
+		max-width: var(--max-width-2);
 	}
 
 	.calendar-checkout-selector {
@@ -65,12 +66,6 @@ const { checkout } = calendarContent;
 		.calendar-checkout-selector {
 			width: 50%;
 			max-width: 500px;
-		}
-	}
-
-	@media (min-width: $breakpoint-desktop) {
-		.package-selectors {
-			justify-content: flex-start;
 		}
 	}
 </style>
