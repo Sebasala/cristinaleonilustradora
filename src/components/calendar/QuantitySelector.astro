@@ -5,7 +5,7 @@ const { hero } = calendarContent;
 ---
 
 <div class="quantity-container">
-	<label class="quantity-label">{hero.quantityLabel}</label>
+	<div class="quantity-label">{hero.quantityLabel}</div>
 	<div class="quantity-selector" data-quantity-selector>
 		<button type="button" class="stepper-btn" data-action="decrement" aria-label="Disminuir cantidad">−</button>
 		<input
@@ -23,7 +23,7 @@ const { hero } = calendarContent;
 </div>
 
 <script>
-	import {
+import {
 $itemQuantity,
 decrementQuantity,
 incrementQuantity,
@@ -85,23 +85,14 @@ setQuantity,
 <style lang="scss">
 	@use "../../styles/base/breakpoints" as *;
 
-	label {
+	.quantity-label {
 		padding-left: var(--space);
+		color: var(--color-accent);
+		line-height: var(--space);
 	}
 
 	.quantity-container {
 		margin: var(--space) 0;
-		@media (min-width: $breakpoint-mobile) {
-			flex-direction: row;
-		}
-
-		@media (min-width: $breakpoint-tablet) {
-			flex-direction: column-reverse;
-		}
-
-		@media (min-width: $breakpoint-desktop) {
-			flex-direction: row;
-		}
 	}
 
 	.quantity-selector {
@@ -167,6 +158,23 @@ setQuantity,
 			outline-offset: -1px;
 			border-radius: var(--space-half);
 			background: var(--color-white);
+		}
+	}
+
+	@media (min-width: $breakpoint-mobile-s) {
+		.quantity-label {
+			padding: 0;
+		}
+		.quantity-container {
+			display: flex;
+			align-items: center;
+			gap: var(--space-half);
+		}
+	}
+
+	@media (min-width: $breakpoint-tablet) {
+		.quantity-container {
+			margin: 0;
 		}
 	}
 </style>

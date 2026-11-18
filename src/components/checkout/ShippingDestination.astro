@@ -3,12 +3,16 @@ import {
 COLOMBIA_DEPARTMENTS,
 SUGGESTED_CITIES,
 } from '@data/colombiaTerritory';
+
+import calendarContent from '@data/calendarContent';
 ---
 
 <section class="shipping-destination" aria-labelledby="shipping-destination-title" data-shipping-destination>
 
 	<div class="shipping-fields">
 		<div class="shipping-field">
+			<!-- TODO: Implement dynamic loading of cities based on selected department -->
+			<!-- TODO: Move hardcoded texts to content -->
 			<label for="shipping-department">Departamento</label>
 			<select id="shipping-department" name="department" data-department>
 				<option value="">Selecciona un departamento</option>
@@ -35,23 +39,23 @@ SUGGESTED_CITIES,
 		</div>
 	</div>
 
-	<dl class="order-totals" aria-live="polite">
-		<div class="total-row">
-			<dt>Subtotal</dt>
-			<dd data-subtotal></dd>
-		</div>
-		<div class="total-row">
-			<dt>Costo de envío</dt>
-			<dd data-shipping-cost></dd>
-		</div>
-		<div class="total-row total-row-grand">
-			<dt>Total definitivo</dt>
-			<dd data-grand-total></dd>
-		</div>
-	</dl>
-	<p class="shipping-provisional" data-shipping-provisional>
-		Tarifa provisional hasta completar departamento y municipio.
-	</p>
+	<div class="totals-container">
+		<p class="shipping-costs">{ calendarContent.checkout.shippingCosts }</p>
+		<dl class="order-totals" aria-live="polite">
+			<div class="total-row">
+				<dt>Subtotal</dt>
+				<dd data-subtotal></dd>
+			</div>
+			<div class="total-row">
+				<dt>Costo de envío</dt>
+				<dd data-shipping-cost></dd>
+			</div>
+			<div class="total-row total-row-grand">
+				<dt>Total definitivo</dt>
+				<dd data-grand-total></dd>
+			</div>
+		</dl>
+	</div>
 </section>
 
 <script>
@@ -71,27 +75,21 @@ $subtotal,
 	const subtotalOutput = root?.querySelector<HTMLElement>('[data-subtotal]');
 	const shippingOutput = root?.querySelector<HTMLElement>('[data-shipping-cost]');
 	const grandTotalOutput = root?.querySelector<HTMLElement>('[data-grand-total]');
-	const provisionalNotice = root?.querySelector<HTMLElement>('[data-shipping-provisional]');
 
 	if (
 		departmentInput &&
 		cityInput &&
 		subtotalOutput &&
 		shippingOutput &&
-		grandTotalOutput &&
-		provisionalNotice
+		grandTotalOutput
 	) {
 		const renderTotals = (): void => {
 			const quantity = $itemQuantity.get();
-			const hasCompleteDestination =
-				Boolean($shippingDepartment.get().trim()) &&
-				Boolean($shippingCity.get().trim());
 
 			subtotalOutput.textContent = formatCOP($subtotal.get());
 			shippingOutput.textContent =
 				quantity >= 3 ? '¡Envío Gratis!' : formatCOP($shippingCost.get());
 			grandTotalOutput.textContent = formatCOP($grandTotal.get());
-			provisionalNotice.hidden = quantity >= 3 || hasCompleteDestination;
 		};
 
 		departmentInput.value = $shippingDepartment.get();
@@ -114,12 +112,17 @@ $subtotal,
 </script>
 
 <style lang="scss">
+	@use "../../styles/base/breakpoints" as *;
 	label {
 		padding-left: var(--space);
 	}
 
-	.shipping-destination {
+	.shipping-costs {
 		margin: var(--space) 0;
+	}
+
+	.shipping-destination {
+		margin: var(--space-2) 0 0;
 	}
 
 	.shipping-title {
@@ -200,5 +203,24 @@ $subtotal,
 		&[hidden] {
 			display: none;
 		}
+	}
+
+	@media screen and (min-width: $breakpoint-tablet) {
+		.totals-container {
+			display: flex;
+			gap: var(--space);
+			margin-top: var(--space-2);
+		}
+
+		.shipping-costs {
+			width: 50%;
+		}
+
+		.order-totals {
+			margin: 0;
+			width: 50%;
+			max-width: 500px;
+		}
+		
 	}
 </style>

@@ -1,18 +1,28 @@
 ---
+import CalendarVariantSelector from '@components/calendar/CalendarVariantSelector.astro';
 import QuantitySelector from '@components/calendar/QuantitySelector.astro';
 import ShippingDestination from '@components/checkout/ShippingDestination.astro';
 import calendarContent from '@data/calendarContent';
+import { calendarVariantsList } from '@data/calendarVariants';
 
 const { checkout } = calendarContent;
 ---
 
 <section id="checkout" class="checkout-section" aria-labelledby="checkout-title">
+	<header class="checkout-header">
+		<h2 id="checkout-title" class="checkout-title">{checkout.title}</h2>
+		<p class="checkout-subtitle">{checkout.subtitle}</p>
+	</header>
 	<div class="checkout-card">
-		<header class="checkout-header">
-			<h2 id="checkout-title" class="checkout-title">{checkout.title}</h2>
-			<p class="checkout-subtitle">{checkout.subtitle}</p>
-		</header>
-		<QuantitySelector />
+		<div class="package-selectors">
+			<div class="calendar-checkout-selector">
+				<CalendarVariantSelector
+					idPrefix="checkout-variant"
+					variants={calendarVariantsList}
+				/>
+			</div>
+			<QuantitySelector />
+		</div>
 		<ShippingDestination />
 	</div>
 </section>
@@ -25,6 +35,42 @@ const { checkout } = calendarContent;
 
 		@media screen and (min-width: $breakpoint-desktop) {
 			max-width: var(--max-width-3);
+		}
+	}
+
+	.checkout-card {
+		background-color: var(--color-white);
+		padding: var(--space-half) var(--space-half) var(--space);
+		border-radius: calc(1.5 * var(--space));
+		box-shadow: var(--box-shadow);
+	}
+
+	.calendar-checkout-selector {
+		container-type: inline-size;
+		max-width: 377px;
+	}
+
+	@media screen and (min-width: $breakpoint-tablet) {
+		.checkout-card {
+			padding: var(--space);
+			border-radius: var(--space-2);
+		}
+
+		.package-selectors {
+			display: flex;
+			justify-content: space-between;
+			gap: var(--space-half);
+		}
+
+		.calendar-checkout-selector {
+			width: 50%;
+			max-width: 500px;
+		}
+	}
+
+	@media (min-width: $breakpoint-desktop) {
+		.package-selectors {
+			justify-content: flex-start;
 		}
 	}
 </style>
