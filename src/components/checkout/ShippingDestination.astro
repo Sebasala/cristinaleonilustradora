@@ -1,12 +1,15 @@
 ---
 import {
-COLOMBIA_DEPARTMENTS,
-SUGGESTED_CITIES,
+CITY_DEPARTMENTS,
+COLOMBIA_DEPARTMENTS
 } from '@data/colombiaTerritory';
 
 import calendarContent from '@data/calendarContent';
 
 const { checkout: { shippingDestination } } = calendarContent;
+const SUGGESTED_CITIES = Object.keys(
+	CITY_DEPARTMENTS
+);
 ---
 
 <section
@@ -18,7 +21,6 @@ const { checkout: { shippingDestination } } = calendarContent;
 
 	<div class="shipping-fields">
 		<div class="shipping-field">
-			<!-- TODO: Implement dynamic loading of cities based on selected department -->
 			<label for="shipping-department">{shippingDestination.departmentLabel}</label>
 			<select id="shipping-department" name="department" data-department>
 				<option value="">{shippingDestination.departmentPlaceholder}</option>
@@ -66,6 +68,7 @@ const { checkout: { shippingDestination } } = calendarContent;
 
 <script>
 	import { formatCOP } from '@data/calendarVariants';
+import { getSuggestedCitiesForDepartment } from '@data/colombiaTerritory';
 import {
 $grandTotal,
 $itemQuantity,
@@ -78,6 +81,7 @@ $subtotal,
 	const root = document.querySelector<HTMLElement>('[data-shipping-destination]');
 	const departmentInput = root?.querySelector<HTMLSelectElement>('[data-department]');
 	const cityInput = root?.querySelector<HTMLInputElement>('[data-city]');
+	const citySuggestions = root?.querySelector<HTMLDataListElement>('#shipping-city-suggestions');
 	const subtotalOutput = root?.querySelector<HTMLElement>('[data-subtotal]');
 	const shippingOutput = root?.querySelector<HTMLElement>('[data-shipping-cost]');
 	const grandTotalOutput = root?.querySelector<HTMLElement>('[data-grand-total]');
@@ -86,6 +90,7 @@ $subtotal,
 	if (
 		departmentInput &&
 		cityInput &&
+		citySuggestions &&
 		subtotalOutput &&
 		shippingOutput &&
 		grandTotalOutput &&
@@ -102,11 +107,22 @@ $subtotal,
 			grandTotalOutput.textContent = formatCOP($grandTotal.get());
 		};
 
+		const renderCitySuggestions = (department: string): void => {
+			const options = getSuggestedCitiesForDepartment(department).map((city) => {
+				const option = document.createElement('option');
+				option.value = city;
+				return option;
+			});
+			citySuggestions.replaceChildren(...options);
+		};
+
 		departmentInput.value = $shippingDepartment.get();
 		cityInput.value = $shippingCity.get();
+		renderCitySuggestions(departmentInput.value);
 
 		departmentInput.addEventListener('change', () => {
 			$shippingDepartment.set(departmentInput.value);
+			renderCitySuggestions(departmentInput.value);
 		});
 		cityInput.addEventListener('input', () => {
 			$shippingCity.set(cityInput.value);
