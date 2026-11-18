@@ -5,17 +5,23 @@ SUGGESTED_CITIES,
 } from '@data/colombiaTerritory';
 
 import calendarContent from '@data/calendarContent';
+
+const { checkout: { shippingDestination } } = calendarContent;
 ---
 
-<section class="shipping-destination" aria-labelledby="shipping-destination-title" data-shipping-destination>
+<section
+	class="shipping-destination"
+	aria-labelledby="shipping-destination-title"
+	data-shipping-destination
+	data-free-shipping-label={shippingDestination.freeShippingLabel}
+>
 
 	<div class="shipping-fields">
 		<div class="shipping-field">
 			<!-- TODO: Implement dynamic loading of cities based on selected department -->
-			<!-- TODO: Move hardcoded texts to content -->
-			<label for="shipping-department">Departamento</label>
+			<label for="shipping-department">{shippingDestination.departmentLabel}</label>
 			<select id="shipping-department" name="department" data-department>
-				<option value="">Selecciona un departamento</option>
+				<option value="">{shippingDestination.departmentPlaceholder}</option>
 				{COLOMBIA_DEPARTMENTS.map((department) => (
 					<option value={department}>{department}</option>
 				))}
@@ -23,13 +29,13 @@ import calendarContent from '@data/calendarContent';
 		</div>
 
 		<div class="shipping-field">
-			<label for="shipping-city">Ciudad o municipio</label>
+			<label for="shipping-city">{shippingDestination.cityLabel}</label>
 			<input
 				id="shipping-city"
 				name="city"
 				type="text"
 				list="shipping-city-suggestions"
-				placeholder="Escribe tu ciudad o municipio"
+				placeholder={shippingDestination.cityPlaceholder}
 				autocomplete="address-level2"
 				data-city
 			/>
@@ -43,15 +49,15 @@ import calendarContent from '@data/calendarContent';
 		<p class="shipping-costs">{ calendarContent.checkout.shippingCosts }</p>
 		<dl class="order-totals" aria-live="polite">
 			<div class="total-row">
-				<dt>Subtotal</dt>
+				<dt>{shippingDestination.subtotalLabel}</dt>
 				<dd data-subtotal></dd>
 			</div>
 			<div class="total-row">
-				<dt>Costo de envío</dt>
+				<dt>{shippingDestination.shippingCostLabel}</dt>
 				<dd data-shipping-cost></dd>
 			</div>
 			<div class="total-row total-row-grand">
-				<dt>Total definitivo</dt>
+				<dt>{shippingDestination.grandTotalLabel}</dt>
 				<dd data-grand-total></dd>
 			</div>
 		</dl>
@@ -75,20 +81,24 @@ $subtotal,
 	const subtotalOutput = root?.querySelector<HTMLElement>('[data-subtotal]');
 	const shippingOutput = root?.querySelector<HTMLElement>('[data-shipping-cost]');
 	const grandTotalOutput = root?.querySelector<HTMLElement>('[data-grand-total]');
+	const freeShippingLabel = root?.dataset.freeShippingLabel;
 
 	if (
 		departmentInput &&
 		cityInput &&
 		subtotalOutput &&
 		shippingOutput &&
-		grandTotalOutput
+		grandTotalOutput &&
+		freeShippingLabel !== undefined
 	) {
 		const renderTotals = (): void => {
 			const quantity = $itemQuantity.get();
 
 			subtotalOutput.textContent = formatCOP($subtotal.get());
 			shippingOutput.textContent =
-				quantity >= 3 ? '¡Envío Gratis!' : formatCOP($shippingCost.get());
+				quantity >= 3
+					? freeShippingLabel
+					: formatCOP($shippingCost.get());
 			grandTotalOutput.textContent = formatCOP($grandTotal.get());
 		};
 
