@@ -1,0 +1,154 @@
+---
+import calendarContent from '@data/calendarContent';
+import {
+DEFAULT_VARIANT_ID,
+type CalendarVariant,
+} from '@data/calendarVariants';
+
+interface Props {
+	idPrefix: string;
+	variants: CalendarVariant[];
+}
+
+const { idPrefix = 'checkout', variants } = Astro.props;
+const { hero } = calendarContent;
+---
+
+<div class="selector-wrapper" data-variant-selector>
+	<div class="selector-label" id={`${idPrefix}-label`}>{hero.selectorLabel}</div>
+	<div class="variant-tabs" role="radiogroup" aria-labelledby={`${idPrefix}-label`}>
+		{
+			variants.map((variant) => {
+				const isDefault = variant.id === DEFAULT_VARIANT_ID;
+				return (
+					<button
+						type="button"
+						role="radio"
+						id={`${idPrefix}-${variant.id}`}
+						class={`variant-pill ${isDefault ? 'is-active' : ''}`}
+						data-variant-id={variant.id}
+						aria-checked={isDefault ? 'true' : 'false'}
+						tabindex={isDefault ? 0 : -1}
+					>
+						<span class="pill-text">{variant.shortName}</span>
+					</button>
+				);
+			})
+		}
+	</div>
+</div>
+
+<script>
+import { calendarVariants, type CalendarVariantId } from '@data/calendarVariants';
+import { selectedVariant, setSelectedVariant } from '@stores/cartStore';
+
+	const getVariantId = (tab: HTMLButtonElement): CalendarVariantId | null => {
+		const variantId = tab.dataset.variantId;
+		return variantId && Object.hasOwn(calendarVariants, variantId)
+			? (variantId as CalendarVariantId)
+			: null;
+	};
+
+	const selectors = document.querySelectorAll<HTMLElement>('[data-variant-selector]');
+
+	const updateSelectors = (variantId: CalendarVariantId): void => {
+		selectors.forEach((selector) => {
+			selector.querySelectorAll<HTMLButtonElement>('[data-variant-id]').forEach((tab) => {
+				const isSelected = tab.dataset.variantId === variantId;
+				tab.classList.toggle('is-active', isSelected);
+				tab.setAttribute('aria-checked', String(isSelected));
+				tab.tabIndex = isSelected ? 0 : -1;
+			});
+		});
+	};
+
+	selectors.forEach((selector) => {
+		const tabs = Array.from(selector.querySelectorAll<HTMLButtonElement>('[data-variant-id]'));
+
+		tabs.forEach((tab, index) => {
+			tab.addEventListener('click', () => {
+				const variantId = getVariantId(tab);
+				if (variantId) setSelectedVariant(variantId);
+			});
+
+			tab.addEventListener('keydown', (event: KeyboardEvent) => {
+				let targetIndex = -1;
+				if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+					targetIndex = (index + 1) % tabs.length;
+				} else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+					targetIndex = (index - 1 + tabs.length) % tabs.length;
+				}
+
+				if (targetIndex >= 0) {
+					event.preventDefault();
+					const targetTab = tabs[targetIndex];
+					targetTab.focus();
+					const variantId = getVariantId(targetTab);
+					if (variantId) setSelectedVariant(variantId);
+				}
+			});
+		});
+	});
+
+	selectedVariant.subscribe(updateSelectors);
+</script>
+
+<style lang="scss">
+	@use "../../styles/base/breakpoints" as *;
+
+	.selector-label {
+		margin-left: var(--space);
+		line-height: var(--space);
+		color: var(--color-accent);
+	}
+
+	.variant-tabs {
+		background-color: var(--color-white);
+		border-radius: var(--space);
+		width: 100%;
+		display: flex;
+		box-shadow: var(--box-shadow);
+	}
+
+	.variant-pill {
+		background-color: transparent;
+		border: 0;
+		padding: var(--space-half) var(--space);
+		color: var(--color-accent);
+		cursor: pointer;
+		flex: 1 0 auto;
+
+		&.is-active {
+			background-color: var(--color-accent);
+			color: var(--color-white);
+			border-radius: var(--space);
+		}
+	}
+
+	.pill-text {
+		line-height: var(--space);
+	}
+
+	@media (min-width: $breakpoint-mobile) {
+		.variant-tabs {
+			flex-grow: 0;
+			width: auto;
+		}
+	}
+
+	@container (min-width: 300px) {
+		.selector-wrapper {
+			display: flex;
+			align-items: center;
+			gap: var(--space-half);
+		}
+
+		.variant-tabs {
+			margin: 0;
+		}
+
+		.selector-label {
+			margin: 0;
+		}
+	}
+</style>
