@@ -67,7 +67,7 @@ const calendarContent = {
       "Completa tus datos para confirmar tu pedido. Te contactaremos vía WhatsApp para coordinar el despacho seguro a tu dirección.",
     destinationTitle: "Datos de envío",
     shippingCosts:
-      "Envíos gratis a partir de 3 unidades. Para 2 unidades o menos, $10.000 para Bogotá y cercanías. $16.000 para el resto del país.",
+      "Envíos gratis a partir de 3 unidades. Para 2 unidades o menos, aplica costo de envío según la ubicación.",
     shippingDestination: {
       departmentLabel: "Departamento",
       departmentPlaceholder: "Selecciona un departamento",
