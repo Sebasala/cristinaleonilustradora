@@ -1,16 +1,9 @@
 ---
-import {
-CITY_DEPARTMENTS,
-COLOMBIA_DEPARTMENTS
-} from '@data/colombiaTerritory';
-
 import ShippingAddress from '@components/checkout/ShippingAddress.astro';
+import ShippingLocation from '@components/checkout/ShippingLocation.astro';
 import calendarContent from '@data/calendarContent';
 
 const { checkout: { shippingDestination, destinationTitle } } = calendarContent;
-const SUGGESTED_CITIES = Object.keys(
-	CITY_DEPARTMENTS
-);
 ---
 
 <section
@@ -19,37 +12,8 @@ const SUGGESTED_CITIES = Object.keys(
 	data-shipping-destination
 	data-free-shipping-label={shippingDestination.freeShippingLabel}
 >
-
 	<h3 id="shipping-destination-title">{destinationTitle}</h3>
-	<!-- // TODO: Add validation messages for shipping destination fields -->
-	<div class="shipping-fields">
-		<div class="shipping-field">
-			<label for="shipping-department">{shippingDestination.departmentLabel}</label>
-			<select id="shipping-department" name="department" data-department>
-				<option value="">{shippingDestination.departmentPlaceholder}</option>
-				{COLOMBIA_DEPARTMENTS.map((department) => (
-					<option value={department}>{department}</option>
-				))}
-			</select>
-		</div>
-
-		<div class="shipping-field">
-			<label for="shipping-city">{shippingDestination.cityLabel}</label>
-			<input
-				id="shipping-city"
-				name="city"
-				type="text"
-				list="shipping-city-suggestions"
-				placeholder={shippingDestination.cityPlaceholder}
-				autocomplete="address-level2"
-				data-city
-			/>
-			<datalist id="shipping-city-suggestions">
-				{SUGGESTED_CITIES.map((city) => <option value={city} />)}
-			</datalist>
-		</div>
-	</div>
-
+	<ShippingLocation />
 	<ShippingAddress />
 
 	<div class="totals-container">
@@ -73,34 +37,15 @@ const SUGGESTED_CITIES = Object.keys(
 
 <script>
 	import { formatCOP } from '@data/calendarVariants';
-import { getSuggestedCitiesForDepartment } from '@data/colombiaTerritory';
-import {
-$grandTotal,
-$itemQuantity,
-$shippingCity,
-$shippingCost,
-$shippingDepartment,
-$subtotal,
-} from '@stores/orderStore';
+import { $grandTotal, $itemQuantity, $shippingCost, $subtotal } from '@stores/orderStore';
 
 	const root = document.querySelector<HTMLElement>('[data-shipping-destination]');
-	const departmentInput = root?.querySelector<HTMLSelectElement>('[data-department]');
-	const cityInput = root?.querySelector<HTMLInputElement>('[data-city]');
-	const citySuggestions = root?.querySelector<HTMLDataListElement>('#shipping-city-suggestions');
 	const subtotalOutput = root?.querySelector<HTMLElement>('[data-subtotal]');
 	const shippingOutput = root?.querySelector<HTMLElement>('[data-shipping-cost]');
 	const grandTotalOutput = root?.querySelector<HTMLElement>('[data-grand-total]');
 	const freeShippingLabel = root?.dataset.freeShippingLabel;
 
-	if (
-		departmentInput &&
-		cityInput &&
-		citySuggestions &&
-		subtotalOutput &&
-		shippingOutput &&
-		grandTotalOutput &&
-		freeShippingLabel !== undefined
-	) {
+	if (subtotalOutput && shippingOutput && grandTotalOutput && freeShippingLabel !== undefined) {
 		const renderTotals = (): void => {
 			const quantity = $itemQuantity.get();
 
@@ -112,41 +57,15 @@ $subtotal,
 			grandTotalOutput.textContent = formatCOP($grandTotal.get());
 		};
 
-		const renderCitySuggestions = (department: string): void => {
-			const options = getSuggestedCitiesForDepartment(department).map((city) => {
-				const option = document.createElement('option');
-				option.value = city;
-				return option;
-			});
-			citySuggestions.replaceChildren(...options);
-		};
-
-		departmentInput.value = $shippingDepartment.get();
-		cityInput.value = $shippingCity.get();
-		renderCitySuggestions(departmentInput.value);
-
-		departmentInput.addEventListener('change', () => {
-			$shippingDepartment.set(departmentInput.value);
-			renderCitySuggestions(departmentInput.value);
-		});
-		cityInput.addEventListener('input', () => {
-			$shippingCity.set(cityInput.value);
-		});
-
 		$subtotal.subscribe(renderTotals);
 		$shippingCost.subscribe(renderTotals);
 		$grandTotal.subscribe(renderTotals);
 		$itemQuantity.subscribe(renderTotals);
-		$shippingDepartment.subscribe(renderTotals);
-		$shippingCity.subscribe(renderTotals);
 	}
 </script>
 
 <style lang="scss">
 	@use "../../styles/base/breakpoints" as *;
-	label {
-		padding-left: var(--space);
-	}
 
 	.shipping-costs {
 		margin: var(--space) 0;
@@ -158,44 +77,6 @@ $subtotal,
 
 	.shipping-title {
 		margin: 0 0 var(--space);
-	}
-
-	.shipping-fields {
-		display: grid;
-		gap: var(--space);
-		grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
-	}
-
-	.shipping-field {
-		position: relative;
-
-		input,
-		select {
-			appearance: none;
-			width: 100%;
-			height: var(--space-2);
-			padding: var(--space-half) var(--space);
-			border: 1px solid var(--color-accent);
-			border-radius: var(--space);
-
-			&::-webkit-calendar-picker-indicator {
-				appearance: none !important;
-				display: none !important;
-			}
-		}
-
-		select {
-			background-image: url('/icons/arrow-down-circle-svgrepo-com.svg');
-			background-repeat: no-repeat;
-			background-position: right var(--space-half) center;
-			background-size: var(--space);
-			padding-right: var(--space-2);
-		}
-
-		:focus-visible {
-			outline: 2px solid var(--color-accent);
-			outline-offset: 2px;
-		}
 	}
 
 	.order-totals {
