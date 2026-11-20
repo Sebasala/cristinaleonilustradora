@@ -1,0 +1,174 @@
+---
+import calendarContent from '@data/calendarContent';
+import {
+CITY_DEPARTMENTS,
+COLOMBIA_DEPARTMENTS,
+} from '@data/colombiaTerritory';
+
+const { shippingDestination } = calendarContent.checkout;
+const SUGGESTED_CITIES = Object.keys(CITY_DEPARTMENTS);
+const MIN_CITY_LENGTH = 3;
+---
+
+<div class="shipping-fields" data-shipping-location>
+	<div class="shipping-field">
+		<label for="shipping-department">{shippingDestination.departmentLabel} *</label>
+		<select
+			id="shipping-department"
+			name="department"
+			data-department
+			required
+			aria-invalid="false"
+			aria-describedby="shipping-department-error"
+		>
+			<option value="">{shippingDestination.departmentPlaceholder}</option>
+			{COLOMBIA_DEPARTMENTS.map((department) => (
+				<option value={department}>{department}</option>
+			))}
+		</select>
+		<p id="shipping-department-error" class="shipping-location__error" role="status" hidden>
+			{shippingDestination.departmentError}
+		</p>
+	</div>
+
+	<div class="shipping-field">
+		<label for="shipping-city">{shippingDestination.cityLabel} *</label>
+		<input
+			id="shipping-city"
+			name="city"
+			type="text"
+			list="shipping-city-suggestions"
+			placeholder={shippingDestination.cityPlaceholder}
+			autocomplete="address-level2"
+			minlength={MIN_CITY_LENGTH}
+			required
+			aria-invalid="false"
+			aria-describedby="shipping-city-error"
+			data-city
+		/>
+		<p id="shipping-city-error" class="shipping-location__error" role="status" hidden>
+			{shippingDestination.cityError}
+		</p>
+		<datalist id="shipping-city-suggestions">
+			{SUGGESTED_CITIES.map((city) => <option value={city} />)}
+		</datalist>
+	</div>
+</div>
+
+<script>
+	import { getSuggestedCitiesForDepartment } from '@data/colombiaTerritory';
+import { $shippingCity, $shippingDepartment } from '@stores/orderStore';
+
+	const root = document.querySelector<HTMLElement>('[data-shipping-location]');
+	const departmentInput = root?.querySelector<HTMLSelectElement>('[data-department]');
+	const cityInput = root?.querySelector<HTMLInputElement>('[data-city]');
+	const citySuggestions = root?.querySelector<HTMLDataListElement>('#shipping-city-suggestions');
+	const departmentError = root?.querySelector<HTMLElement>('#shipping-department-error');
+	const cityError = root?.querySelector<HTMLElement>('#shipping-city-error');
+
+	if (departmentInput && cityInput && citySuggestions && departmentError && cityError) {
+		const touched = { department: false, city: false };
+
+		const renderErrors = (): void => {
+			const invalidDepartment = touched.department && !departmentInput.value;
+			const invalidCity = touched.city && cityInput.value.trim().length < cityInput.minLength;
+
+			departmentInput.setAttribute('aria-invalid', String(invalidDepartment));
+			cityInput.setAttribute('aria-invalid', String(invalidCity));
+			departmentError.hidden = !invalidDepartment;
+			cityError.hidden = !invalidCity;
+		};
+
+		const renderCitySuggestions = (department: string): void => {
+			const options = getSuggestedCitiesForDepartment(department).map((city) => {
+				const option = document.createElement('option');
+				option.value = city;
+				return option;
+			});
+			citySuggestions.replaceChildren(...options);
+		};
+
+		departmentInput.value = $shippingDepartment.get();
+		cityInput.value = $shippingCity.get();
+		renderCitySuggestions(departmentInput.value);
+
+		departmentInput.addEventListener('change', () => {
+			$shippingDepartment.set(departmentInput.value);
+			renderCitySuggestions(departmentInput.value);
+			renderErrors();
+		});
+		departmentInput.addEventListener('blur', () => {
+			touched.department = true;
+			renderErrors();
+		});
+		cityInput.addEventListener('input', () => {
+			$shippingCity.set(cityInput.value);
+			renderErrors();
+		});
+		cityInput.addEventListener('blur', () => {
+			touched.city = true;
+			renderErrors();
+		});
+
+		window.addEventListener('checkout:validate-all', () => {
+			touched.department = true;
+			touched.city = true;
+			renderErrors();
+		});
+	} else {
+		console.error('Shipping location fields or validation messages could not be initialized.');
+	}
+</script>
+
+<style lang="scss">
+	label {
+		padding-left: var(--space);
+	}
+
+	.shipping-fields {
+		display: grid;
+		gap: var(--space);
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+	}
+
+	.shipping-field {
+		position: relative;
+
+		input,
+		select {
+			appearance: none;
+			width: 100%;
+			height: var(--space-2);
+			padding: var(--space-half) var(--space);
+			border: 1px solid var(--color-accent);
+			border-radius: var(--space);
+
+			&::-webkit-calendar-picker-indicator {
+				appearance: none !important;
+				display: none !important;
+			}
+		}
+
+		select {
+			background-image: url('/icons/arrow-down-circle-svgrepo-com.svg');
+			background-repeat: no-repeat;
+			background-position: right var(--space-half) center;
+			background-size: var(--space);
+			padding-right: var(--space-2);
+		}
+
+		[aria-invalid="true"] {
+			border-color: var(--color-error);
+		}
+
+		:focus-visible {
+			outline: 2px solid var(--color-accent);
+			outline-offset: 2px;
+		}
+	}
+
+	.shipping-location__error {
+		margin: 0;
+		color: var(--color-error);
+	}
+</style>

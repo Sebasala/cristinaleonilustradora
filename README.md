@@ -1,61 +1,97 @@
----
-// TODO: Update the README with project-specific information
----
+# Cristina León — Sitio artístico
 
-# Astro Starter Kit: Basics
+Sitio web de la artista visual e ilustradora Cristina León. Incluye su
+portafolio, biografía, talleres, calendario ilustrado y captura de clientes
+potenciales.
+
+## Tecnologías
+
+- [Astro](https://docs.astro.build/) para las páginas y componentes
+- MDX para contenido de páginas
+- SCSS para estilos
+- Nanostores para el estado del catálogo y el checkout
+- Netlify Functions para el endpoint de captación de leads
+
+## Requisitos
+
+- Node.js 22
+- pnpm 10 o posterior
+
+## Instalación y desarrollo
 
 ```sh
-npm create astro@latest -- --template basics
+corepack enable
+corepack pnpm install --frozen-lockfile
+corepack pnpm dev
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+El servidor local usa por defecto `http://localhost:4321`.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Para ejecutar el sitio junto con las funciones de Netlify:
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+```sh
+corepack pnpm netlify:dev
+```
 
-## 🚀 Project Structure
+## Comandos
 
-Inside of your Astro project, you'll see the following folders and files:
+| Comando | Acción |
+| :--- | :--- |
+| `corepack pnpm dev` | Inicia el servidor de desarrollo |
+| `corepack pnpm start` | Alias de `pnpm dev` |
+| `corepack pnpm build` | Genera la versión de producción en `dist/` |
+| `corepack pnpm preview` | Previsualiza la compilación local |
+| `corepack pnpm astro ...` | Ejecuta comandos de la CLI de Astro |
+| `corepack pnpm netlify:dev` | Ejecuta Astro y las funciones con Netlify Dev |
+
+La validación principal del sitio es:
+
+```sh
+corepack pnpm build
+```
+
+## Captura de leads y variables de entorno
+
+El formulario del Taller de Ilustración Poética, disponible en
+`/talleres/ilustracion-poetica/`, envía los datos a `POST /api/lead`.
+La función `netlify/functions/lead.ts` recibe el objeto JSON y reenvía sus
+campos de tipo texto a `GOOGLE_SHEETS_WEBHOOK_URL`.
+
+| Variable | Uso |
+| :--- | :--- |
+| `GOOGLE_SHEETS_WEBHOOK_URL` | URL del webhook que recibe los datos capturados |
+| `ADMIN_WHATSAPP_PHONE` | Número opcional devuelto al frontend después de registrar un lead |
+
+Configúralas en el entorno local de Netlify o en las variables de entorno del
+sitio desplegado. Nunca agregues secretos al repositorio.
+
+## Estructura
 
 ```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── components/
-│   │   └── Card.astro
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+src/
+├── components/   Componentes Astro reutilizables
+├── content/      Contenido MDX
+├── data/         Catálogos y datos de calendario, talleres y territorio
+├── layouts/      Plantillas generales y privadas
+├── pages/        Rutas públicas y página de privacidad
+├── scripts/      Captura y distribución de leads
+├── stores/       Estado reactivo del carrito y el checkout
+├── styles/       Estilos globales y módulos SCSS
+└── utils/        Utilidades compartidas
+
+netlify/functions/   Funciones serverless desplegadas por Netlify
+public/              Archivos estáticos, imágenes y redirecciones
+apps-script/         Integraciones auxiliares de Google Apps Script
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Rutas principales
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- `/` — Portafolio principal
+- `/biografia/` — Información sobre la artista
+- `/calendario/` — Catálogo y checkout del calendario
+- `/talleres/` — Talleres disponibles
+- `/talleres/ilustracion-poetica/` — Taller y formulario de captación de leads
+- `/politica-de-privacidad/` — Política de privacidad
 
 ## Checkout: validación de dirección
 
@@ -63,9 +99,10 @@ Feel free to check [our documentation](https://docs.astro.build) or jump into ou
 `src/stores/orderStore.ts`. Los valores de dirección se normalizan al escribir y
 se guardan en `sessionStorage` junto con el resto del checkout.
 
-Para mostrar los errores de los campos obligatorios antes de continuar, CAL-05C
-puede emitir el evento síncrono `window.dispatchEvent(new Event('checkout:validate-all'))`
-y buscar el primer campo inválido con
+Para mostrar los errores de los campos obligatorios antes de continuar,
+`CAL-05C` puede emitir el evento síncrono
+`window.dispatchEvent(new Event('checkout:validate-all'))` y buscar el primer
+campo inválido con
 `document.querySelector('[data-shipping-address] [aria-invalid="true"]')`.
 Los wrappers identifican los campos mediante `data-field`. El consumidor se
 encarga del desplazamiento y del control de avance.

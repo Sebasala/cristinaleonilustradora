@@ -71,8 +71,10 @@ const calendarContent = {
     shippingDestination: {
       departmentLabel: "Departamento",
       departmentPlaceholder: "Selecciona un departamento",
+      departmentError: "Selecciona un departamento.",
       cityLabel: "Ciudad o municipio",
       cityPlaceholder: "Escribe tu ciudad o municipio",
+      cityError: "Escribe una ciudad o municipio de al menos 3 caracteres.",
       subtotalLabel: "Subtotal",
       shippingCostLabel: "Costo de envío",
       grandTotalLabel: "Total definitivo",
