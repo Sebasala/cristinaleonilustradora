@@ -77,6 +77,20 @@ const calendarContent = {
       shippingCostLabel: "Costo de envío",
       grandTotalLabel: "Total definitivo",
       freeShippingLabel: "¡Envío Gratis!"
+    },
+    shippingAddress: {
+      addressLabel: "Dirección",
+      addressPlaceholder: "Ej. Cra 15 # 85-20 o Vereda La Balsa",
+      addressError: "Escribe una dirección de al menos 5 caracteres.",
+      neighborhoodLabel: "Barrio / Vereda",
+      neighborhoodPlaceholder: "Escribe tu barrio o vereda",
+      neighborhoodError: "Escribe un barrio o vereda de al menos 2 caracteres.",
+      complementLabel: "Complemento (opcional)",
+      complementPlaceholder: "Apartamento, torre, casa u otra referencia",
+      complementHelp:
+        "Incluye detalles adicionales de la dirección, si los necesitas.",
+      deliveryNotesLabel: "Notas de entrega (opcional)",
+      deliveryNotesPlaceholder: "Indicaciones para la persona que entrega"
     }
   }
 } as const;

@@ -1,3 +1,7 @@
+---
+// TODO: Update the README with project-specific information
+---
+
 # Astro Starter Kit: Basics
 
 ```sh
@@ -52,3 +56,16 @@ All commands are run from the root of the project, from a terminal:
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+
+## Checkout: validación de dirección
+
+`$shippingAddress` y `$shippingAddressValidity` se exportan desde
+`src/stores/orderStore.ts`. Los valores de dirección se normalizan al escribir y
+se guardan en `sessionStorage` junto con el resto del checkout.
+
+Para mostrar los errores de los campos obligatorios antes de continuar, CAL-05C
+puede emitir el evento síncrono `window.dispatchEvent(new Event('checkout:validate-all'))`
+y buscar el primer campo inválido con
+`document.querySelector('[data-shipping-address] [aria-invalid="true"]')`.
+Los wrappers identifican los campos mediante `data-field`. El consumidor se
+encarga del desplazamiento y del control de avance.

@@ -1,0 +1,219 @@
+---
+import calendarContent from '@data/calendarContent';
+
+const { shippingAddress } = calendarContent.checkout;
+---
+
+<div class="shipping-address" data-shipping-address>
+	<div class="shipping-address__fields">
+		<div class="shipping-address__field" data-field="address">
+			<label for="shipping-address">{shippingAddress.addressLabel} *</label>
+			<input
+				id="shipping-address"
+				name="address"
+				type="text"
+				placeholder={shippingAddress.addressPlaceholder}
+				autocomplete="street-address"
+				enterkeyhint="next"
+				minlength="5"
+				required
+				aria-invalid="false"
+				aria-describedby="shipping-address-error"
+			/>
+			<p id="shipping-address-error" class="shipping-address__error" role="status" hidden>
+				{shippingAddress.addressError}
+			</p>
+		</div>
+
+		<div class="shipping-address__field" data-field="neighborhood">
+			<label for="shipping-neighborhood">{shippingAddress.neighborhoodLabel} *</label>
+			<input
+				id="shipping-neighborhood"
+				name="neighborhood"
+				type="text"
+				placeholder={shippingAddress.neighborhoodPlaceholder}
+				enterkeyhint="next"
+				minlength="2"
+				required
+				aria-invalid="false"
+				aria-describedby="shipping-neighborhood-error"
+			/>
+			<p id="shipping-neighborhood-error" class="shipping-address__error" role="status" hidden>
+				{shippingAddress.neighborhoodError}
+			</p>
+		</div>
+
+		<div class="shipping-address__field" data-field="complement">
+			<label for="shipping-complement">{shippingAddress.complementLabel}</label>
+			<input
+				id="shipping-complement"
+				name="complement"
+				type="text"
+				placeholder={shippingAddress.complementPlaceholder}
+				autocomplete="address-line2"
+				enterkeyhint="next"
+				aria-invalid="false"
+				aria-describedby="shipping-complement-help"
+			/>
+			<p id="shipping-complement-help" class="shipping-address__help">
+				{shippingAddress.complementHelp}
+			</p>
+		</div>
+
+		<div class="shipping-address__field" data-field="deliveryNotes">
+			<label for="shipping-delivery-notes">{shippingAddress.deliveryNotesLabel}</label>
+			<textarea
+				id="shipping-delivery-notes"
+				name="deliveryNotes"
+				placeholder={shippingAddress.deliveryNotesPlaceholder}
+				maxlength="200"
+				aria-invalid="false"
+				aria-describedby="shipping-delivery-notes-help shipping-delivery-notes-count"
+			></textarea>
+			<p id="shipping-delivery-notes-count" class="shipping-address__count">0/200</p>
+		</div>
+	</div>
+</div>
+
+<script>
+	import {
+$shippingAddress,
+$shippingAddressValidity,
+MAX_DELIVERY_NOTES_LENGTH,
+setShippingAddressField,
+type ShippingAddress,
+} from '@stores/orderStore';
+
+	const root = document.querySelector<HTMLElement>('[data-shipping-address]');
+	const address = root?.querySelector<HTMLInputElement>('#shipping-address');
+	const neighborhood = root?.querySelector<HTMLInputElement>('#shipping-neighborhood');
+	const complement = root?.querySelector<HTMLInputElement>('#shipping-complement');
+	const deliveryNotes = root?.querySelector<HTMLTextAreaElement>('#shipping-delivery-notes');
+	const addressError = root?.querySelector<HTMLElement>('#shipping-address-error');
+	const neighborhoodError = root?.querySelector<HTMLElement>('#shipping-neighborhood-error');
+	const counter = root?.querySelector<HTMLElement>('#shipping-delivery-notes-count');
+
+	if (root && address && neighborhood && complement && deliveryNotes && addressError && neighborhoodError && counter) {
+		const fields: Record<keyof ShippingAddress, HTMLInputElement | HTMLTextAreaElement> = {
+			address,
+			neighborhood,
+			complement,
+			deliveryNotes,
+		};
+		const requiredFields = { address, neighborhood };
+		const errors = { address: addressError, neighborhood: neighborhoodError };
+		const touched = new Set<keyof typeof requiredFields>();
+		let updatingFromInput = false;
+
+		const renderErrors = (): void => {
+			const validity = $shippingAddressValidity.get();
+			for (const field of ['address', 'neighborhood'] as const) {
+				const invalid = touched.has(field) && !validity[field];
+				requiredFields[field].setAttribute('aria-invalid', String(invalid));
+				errors[field].hidden = !invalid;
+			}
+		};
+
+		const renderCounter = (): void => {
+			const length = deliveryNotes.value.length;
+			counter.textContent = `${length}/${MAX_DELIVERY_NOTES_LENGTH}`;
+		};
+
+		const syncField = (field: keyof ShippingAddress): void => {
+			updatingFromInput = true;
+			setShippingAddressField(field, fields[field].value);
+			updatingFromInput = false;
+		};
+
+		$shippingAddress.subscribe((values) => {
+			if (!updatingFromInput) {
+				for (const field of Object.keys(fields) as (keyof ShippingAddress)[]) {
+					if (document.activeElement !== fields[field]) {
+						fields[field].value = values[field];
+					}
+				}
+				renderCounter();
+			}
+			renderErrors();
+		});
+
+		for (const field of Object.keys(fields) as (keyof ShippingAddress)[]) {
+			fields[field].addEventListener('input', () => {
+				syncField(field);
+				renderErrors();
+				if (field === 'deliveryNotes') renderCounter();
+			});
+			fields[field].addEventListener('blur', () => {
+				syncField(field);
+				fields[field].value = $shippingAddress.get()[field];
+				if (field === 'address' || field === 'neighborhood') touched.add(field);
+				renderErrors();
+				if (field === 'deliveryNotes') renderCounter();
+			});
+		}
+
+		window.addEventListener('checkout:validate-all', () => {
+			for (const field of Object.keys(fields) as (keyof ShippingAddress)[]) syncField(field);
+			touched.add('address');
+			touched.add('neighborhood');
+			renderErrors();
+		});
+	} else {
+		console.error('Shipping address fields could not be initialized.');
+	}
+</script>
+
+<style lang="scss">
+	.shipping-address {
+		margin-top: var(--space);
+	}
+
+	.shipping-address__fields {
+		display: grid;
+		gap: var(--space);
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+	}
+
+	.shipping-address__field {
+		min-width: 0;
+
+		label {
+			padding-left: var(--space);
+		}
+
+		input,
+		textarea {
+			width: 100%;
+			border-radius: var(--space);
+			padding: var(--space-half) var(--space);
+		}
+
+		input {
+			height: var(--space-2);
+		}
+
+		textarea {
+			height: calc(6 * var(--space));
+			resize: none;
+		}
+
+		[aria-invalid="true"] {
+			border-color: var(--color-error);
+		}
+	}
+
+	.shipping-address__error,
+	.shipping-address__help,
+	.shipping-address__count {
+		margin: 0;
+	}
+
+	.shipping-address__error {
+		color: var(--color-error);
+	}
+
+	.shipping-address__count {
+		text-align: right;
+		opacity: var(--opacity-medium);
+	}
+</style>
