@@ -4,6 +4,7 @@ CITY_DEPARTMENTS,
 COLOMBIA_DEPARTMENTS
 } from '@data/colombiaTerritory';
 
+import ShippingAddress from '@components/checkout/ShippingAddress.astro';
 import calendarContent from '@data/calendarContent';
 
 const { checkout: { shippingDestination, destinationTitle } } = calendarContent;
@@ -20,6 +21,7 @@ const SUGGESTED_CITIES = Object.keys(
 >
 
 	<h3 id="shipping-destination-title">{destinationTitle}</h3>
+	<!-- // TODO: Add validation messages for shipping destination fields -->
 	<div class="shipping-fields">
 		<div class="shipping-field">
 			<label for="shipping-department">{shippingDestination.departmentLabel}</label>
@@ -47,6 +49,8 @@ const SUGGESTED_CITIES = Object.keys(
 			</datalist>
 		</div>
 	</div>
+
+	<ShippingAddress />
 
 	<div class="totals-container">
 		<p class="shipping-costs">{ calendarContent.checkout.shippingCosts }</p>
