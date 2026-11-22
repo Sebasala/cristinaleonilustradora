@@ -1,18 +1,20 @@
 ---
-import calendarContent from '@data/calendarContent';
+import calendarContent from "@data/calendarContent";
 import {
-CITY_DEPARTMENTS,
-COLOMBIA_DEPARTMENTS,
-} from '@data/colombiaTerritory';
+	CITY_DEPARTMENTS,
+	COLOMBIA_DEPARTMENTS
+} from "@data/colombiaTerritory";
+import { MIN_CITY_LENGTH } from "@stores/orderStore";
 
 const { shippingDestination } = calendarContent.checkout;
 const SUGGESTED_CITIES = Object.keys(CITY_DEPARTMENTS);
-const MIN_CITY_LENGTH = 3;
 ---
 
 <div class="shipping-fields" data-shipping-location>
 	<div class="shipping-field">
-		<label for="shipping-department">{shippingDestination.departmentLabel} *</label>
+		<label for="shipping-department">
+			{shippingDestination.departmentLabel} *
+		</label>
 		<select
 			id="shipping-department"
 			name="department"
@@ -26,7 +28,12 @@ const MIN_CITY_LENGTH = 3;
 				<option value={department}>{department}</option>
 			))}
 		</select>
-		<p id="shipping-department-error" class="shipping-location__error" role="status" hidden>
+		<p
+			id="shipping-department-error"
+			class="shipping-location__error"
+			role="status"
+			hidden
+		>
 			{shippingDestination.departmentError}
 		</p>
 	</div>
@@ -46,77 +53,112 @@ const MIN_CITY_LENGTH = 3;
 			aria-describedby="shipping-city-error"
 			data-city
 		/>
-		<p id="shipping-city-error" class="shipping-location__error" role="status" hidden>
+		<p
+			id="shipping-city-error"
+			class="shipping-location__error"
+			role="status"
+			hidden
+		>
 			{shippingDestination.cityError}
 		</p>
 		<datalist id="shipping-city-suggestions">
-			{SUGGESTED_CITIES.map((city) => <option value={city} />)}
+			{SUGGESTED_CITIES.map((city) => (
+				<option value={city} />
+			))}
 		</datalist>
 	</div>
 </div>
 
 <script>
-	import { getSuggestedCitiesForDepartment } from '@data/colombiaTerritory';
-import { $shippingCity, $shippingDepartment } from '@stores/orderStore';
+	import { getSuggestedCitiesForDepartment } from "@data/colombiaTerritory";
+	import { $shippingCity, $shippingDepartment } from "@stores/orderStore";
 
-	const root = document.querySelector<HTMLElement>('[data-shipping-location]');
-	const departmentInput = root?.querySelector<HTMLSelectElement>('[data-department]');
-	const cityInput = root?.querySelector<HTMLInputElement>('[data-city]');
-	const citySuggestions = root?.querySelector<HTMLDataListElement>('#shipping-city-suggestions');
-	const departmentError = root?.querySelector<HTMLElement>('#shipping-department-error');
-	const cityError = root?.querySelector<HTMLElement>('#shipping-city-error');
+	const root = document.querySelector<HTMLElement>("[data-shipping-location]");
+	const departmentInput =
+		root?.querySelector<HTMLSelectElement>("[data-department]");
+	const cityInput = root?.querySelector<HTMLInputElement>("[data-city]");
+	const citySuggestions = root?.querySelector<HTMLDataListElement>(
+		"#shipping-city-suggestions"
+	);
+	const departmentError = root?.querySelector<HTMLElement>(
+		"#shipping-department-error"
+	);
+	const cityError = root?.querySelector<HTMLElement>("#shipping-city-error");
 
-	if (departmentInput && cityInput && citySuggestions && departmentError && cityError) {
+	if (
+		departmentInput &&
+		cityInput &&
+		citySuggestions &&
+		departmentError &&
+		cityError
+	) {
 		const touched = { department: false, city: false };
+		let updatingFromInput = false;
 
 		const renderErrors = (): void => {
 			const invalidDepartment = touched.department && !departmentInput.value;
-			const invalidCity = touched.city && cityInput.value.trim().length < cityInput.minLength;
+			const invalidCity =
+				touched.city && cityInput.value.trim().length < cityInput.minLength;
 
-			departmentInput.setAttribute('aria-invalid', String(invalidDepartment));
-			cityInput.setAttribute('aria-invalid', String(invalidCity));
+			departmentInput.setAttribute("aria-invalid", String(invalidDepartment));
+			cityInput.setAttribute("aria-invalid", String(invalidCity));
 			departmentError.hidden = !invalidDepartment;
 			cityError.hidden = !invalidCity;
 		};
 
 		const renderCitySuggestions = (department: string): void => {
-			const options = getSuggestedCitiesForDepartment(department).map((city) => {
-				const option = document.createElement('option');
-				option.value = city;
-				return option;
-			});
+			const options = getSuggestedCitiesForDepartment(department).map(
+				(city) => {
+					const option = document.createElement("option");
+					option.value = city;
+					return option;
+				}
+			);
 			citySuggestions.replaceChildren(...options);
 		};
 
-		departmentInput.value = $shippingDepartment.get();
-		cityInput.value = $shippingCity.get();
-		renderCitySuggestions(departmentInput.value);
-
-		departmentInput.addEventListener('change', () => {
-			$shippingDepartment.set(departmentInput.value);
-			renderCitySuggestions(departmentInput.value);
+		$shippingDepartment.subscribe((department) => {
+			departmentInput.value = department;
+			renderCitySuggestions(department);
 			renderErrors();
 		});
-		departmentInput.addEventListener('blur', () => {
+		$shippingCity.subscribe((city) => {
+			if (!updatingFromInput) cityInput.value = city;
+			renderErrors();
+		});
+
+		departmentInput.addEventListener("change", () => {
+			$shippingDepartment.set(departmentInput.value);
+			renderErrors();
+		});
+		departmentInput.addEventListener("blur", () => {
 			touched.department = true;
 			renderErrors();
 		});
-		cityInput.addEventListener('input', () => {
+		cityInput.addEventListener("input", () => {
+			updatingFromInput = true;
 			$shippingCity.set(cityInput.value);
+			updatingFromInput = false;
 			renderErrors();
 		});
-		cityInput.addEventListener('blur', () => {
+		cityInput.addEventListener("blur", () => {
 			touched.city = true;
 			renderErrors();
 		});
 
-		window.addEventListener('checkout:validate-all', () => {
+		window.addEventListener("checkout:validate", () => {
+			updatingFromInput = true;
+			$shippingDepartment.set(departmentInput.value);
+			$shippingCity.set(cityInput.value);
+			updatingFromInput = false;
 			touched.department = true;
 			touched.city = true;
 			renderErrors();
 		});
 	} else {
-		console.error('Shipping location fields or validation messages could not be initialized.');
+		console.error(
+			"Shipping location fields or validation messages could not be initialized."
+		);
 	}
 </script>
 
@@ -150,7 +192,7 @@ import { $shippingCity, $shippingDepartment } from '@stores/orderStore';
 		}
 
 		select {
-			background-image: url('/icons/arrow-down-circle-svgrepo-com.svg');
+			background-image: url("/icons/arrow-down-circle-svgrepo-com.svg");
 			background-repeat: no-repeat;
 			background-position: right var(--space-half) center;
 			background-size: var(--space);

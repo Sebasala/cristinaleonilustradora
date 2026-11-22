@@ -21,7 +21,7 @@ th {
 h1,
 h2,
 h3 {
-  letter-spacing: 0.2rem;
+  letter-spacing: var(--letter-spaced);
 }
 
 h1 {
@@ -47,5 +47,4 @@ li {
 
 a {
   text-decoration: none;
-  letter-spacing: 0.2rem;
 }

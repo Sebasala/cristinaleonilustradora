@@ -107,7 +107,10 @@ const whatsappHref = whatsappPhone ? `https://wa.me/${whatsappPhone}` : undefine
 	}
 
 	.nav-link {
-		color: var(--color-text);
+		color: var(--color-text);			
+		display: inline-block;
+		padding: var(--space-half);
+		letter-spacing: var(--letter-spaced);
 	}
 
 	.logo {
@@ -130,6 +133,7 @@ const whatsappHref = whatsappPhone ? `https://wa.me/${whatsappPhone}` : undefine
 
 		p {
 			font-size: 18.5px;
+			letter-spacing: 3.3px;
 		}
 
 		@media screen and (min-width: $breakpoint-desktop) {

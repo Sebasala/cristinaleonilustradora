@@ -1,0 +1,342 @@
+---
+import calendarContent from "@data/calendarContent";
+
+const { customerContact } = calendarContent.checkout;
+const fields = [
+  {
+    key: "fullName",
+    label: customerContact.fullNameLabel,
+    error: customerContact.fullNameError,
+    type: "text",
+    inputmode: "text",
+    autocomplete: "name"
+  },
+  {
+    key: "phone",
+    label: customerContact.phoneLabel,
+    error: customerContact.phoneError,
+    type: "tel",
+    inputmode: "numeric",
+    autocomplete: "tel"
+  },
+  {
+    key: "email",
+    label: customerContact.emailLabel,
+    error: customerContact.emailError,
+    type: "email",
+    inputmode: "email",
+    autocomplete: "email"
+  },
+  {
+    key: "documentId",
+    label: customerContact.documentIdLabel,
+    error: customerContact.documentIdError,
+    type: "text",
+    inputmode: "numeric",
+    autocomplete: "off"
+  }
+] as const;
+---
+
+<section
+  class="customer-contact"
+  aria-labelledby="customer-contact-title"
+  data-customer-contact
+>
+  <h3 id="customer-contact-title">{customerContact.title}</h3>
+  <div class="customer-contact__fields">
+    {fields.map((field) => (
+      <div class="customer-contact__field">
+        <label for={`contact-${field.key}`}>{field.label} *</label>
+        <input
+          id={`contact-${field.key}`}
+          name={field.key}
+          type={field.type}
+          inputmode={field.inputmode}
+          autocomplete={field.autocomplete}
+          required
+          aria-invalid="false"
+          aria-describedby={`contact-${field.key}-error`}
+        />
+        <p
+          id={`contact-${field.key}-error`}
+          class="customer-contact__error"
+          role="status"
+          hidden
+        >
+          {field.error}
+        </p>
+      </div>
+    ))}
+  </div>
+  <div class="customer-contact__consent">
+    <input
+      id="contact-privacy"
+      name="acceptedPrivacy"
+      type="checkbox"
+      required
+      aria-invalid="false"
+      aria-describedby="contact-privacy-error"
+    />
+    <div>
+      <label class="contact-privacy-label" for="contact-privacy">
+        {customerContact.privacyLabel}{" "}
+      </label>
+      <a href="/politica-de-privacidad">{customerContact.privacyLink}</a>.
+      <p
+        id="contact-privacy-error"
+        class="customer-contact__error"
+        role="status"
+        hidden
+      >
+        {customerContact.privacyError}
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+  import {
+    $customerContact,
+    $customerContactValidity,
+    setCustomerContactField,
+    type CustomerContact
+  } from "@stores/orderStore";
+
+  const root = document.querySelector<HTMLElement>("[data-customer-contact]");
+  const fullName = root?.querySelector<HTMLInputElement>("#contact-fullName");
+  const phone = root?.querySelector<HTMLInputElement>("#contact-phone");
+  const email = root?.querySelector<HTMLInputElement>("#contact-email");
+  const documentId = root?.querySelector<HTMLInputElement>(
+    "#contact-documentId"
+  );
+  const privacy = root?.querySelector<HTMLInputElement>("#contact-privacy");
+  const fullNameError = root?.querySelector<HTMLElement>(
+    "#contact-fullName-error"
+  );
+  const phoneError = root?.querySelector<HTMLElement>("#contact-phone-error");
+  const emailError = root?.querySelector<HTMLElement>("#contact-email-error");
+  const documentIdError = root?.querySelector<HTMLElement>(
+    "#contact-documentId-error"
+  );
+  const privacyError = root?.querySelector<HTMLElement>(
+    "#contact-privacy-error"
+  );
+
+  if (
+    fullName &&
+    phone &&
+    email &&
+    documentId &&
+    privacy &&
+    fullNameError &&
+    phoneError &&
+    emailError &&
+    documentIdError &&
+    privacyError
+  ) {
+    const fields = { fullName, phone, email, documentId };
+    const errors = {
+      fullName: fullNameError,
+      phone: phoneError,
+      email: emailError,
+      documentId: documentIdError,
+      acceptedPrivacy: privacyError
+    };
+    const controls = { ...fields, acceptedPrivacy: privacy };
+    const fieldNames = Object.keys(fields) as (keyof typeof fields)[];
+    const touched = new Set<keyof CustomerContact>();
+    let updatingFromInput = false;
+
+    const restrictInsertedCharacters = (
+      input: HTMLInputElement,
+      isAllowed: (value: string) => boolean,
+      sanitize: (value: string) => string
+    ): void => {
+      const isAllowedInsertion = (inserted: string): boolean => {
+        const start = input.selectionStart ?? input.value.length;
+        const end = input.selectionEnd ?? start;
+        return isAllowed(
+          input.value.slice(0, start) + inserted + input.value.slice(end)
+        );
+      };
+
+      input.addEventListener("beforeinput", (event: InputEvent) => {
+        if (!event.inputType.startsWith("insert")) return;
+        const inserted =
+          event.data ?? event.dataTransfer?.getData("text/plain");
+        if (
+          inserted !== null &&
+          inserted !== undefined &&
+          !isAllowedInsertion(inserted)
+        ) {
+          event.preventDefault();
+        }
+      });
+
+      input.addEventListener("input", () => {
+        const value = input.value;
+        if (isAllowed(value)) return;
+
+        const start = input.selectionStart ?? value.length;
+        const end = input.selectionEnd ?? start;
+        input.value = sanitize(value);
+        input.setSelectionRange(
+          sanitize(value.slice(0, start)).length,
+          sanitize(value.slice(0, end)).length
+        );
+      });
+
+      input.addEventListener("paste", (event) => {
+        const pasted = event.clipboardData?.getData("text/plain");
+        if (pasted && !isAllowedInsertion(pasted)) event.preventDefault();
+      });
+    };
+
+    const sanitizePhone = (value: string): string => {
+      let sanitized = "";
+      for (const character of value) {
+        if (/[0-9 ()-]/.test(character)) {
+          sanitized += character;
+        } else if (
+          character === "+" &&
+          (sanitized === "" || sanitized === "(")
+        ) {
+          sanitized += character;
+        }
+      }
+      return sanitized;
+    };
+
+    const renderErrors = (): void => {
+      const validity = $customerContactValidity.get();
+      for (const field of Object.keys(controls) as (keyof CustomerContact)[]) {
+        const invalid = touched.has(field) && !validity[field];
+        controls[field].setAttribute("aria-invalid", String(invalid));
+        errors[field].hidden = !invalid;
+      }
+    };
+
+    const syncField = (field: keyof typeof fields): void => {
+      updatingFromInput = true;
+      setCustomerContactField(field, fields[field].value);
+      updatingFromInput = false;
+    };
+
+    $customerContact.subscribe((contact) => {
+      if (!updatingFromInput) {
+        for (const field of fieldNames) fields[field].value = contact[field];
+        privacy.checked = contact.acceptedPrivacy;
+      }
+      renderErrors();
+    });
+
+    restrictInsertedCharacters(
+      phone,
+      (value) => /^(?:\+|\(\+)?[0-9 ()-]*$/.test(value),
+      sanitizePhone
+    );
+
+    restrictInsertedCharacters(
+      documentId,
+      (value) => /^[0-9.]*$/.test(value),
+      (value) => value.replace(/[^0-9.]/g, "")
+    );
+
+    for (const field of fieldNames) {
+      fields[field].addEventListener("input", () => syncField(field));
+      fields[field].addEventListener("blur", () => {
+        syncField(field);
+        fields[field].value = $customerContact.get()[field];
+        touched.add(field);
+        renderErrors();
+      });
+    }
+
+    privacy.addEventListener("change", () => {
+      $customerContact.setKey("acceptedPrivacy", privacy.checked);
+      touched.add("acceptedPrivacy");
+      renderErrors();
+    });
+    privacy.addEventListener("blur", () => {
+      touched.add("acceptedPrivacy");
+      renderErrors();
+    });
+
+    window.addEventListener("checkout:validate", () => {
+      for (const field of fieldNames) {
+        syncField(field);
+        touched.add(field);
+      }
+      $customerContact.setKey("acceptedPrivacy", privacy.checked);
+      touched.add("acceptedPrivacy");
+      renderErrors();
+    });
+  } else {
+    console.error(
+      "Customer contact fields or validation messages could not be initialized."
+    );
+  }
+</script>
+
+<style lang="scss">
+  .customer-contact {
+    margin-top: var(--space-2);
+  }
+
+  .customer-contact__fields {
+    display: grid;
+    gap: var(--space);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  }
+
+  .customer-contact__field {
+    min-width: 0;
+
+    label {
+      padding-left: var(--space);
+    }
+
+    input {
+      height: var(--space-2);
+      padding: var(--space-half) var(--space);
+      border-radius: var(--space);
+    }
+
+    [aria-invalid="true"] {
+      border-color: var(--color-error);
+    }
+  }
+
+  .customer-contact__consent {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-half);
+    margin-top: var(--space);
+
+    input {
+      width: auto;
+      flex: none;
+      margin-top: 0.3em;
+      accent-color: var(--color-accent);
+    }
+
+    input[aria-invalid="true"] {
+      outline: 2px solid var(--color-error);
+    }
+
+    label {
+      display: inline;
+    }
+  }
+
+  .customer-contact__error {
+    margin: 0;
+    color: var(--color-error);
+  }
+
+  .contact-privacy-label {
+    color: var(--color-text);
+    opacity: var(--opacity-high);
+  }
+</style>
