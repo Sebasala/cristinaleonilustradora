@@ -1,4 +1,4 @@
-import { calendarVariants, calendarVariantsList } from "@data/calendarVariants";
+import { calendarVariants, calendarVariantsList, DEFAULT_VARIANT_ID } from "@data/calendarVariants";
 import {
   calculateShippingRate,
   COLOMBIA_DEPARTMENTS
@@ -21,6 +21,14 @@ export const $subtotal = computed(
 
 export const $shippingDepartment = atom<string>("");
 export const $shippingCity = atom<string>("");
+export const MIN_CITY_LENGTH = 3;
+
+export const $shippingLocationValid = computed(
+  [$shippingDepartment, $shippingCity],
+  (department, city) =>
+    COLOMBIA_DEPARTMENTS.some((item) => item === department) &&
+    city.trim().length >= MIN_CITY_LENGTH
+);
 
 export interface ShippingAddress {
   address: string;
@@ -60,6 +68,75 @@ export const setShippingAddressField = (
   $shippingAddress.setKey(field, normalizeShippingAddressValue(limitedValue));
 };
 
+export interface CustomerContact {
+  fullName: string;
+  phone: string;
+  email: string;
+  documentId: string;
+  acceptedPrivacy: boolean;
+}
+
+const emptyCustomerContact: CustomerContact = {
+  fullName: "",
+  phone: "",
+  email: "",
+  documentId: "",
+  acceptedPrivacy: false
+};
+
+type ContactTextField = Exclude<keyof CustomerContact, "acceptedPrivacy">;
+
+export const normalizeContactValue = (field: ContactTextField, value: string): string => {
+  const trimmed = value.trim();
+  if (field === "phone") {
+    if (!/^(?:\+57|\(\+57\))?[0-9 ()-]*$/.test(trimmed)) return trimmed;
+    return trimmed.replace(/[ ()-]/g, "").replace(/^\+57/, "");
+  }
+  if (field === "documentId") {
+    return /^[\d.\s]*$/.test(trimmed) ? trimmed.replace(/[.\s]/g, "") : trimmed;
+  }
+  return field === "fullName" ? trimmed.replace(/\s+/g, " ") : trimmed;
+};
+
+export const $customerContact = map<CustomerContact>({ ...emptyCustomerContact });
+
+export const setCustomerContactField = (field: ContactTextField, value: string): void => {
+  $customerContact.setKey(field, normalizeContactValue(field, value));
+};
+
+export const $customerContactValidity = computed($customerContact, (contact) => {
+  const words = contact.fullName.trim().split(/\s+/);
+  return {
+    fullName: words.length >= 2 && words.every((word) =>
+      /\p{L}/u.test(word) && /^[\p{L}\p{M}]+(?:['’\-][\p{L}\p{M}]+)*$/u.test(word)
+    ),
+    phone: /^3\d{9}$/.test(contact.phone),
+    email: /^[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?\.)+[A-Za-z]{2,63}$/.test(contact.email),
+    documentId: /^\d{6,10}$/.test(contact.documentId),
+    acceptedPrivacy: contact.acceptedPrivacy
+  };
+});
+
+export const $isContactValid = computed($customerContactValidity, (validity) =>
+  Object.values(validity).every(Boolean)
+);
+
+export const $isCheckoutValid = computed(
+  [$shippingLocationValid, $shippingAddressValidity, $isContactValid],
+  (locationValid, addressValidity, contactValid) =>
+    locationValid && addressValidity.address && addressValidity.neighborhood && contactValid
+);
+
+const isStoredCustomerContact = (value: unknown): value is Pick<
+  CustomerContact, "fullName" | "phone" | "email" | "documentId"
+> =>
+  typeof value === "object" &&
+  value !== null &&
+  "fullName" in value && typeof value.fullName === "string" &&
+  "phone" in value && typeof value.phone === "string" &&
+  "email" in value && typeof value.email === "string" &&
+  "documentId" in value && typeof value.documentId === "string";
+
 const isStoredShippingAddress = (value: unknown): value is ShippingAddress =>
   typeof value === "object" &&
   value !== null &&
@@ -95,6 +172,28 @@ export const decrementQuantity = (): void =>
   setQuantity($itemQuantity.get() - 1);
 
 const CHECKOUT_STORAGE_KEY = "calendar-checkout";
+let clearingCheckout = false;
+
+export const clearCheckoutSession = (): void => {
+  clearingCheckout = true;
+  try {
+    setSelectedVariant(DEFAULT_VARIANT_ID);
+    setQuantity(MIN_QTY);
+    $shippingDepartment.set("");
+    $shippingCity.set("");
+    $shippingAddress.set({ ...emptyShippingAddress });
+    $customerContact.set({ ...emptyCustomerContact });
+    if (typeof window !== "undefined") {
+      try {
+        window.sessionStorage.removeItem(CHECKOUT_STORAGE_KEY);
+      } catch (error) {
+        console.warn("Could not clear checkout state from session storage.", error);
+      }
+    }
+  } finally {
+    clearingCheckout = false;
+  }
+};
 
 if (typeof window !== "undefined") {
   try {
@@ -105,7 +204,7 @@ if (typeof window !== "undefined") {
         throw new Error("Invalid checkout state");
       }
 
-      const { variant, quantity, department, city, shippingAddress } = state as Record<
+      const { variant, quantity, department, city, shippingAddress, customerContact } = state as Record<
         string,
         unknown
       >;
@@ -140,17 +239,30 @@ if (typeof window !== "undefined") {
           setShippingAddressField("complement", shippingAddress.complement);
           setShippingAddressField("deliveryNotes", shippingAddress.deliveryNotes);
         }
+
+      }
+
+      if (customerContact !== undefined) {
+        if (!isStoredCustomerContact(customerContact)) {
+          console.warn("Could not restore invalid customer contact from session storage.");
+        } else {
+          setCustomerContactField("fullName", customerContact.fullName);
+          setCustomerContactField("phone", customerContact.phone);
+          setCustomerContactField("email", customerContact.email);
+          setCustomerContactField("documentId", customerContact.documentId);
+        }
       }
     }
-  } catch (error) {
+  } catch {
     console.warn(
-      "Could not restore checkout state from session storage.",
-      error
+      "Could not restore checkout state from session storage."
     );
   }
 
   const persistCheckout = (): void => {
+    if (clearingCheckout) return;
     try {
+      const { fullName, phone, email, documentId } = $customerContact.get();
       window.sessionStorage.setItem(
         CHECKOUT_STORAGE_KEY,
         JSON.stringify({
@@ -158,7 +270,8 @@ if (typeof window !== "undefined") {
           quantity: $itemQuantity.get(),
           department: $shippingDepartment.get(),
           city: $shippingCity.get(),
-          shippingAddress: $shippingAddress.get()
+          shippingAddress: $shippingAddress.get(),
+          customerContact: { fullName, phone, email, documentId }
         })
       );
     } catch (error) {
@@ -171,4 +284,5 @@ if (typeof window !== "undefined") {
   $shippingDepartment.listen(persistCheckout);
   $shippingCity.listen(persistCheckout);
   $shippingAddress.listen(persistCheckout);
+  $customerContact.listen(persistCheckout);
 }

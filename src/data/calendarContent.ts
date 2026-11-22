@@ -93,7 +93,22 @@ const calendarContent = {
         "Incluye detalles adicionales de la dirección, si los necesitas.",
       deliveryNotesLabel: "Notas de entrega (opcional)",
       deliveryNotesPlaceholder: "Indicaciones para la persona que entrega"
-    }
+    },
+    customerContact: {
+      title: "Datos de contacto",
+      fullNameLabel: "Nombre completo",
+      fullNameError: "Escribe tu nombre completo con al menos dos palabras válidas.",
+      phoneLabel: "Celular",
+      phoneError: "Escribe un celular colombiano de 10 dígitos que comience por 3.",
+      emailLabel: "Correo electrónico",
+      emailError: "Escribe un correo electrónico válido.",
+      documentIdLabel: "Cédula",
+      documentIdError: "Escribe una cédula de 6 a 10 dígitos.",
+      privacyLabel: "Autorizo el tratamiento de mis datos personales para gestionar y entregar mi pedido, de acuerdo con la",
+      privacyLink: "Política de tratamiento de datos personales",
+      privacyError: "Debes autorizar el tratamiento de tus datos personales para continuar."
+    },
+    continueLabel: "Continuar al pago"
   }
 } as const;
 
