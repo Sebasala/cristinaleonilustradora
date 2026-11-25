@@ -1,8 +1,9 @@
 import deskHeroImg from "@assets/calendar/calendar-desk-hero.jpg";
 import wallHeroImg from "@assets/calendar/calendar-wall-hero.jpg";
 import type { ImageMetadata } from "astro";
+import { calendarPrices, type CalendarVariantId } from "./calendarPrices";
 
-export type CalendarVariantId = "desk-2027" | "wall-2027";
+export type { CalendarVariantId } from "./calendarPrices";
 
 export interface CalendarVariant {
   id: CalendarVariantId;
@@ -38,7 +39,7 @@ export const calendarVariants: Record<CalendarVariantId, CalendarVariant> = {
     imageAsset: deskHeroImg,
     idealUse: "Escritorio de trabajo o estudio personal",
     name: "Calendario de Escritorio 2027",
-    priceCOP: 65000,
+    priceCOP: calendarPrices["desk-2027"],
     shortName: "Escritorio"
   },
   "wall-2027": {
@@ -50,7 +51,7 @@ export const calendarVariants: Record<CalendarVariantId, CalendarVariant> = {
     imageAsset: wallHeroImg,
     idealUse: "Pared de sala o estudio creativo",
     name: "Calendario de Pared 2027",
-    priceCOP: 85000,
+    priceCOP: calendarPrices["wall-2027"],
     shortName: "Pared"
   }
 };
