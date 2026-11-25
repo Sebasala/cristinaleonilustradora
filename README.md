@@ -35,13 +35,13 @@ corepack pnpm netlify:dev
 
 ## Comandos
 
-| Comando | Acción |
-| :--- | :--- |
-| `corepack pnpm dev` | Inicia el servidor de desarrollo |
-| `corepack pnpm start` | Alias de `pnpm dev` |
-| `corepack pnpm build` | Genera la versión de producción en `dist/` |
-| `corepack pnpm preview` | Previsualiza la compilación local |
-| `corepack pnpm astro ...` | Ejecuta comandos de la CLI de Astro |
+| Comando                     | Acción                                        |
+| :-------------------------- | :-------------------------------------------- |
+| `corepack pnpm dev`         | Inicia el servidor de desarrollo              |
+| `corepack pnpm start`       | Alias de `pnpm dev`                           |
+| `corepack pnpm build`       | Genera la versión de producción en `dist/`    |
+| `corepack pnpm preview`     | Previsualiza la compilación local             |
+| `corepack pnpm astro ...`   | Ejecuta comandos de la CLI de Astro           |
 | `corepack pnpm netlify:dev` | Ejecuta Astro y las funciones con Netlify Dev |
 
 La validación principal del sitio es:
@@ -50,6 +50,9 @@ La validación principal del sitio es:
 corepack pnpm build
 ```
 
+Las pruebas focalizadas del registro de órdenes se ejecutan con
+`node --test tests/orders.test.cjs`.
+
 ## Captura de leads y variables de entorno
 
 El formulario del Taller de Ilustración Poética, disponible en
@@ -57,13 +60,17 @@ El formulario del Taller de Ilustración Poética, disponible en
 La función `netlify/functions/lead.ts` recibe el objeto JSON y reenvía sus
 campos de tipo texto a `GOOGLE_SHEETS_WEBHOOK_URL`.
 
-| Variable | Uso |
-| :--- | :--- |
-| `GOOGLE_SHEETS_WEBHOOK_URL` | URL del webhook que recibe los datos capturados |
-| `ADMIN_WHATSAPP_PHONE` | Número opcional devuelto al frontend después de registrar un lead |
+| Variable                    | Uso                                                               |
+| :-------------------------- | :---------------------------------------------------------------- |
+| `GOOGLE_SHEETS_WEBHOOK_URL` | URL del webhook que recibe los datos capturados                   |
+| `ADMIN_WHATSAPP_PHONE`      | Número opcional devuelto al frontend después de registrar un lead |
 
 Configúralas en el entorno local de Netlify o en las variables de entorno del
 sitio desplegado. Nunca agregues secretos al repositorio.
+
+Para el registro de órdenes del calendario, consulta la
+[guía de Google Sheets](docs/registro-ordenes.md). La función `/api/orders`
+utiliza la variable privada `ORDERS_WEBHOOK_URL` y aplica un límite de solicitudes.
 
 ## Estructura
 
@@ -99,10 +106,9 @@ apps-script/         Integraciones auxiliares de Google Apps Script
 `src/stores/orderStore.ts`. Los valores de dirección se normalizan al escribir y
 se guardan en `sessionStorage` junto con el resto del checkout.
 
-Para mostrar los errores de los campos obligatorios antes de continuar,
-`CAL-05C` puede emitir el evento síncrono
-`window.dispatchEvent(new Event('checkout:validate-all'))` y buscar el primer
-campo inválido con
-`document.querySelector('[data-shipping-address] [aria-invalid="true"]')`.
-Los wrappers identifican los campos mediante `data-field`. El consumidor se
-encarga del desplazamiento y del control de avance.
+El formulario emite `checkout:validate` y, si todos los campos son válidos,
+`checkout:valid`. El servicio de órdenes guarda el recibo en `$currentOrder` y
+emite `order:created`; no limpia el checkout ni navega a una pantalla de pago.
+La estructura del recibo se valida tanto al restaurarlo en el navegador como
+en la función de órdenes, mediante `src/utils/orderValidation.ts`. La función
+además verifica los datos del checkout y los precios y tarifas vigentes.

@@ -9,10 +9,11 @@
       "@data/*": ["./src/data/*"],
       "@layouts/*": ["./src/layouts/*"],
       "@pages/*": ["./src/pages/*"],
+      "@scripts/*": ["./src/scripts/*"],
+      "@stores/*": ["./src/stores/*"],
       "@styles/*": ["./src/styles/*"],
       "@talleres/*": ["./src/pages/talleres/*"],
-      "@scripts/*": ["./src/scripts/*"],
-      "@stores/*": ["./src/stores/*"]
+      "@utils/*": ["./src/utils/*"]
     }
   }
 }

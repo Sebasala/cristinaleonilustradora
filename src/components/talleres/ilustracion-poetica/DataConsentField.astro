@@ -1,5 +1,5 @@
 ---
-import { parseInlineLink } from "../../../utils/text";
+import { parseInlineLink } from "@utils/text";
 
 const { content } = Astro.props;
 const { name, error, label } = content;
@@ -8,44 +8,51 @@ const { beforeLink, linkLabel, linkHref, afterLink } = parseInlineLink(label);
 ---
 
 <div class="field-wrapper consent-field-wrapper" data-field-wrapper>
-    <label class="consent-label" for={name}>
-        <input id={name} name={name} type="checkbox" required aria-describedby={errorId} />
-        <span>
-            {beforeLink}
-            {linkLabel && <a href={linkHref!}>{linkLabel}</a>}
-            {afterLink}
-            <span class="required-indicator" aria-hidden="true"> *</span>
-        </span>
-    </label>
+	<label class="consent-label" for={name}>
+		<input
+			id={name}
+			name={name}
+			type="checkbox"
+			required
+			aria-describedby={errorId}
+		/>
+		<span>
+			{beforeLink}
+			{linkLabel && <a href={linkHref!}>{linkLabel}</a>}
+			{afterLink}
+			<span class="required-indicator" aria-hidden="true">
+				{" "}
+				*
+			</span>
+		</span>
+	</label>
 
-    <p id={errorId} class="field-error" role="status" hidden aria-live="polite">
-        {error}
-    </p>
+	<p id={errorId} class="field-error" role="status" hidden aria-live="polite">
+		{error}
+	</p>
 </div>
 
 <style>
-    .field-wrapper {
-        padding-bottom: 0;
-    }
+	.field-wrapper {
+		padding-bottom: 0;
+	}
 
-    .field-error {
-        bottom: calc(var(--space) * -2);
-    }
-    
-    .consent-label {
-        color: var(--color-text);
-        opacity: var(--opacity-high);
-    }
+	.field-error {
+		bottom: calc(var(--space) * -2);
+	}
 
-    .consent-field-wrapper {
-        margin-top: var(--space);
-    }
-    .consent-field-wrapper.invalid {
-        .consent-label {
-            color: var(--color-text);
-            opacity: var(--opacity-high);
-        }
-        
-    }
+	.consent-label {
+		color: var(--color-text);
+		opacity: var(--opacity-high);
+	}
 
+	.consent-field-wrapper {
+		margin-top: var(--space);
+	}
+	.consent-field-wrapper.invalid {
+		.consent-label {
+			color: var(--color-text);
+			opacity: var(--opacity-high);
+		}
+	}
 </style>

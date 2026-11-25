@@ -1,17 +1,23 @@
 ---
-import CalendarVariantSelector from '@components/calendar/CalendarVariantSelector.astro';
-import QuantitySelector from '@components/calendar/QuantitySelector.astro';
-import CustomerContactForm from '@components/checkout/CustomerContactForm.astro';
-import ShippingDestination from '@components/checkout/ShippingDestination.astro';
-import calendarContent from '@data/calendarContent';
-import { calendarVariantsList } from '@data/calendarVariants';
+import CalendarVariantSelector from "@components/calendar/CalendarVariantSelector.astro";
+import QuantitySelector from "@components/calendar/QuantitySelector.astro";
+import CustomerContactForm from "@components/checkout/CustomerContactForm.astro";
+import ShippingDestination from "@components/checkout/ShippingDestination.astro";
+import calendarContent from "@data/calendarContent";
+import { calendarVariantsList } from "@data/calendarVariants";
 
 const { checkout } = calendarContent;
 ---
 
-<section id="checkout" class="checkout-section" aria-labelledby="checkout-title">
+<section
+	id="checkout"
+	class="checkout-section"
+	aria-labelledby="checkout-title"
+>
 	<header class="checkout-header">
-		<h2 id="checkout-title" class="checkout-title">{checkout.title}</h2>
+		<h2 id="checkout-title" class="checkout-title">
+			{checkout.title}
+		</h2>
 		<p class="checkout-subtitle">{checkout.subtitle}</p>
 	</header>
 	<div class="checkout-card">
@@ -27,33 +33,130 @@ const { checkout } = calendarContent;
 		<form class="checkout-form" novalidate data-checkout-form>
 			<ShippingDestination />
 			<CustomerContactForm />
-			<button class="button checkout-form__submit" type="submit">{checkout.continueLabel}</button>
+			<div class="submit-wrapper">
+				<p class="submit-status" role="status" data-order-status></p>
+				<button
+					id="checkout-submit-btn"
+					class="button checkout-form__submit"
+					type="submit"
+					aria-busy="false"
+				>
+					{checkout.continueLabel}
+				</button>
+			</div>
 		</form>
 	</div>
 </section>
 
 <script>
-	import { $isCheckoutValid } from '@stores/orderStore';
+	import {
+		$customerContact,
+		$isCheckoutValid,
+		$itemQuantity,
+		$shippingAddress,
+		$shippingCity,
+		$shippingDepartment
+	} from "@stores/orderStore";
+	import { selectedVariant } from "@stores/cartStore";
+	import { $currentOrder } from "@stores/currentOrder";
+	import type { OrderReceipt } from "@stores/currentOrder";
+	import calendarContent from "@data/calendarContent";
+	import {
+		createConsolidatedOrder,
+		isCurrentOrderForCheckout
+	} from "../../services/orderService";
 
-	const form = document.querySelector<HTMLFormElement>('[data-checkout-form]');
+	const form = document.querySelector<HTMLFormElement>("[data-checkout-form]");
+	const button = form?.querySelector<HTMLButtonElement>("#checkout-submit-btn");
+	const status = form?.querySelector<HTMLElement>("[data-order-status]");
 
-	if (form) {
-		form.addEventListener('submit', (event) => {
+	if (form && button && status) {
+		const {
+			continueLabel,
+			creatingOrderLabel,
+			retryOrderLabel,
+			orderFallbackMessage,
+			orderSyncedMessage,
+			orderChangedFallbackMessage,
+			orderChangedSyncedMessage,
+			orderErrorMessage
+		} = calendarContent.checkout;
+		let submitting = false;
+
+		const renderOrder = (completed?: OrderReceipt): void => {
+			const receipt = $currentOrder.get();
+			if (receipt && isCurrentOrderForCheckout()) {
+				button.textContent =
+					receipt.syncStatus === "fallback" ? retryOrderLabel : continueLabel;
+				status.textContent = (
+					receipt.syncStatus === "fallback"
+						? orderFallbackMessage
+						: orderSyncedMessage
+				).replace("{orderId}", receipt.orderId);
+			} else {
+				button.textContent = continueLabel;
+				status.textContent = completed
+					? (completed.syncStatus === "fallback"
+							? orderChangedFallbackMessage
+							: orderChangedSyncedMessage
+						).replace("{orderId}", completed.orderId)
+					: "";
+			}
+		};
+
+		const onCheckoutChange = (): void => {
+			if (!submitting) renderOrder();
+		};
+		selectedVariant.listen(onCheckoutChange);
+		$itemQuantity.listen(onCheckoutChange);
+		$shippingDepartment.listen(onCheckoutChange);
+		$shippingCity.listen(onCheckoutChange);
+		$shippingAddress.listen(onCheckoutChange);
+		$customerContact.listen(onCheckoutChange);
+		renderOrder();
+
+		window.addEventListener("checkout:valid", async () => {
+			if (submitting) return;
+
+			submitting = true;
+			button.disabled = true;
+			button.setAttribute("aria-busy", "true");
+			button.textContent = creatingOrderLabel;
+			status.textContent = "";
+
+			try {
+				const receipt = await createConsolidatedOrder();
+				renderOrder(receipt);
+			} catch (error) {
+				console.error("Could not create order.", error);
+				button.textContent = continueLabel;
+				status.textContent = orderErrorMessage;
+			} finally {
+				submitting = false;
+				button.disabled = false;
+				button.setAttribute("aria-busy", "false");
+			}
+		});
+
+		form.addEventListener("submit", (event) => {
 			event.preventDefault();
-			window.dispatchEvent(new CustomEvent('checkout:validate'));
+			if (submitting) return;
+			window.dispatchEvent(new CustomEvent("checkout:validate"));
 
-			const firstInvalid = form.querySelector<HTMLElement>('[aria-invalid="true"]');
+			const firstInvalid = form.querySelector<HTMLElement>(
+				'[aria-invalid="true"]'
+			);
 			if (firstInvalid) {
-				firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+				firstInvalid.scrollIntoView({ behavior: "smooth", block: "center" });
 				firstInvalid.focus({ preventScroll: true });
 			} else if ($isCheckoutValid.get()) {
-				window.dispatchEvent(new CustomEvent('checkout:valid'));
+				window.dispatchEvent(new CustomEvent("checkout:valid"));
 			} else {
-				console.error('Checkout validation failed without an invalid field.');
+				console.error("Checkout validation failed without an invalid field.");
 			}
 		});
 	} else {
-		console.error('Checkout form could not be initialized.');
+		console.error("Checkout form could not be initialized.");
 	}
 </script>
 
@@ -85,7 +188,6 @@ const { checkout } = calendarContent;
 		min-height: 0;
 		padding: 0;
 	}
-
 	@media screen and (min-width: $breakpoint-tablet) {
 		.checkout-card {
 			padding: var(--space);
@@ -101,6 +203,22 @@ const { checkout } = calendarContent;
 		.calendar-checkout-selector {
 			width: 50%;
 			max-width: 500px;
+		}
+
+		.submit-wrapper {
+			align-items: center;
+			display: flex;
+			flex-flow: row-reverse nowrap;
+			justify-content: flex-end;
+			gap: var(--space-half);
+		}
+
+		.submit-status {
+			margin: 0;
+		}
+
+		.checkout-form__submit {
+			flex-shrink: 0;
 		}
 	}
 </style>

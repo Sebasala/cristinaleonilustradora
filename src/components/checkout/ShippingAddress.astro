@@ -95,10 +95,10 @@ const { shippingAddress } = calendarContent.checkout;
 	import {
 		$shippingAddress,
 		$shippingAddressValidity,
-		MAX_DELIVERY_NOTES_LENGTH,
 		setShippingAddressField,
 		type ShippingAddress
 	} from "@stores/orderStore";
+	import { MAX_DELIVERY_NOTES_LENGTH } from "@utils/checkoutValidation";
 
 	const root = document.querySelector<HTMLElement>("[data-shipping-address]");
 	const address = root?.querySelector<HTMLInputElement>("#shipping-address");
